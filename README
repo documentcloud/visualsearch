@@ -1,0 +1,16 @@
+ __      ___                 _  _____                     _       _     
+ \ \    / (_)               | |/ ____|                   | |     (_)    
+  \ \  / / _ ___ _   _  __ _| | (___   ___  __ _ _ __ ___| |__    _ ___ 
+   \ \/ / | / __| | | |/ _` | |\___ \ / _ \/ _` | '__/ __| '_ \  | / __|
+    \  /  | \__ \ |_| | (_| | |____) |  __/ (_| | | | (__| | | |_| \__ \
+     \/   |_|___/\__,_|\__,_|_|_____/ \___|\__,_|_|  \___|_| |_(_) |___/
+                                                                _/ |    
+                                                               |__/    
+                                                               
+DocumentCloud's VisualSearch.js is an auto-completing textbox with multiple facets. 
+This textbox replaces ordinary search boxes with a search box that autocompletes 
+individual facet categories and then autocompletes the expected values of those
+categories.
+
+For documentation, pre-packed downloads, demos, and tests, see:
+http://documentcloud.github.com/visualsearch
