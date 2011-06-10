@@ -1,0 +1,15 @@
+embed_assets: datauri
+javascript_compressor: closure
+template_function: _.template
+package_path: build
+
+javascripts:
+    visualsearch:
+        - js/views/*.js
+        - js/utils/*.js
+        - js/models/*.js
+        - js/templates/*.jst
+        
+stylesheets:
+    visualsearch:
+        - css/*.css
