@@ -13,10 +13,7 @@
     
     var searchBox = VS.app.searchBox.render().el;
     $(options.container).html(searchBox);
-    
-    if (options.query != null) {
-      VS.app.searchBox.value(options.query);
-    }
+    VS.app.searchBox.value(options.query || '');
     
     return VS.app.searchBox;
   };
