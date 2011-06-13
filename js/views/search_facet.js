@@ -1,6 +1,6 @@
 // This is the visual search facet that holds the category and its autocompleted 
 // input field.
-dc.ui.SearchFacet = Backbone.View.extend({
+VS.ui.SearchFacet = Backbone.View.extend({
   
   type : 'facet',
   
@@ -23,7 +23,7 @@ dc.ui.SearchFacet = Backbone.View.extend({
   render : function() {
     console.log(['search facet', this.model.get('category'), this.model.get('value')]);
     var $el = this.$el = $(this.el);
-    $el.html(JST['workspace/search_facet']({
+    $el.html(JST['search_facet']({
       model : this.model
     }));
     this.setMode('not', 'editing');
@@ -83,7 +83,7 @@ dc.ui.SearchFacet = Backbone.View.extend({
   search : function(e) {
     console.log(['facet search', e]);
     this.closeAutocomplete();
-    dc.app.searchBox.searchEvent(e);
+    VS.app.searchBox.searchEvent(e);
   },
   
   enableEdit : function() {
@@ -98,8 +98,8 @@ dc.ui.SearchFacet = Backbone.View.extend({
     }
     this.searchAutocomplete();
     this.resize();
-    dc.app.searchBox.disableFacets(this);
-    dc.app.searchBox.addFocus();
+    VS.app.searchBox.disableFacets(this);
+    VS.app.searchBox.addFocus();
     if (!this.box.is(':focus')) this.box.focus();
   },
   
@@ -116,7 +116,7 @@ dc.ui.SearchFacet = Backbone.View.extend({
   
   disableEdit : function() {
     console.log(['disableEdit', this.model.get('category'), this.box.is(':focus')]);
-    var newFacetQuery = dc.inflector.trim(this.box.val());
+    var newFacetQuery = VS.utils.inflector.trim(this.box.val());
     if (newFacetQuery != this.model.get('value')) {
       this.set(newFacetQuery);
     }
@@ -141,8 +141,8 @@ dc.ui.SearchFacet = Backbone.View.extend({
         $(document).unbind('keydown.facet').bind('keydown.facet', this.keydown);
         $(document).unbind('click.facet').one('click.facet', this.deselectFacet);
       }, this));
-      dc.app.searchBox.disableFacets(this);
-      dc.app.searchBox.addFocus();
+      VS.app.searchBox.disableFacets(this);
+      VS.app.searchBox.addFocus();
     }
   },
   
@@ -193,7 +193,7 @@ dc.ui.SearchFacet = Backbone.View.extend({
     }
     
     if (searchTerm && value != searchTerm) {
-      var re = dc.inflector.escapeRegExp(searchTerm || '');
+      var re = VS.utils.inflector.escapeRegExp(searchTerm || '');
       var matcher = new RegExp('\\b' + re, 'i');
       matches = $.grep(matches, function(item) {
         return matcher.test(item) || matcher.test(item.value) || matcher.test(item.label);
@@ -227,13 +227,13 @@ dc.ui.SearchFacet = Backbone.View.extend({
     var committed = this.model.has('value');
     this.deselectFacet();
     this.disableEdit();
-    SearchQuery.remove(this.model);
+    VS.app.searchQuery.remove(this.model);
     if (committed) {
       this.search();
     } else {
-      dc.app.searchBox.renderFacets();
+      VS.app.searchBox.renderFacets();
     }
-    dc.app.searchBox.focusNextFacet(this, 0, {viewPosition: this.options.order});
+    VS.app.searchBox.focusNextFacet(this, 0, {viewPosition: this.options.order});
   },
   
   removeLastCharacter : function() {
@@ -248,8 +248,8 @@ dc.ui.SearchFacet = Backbone.View.extend({
   },
   
   keydown : function(e) {
-    var key = dc.app.hotkeys.key(e);
-    console.log(['facet keydown', key, this.box.val(), this.box.getCursorPosition(), this.box.getSelection().length, dc.app.hotkeys.left, dc.app.hotkeys.right]);
+    var key = VS.app.hotkeys.key(e);
+    console.log(['facet keydown', key, this.box.val(), this.box.getCursorPosition(), this.box.getSelection().length, VS.app.hotkeys.left, VS.app.hotkeys.right]);
 
     if (key == 'enter' && this.box.val()) {
       this.disableEdit();
@@ -258,7 +258,7 @@ dc.ui.SearchFacet = Backbone.View.extend({
       if (this.box.getCursorPosition() == 0 && !this.box.getSelection().length) {
         if (this.modes.selected == 'is') {
           this.deselectFacet();
-          dc.app.searchBox.focusNextFacet(this, -1, {startAtEnd: true});
+          VS.app.searchBox.focusNextFacet(this, -1, {startAtEnd: true});
         } else {
           this.selectFacet();
         }
@@ -272,24 +272,24 @@ dc.ui.SearchFacet = Backbone.View.extend({
       } else if (this.box.getCursorPosition() == this.box.val().length) {
         e.preventDefault();
         this.disableEdit();
-        dc.app.searchBox.focusNextFacet(this, 1);
+        VS.app.searchBox.focusNextFacet(this, 1);
       }
-    } else if (dc.app.hotkeys.shift && key == 'tab') {
+    } else if (VS.app.hotkeys.shift && key == 'tab') {
       e.preventDefault();
       this.deselectFacet();
       this.disableEdit();
-      dc.app.searchBox.focusNextFacet(this, -1, {startAtEnd: true, skipToFacet: true, selectText: true});
+      VS.app.searchBox.focusNextFacet(this, -1, {startAtEnd: true, skipToFacet: true, selectText: true});
     } else if (key == 'tab') {
       e.preventDefault();
       this.deselectFacet();
       this.disableEdit();
-      dc.app.searchBox.focusNextFacet(this, 1, {skipToFacet: true, selectText: true});
-    } else if (dc.app.hotkeys.command && (e.which == 97 || e.which == 65)) {
+      VS.app.searchBox.focusNextFacet(this, 1, {skipToFacet: true, selectText: true});
+    } else if (VS.app.hotkeys.command && (e.which == 97 || e.which == 65)) {
       e.preventDefault();
-      dc.app.searchBox.selectAllFacets();
+      VS.app.searchBox.selectAllFacets();
       return false;
-    } else if (dc.app.hotkeys.printable(e) && this.modes.selected == 'is') {
-      dc.app.searchBox.focusNextFacet(this, -1, {startAtEnd: true});
+    } else if (VS.app.hotkeys.printable(e) && this.modes.selected == 'is') {
+      VS.app.searchBox.focusNextFacet(this, -1, {startAtEnd: true});
       this.remove();
     } else if (key == 'backspace') {
       if (this.modes.selected == 'is') {

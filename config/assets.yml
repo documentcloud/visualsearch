@@ -1,13 +1,24 @@
 embed_assets: datauri
 javascript_compressor: closure
 template_function: _.template
-package_path: build
+package_path: ""
+compress_assets: off
 
 javascripts:
     visualsearch:
+        - vendor/jquery-*.js
+        - vendor/jquery.ui.core.js
+        - vendor/jquery.ui.widget.js
+        - vendor/jquery.ui.position.js
+        - vendor/jquery.ui.*.js
+        - vendor/underscore-*.js
+        - vendor/backbone-*.js
+        - js/visual_search.js
         - js/views/*.js
         - js/utils/*.js
         - js/models/*.js
+        - js/templates/*.jst
+    visualsearch_templates:
         - js/templates/*.jst
         
 stylesheets:

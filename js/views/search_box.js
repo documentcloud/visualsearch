@@ -1,5 +1,5 @@
 // The search box is responsible for managing the many facet views and input views.
-dc.ui.SearchBox = Backbone.View.extend({
+VS.ui.SearchBox = Backbone.View.extend({
 
   // Error messages to display when your search returns no results.
   NO_RESULTS : {
@@ -32,12 +32,12 @@ dc.ui.SearchBox = Backbone.View.extend({
     this.facetViews = [];
     this.inputViews = [];
     _.bindAll(this, 'hideSearch', 'renderFacets', '_maybeDisableFacets', 'disableFacets');
-    SearchQuery.bind('refresh', this.renderFacets);
+    VS.app.searchQuery.bind('refresh', this.renderFacets);
     $(document).bind('keydown', this._maybeDisableFacets);
   },
 
   render : function() {
-    $(this.el).append(JST['workspace/search_box']({}));
+    $(this.el).append(JST['search_box']({}));
     this.titleBox = this.$('#title_box_inner');
     $(document.body).setMode('no', 'search');
         
@@ -50,27 +50,27 @@ dc.ui.SearchBox = Backbone.View.extend({
 
   showDocuments : function() {
     var query       = this.value();
-    var title       = dc.model.DocumentSet.entitle(query);
-    var projectName = SearchQuery.find('project');
-    var groupName   = SearchQuery.find('group');
+    var title       = VS.model.DocumentSet.entitle(query);
+    var projectName = VS.app.searchQuery.find('project');
+    var groupName   = VS.app.searchQuery.find('group');
 
     $(document.body).setMode('active', 'search');
     this.titleBox.html(title);
-    dc.app.organizer.highlight(projectName, groupName);
+    VS.app.organizer.highlight(projectName, groupName);
   },
 
   // 
   startSearch : function() {
-    dc.ui.spinner.show();
-    dc.app.paginator.hide();
-    _.defer(dc.app.toolbar.checkFloat);
+    VS.ui.spinner.show();
+    VS.app.paginator.hide();
+    _.defer(VS.app.toolbar.checkFloat);
   },
 
   // Handles keydown events on the document. Used to complete the Cmd+A deletion, and
   // blurring focus.
   _maybeDisableFacets : function(e) {
     if (this.flags.allSelected && 
-        (dc.app.hotkeys.key(e) == 'backspace' || dc.app.hotkeys.printable(e))) {
+        (VS.app.hotkeys.key(e) == 'backspace' || VS.app.hotkeys.printable(e))) {
       this.clearSearch();
     } else if (this.flags.allSelected) {
       console.log(['_maybeDisableFacets', this.flags.allSelected]);
@@ -91,7 +91,7 @@ dc.ui.SearchBox = Backbone.View.extend({
   searchEvent : function(e) {
     var query = this.value();
     console.log(['real searchEvent', e, query]);
-    if (!dc.app.searcher.flags.outstandingSearch) dc.app.searcher.search(query);
+    if (!VS.app.searcher.flags.outstandingSearch) VS.app.searcher.search(query);
     this.focusSearch();
   },
   
@@ -101,13 +101,13 @@ dc.ui.SearchBox = Backbone.View.extend({
     return this.setQuery(query);
   },
   
-  // Uses the SearchQuery collection to serialize the current query from the various
+  // Uses the VS.app.searchQuery collection to serialize the current query from the various
   // facets that are in the search box.
   getQuery : function() {
     var query           = [];
     var inputViewsCount = this.inputViews.length;
     
-    SearchQuery.each(_.bind(function(facet, i) {
+    VS.app.searchQuery.each(_.bind(function(facet, i) {
       query.push(this.inputViews[i].value());
       query.push(facet.serialize());
     }, this));
@@ -123,7 +123,7 @@ dc.ui.SearchBox = Backbone.View.extend({
   // Takes a query string and uses the SearchParser to parse and render it.
   setQuery : function(query) {
     this.currentQuery = query;
-    dc.app.SearchParser.parse(query);
+    VS.app.SearchParser.parse(query);
     this.clearInputs();
   },
   
@@ -147,11 +147,11 @@ dc.ui.SearchBox = Backbone.View.extend({
     if (!category) return;
     
     console.log(['addFacet', category, initialQuery, position]);
-    var model = new dc.model.SearchFacet({
+    var model = new VS.model.SearchFacet({
       category : category,
       value    : initialQuery || ''
     });
-    SearchQuery.add(model, {at: position});
+    VS.app.searchQuery.add(model, {at: position});
     this.renderFacets();
     var facetView = _.detect(this.facetViews, function(view) {
       if (view.model == model) return true;
@@ -166,7 +166,7 @@ dc.ui.SearchBox = Backbone.View.extend({
     
     this.$('.search_inner').empty();
     
-    SearchQuery.each(_.bind(function(facet, i) {
+    VS.app.searchQuery.each(_.bind(function(facet, i) {
       this.renderFacet(facet, i);
     }, this));
     
@@ -176,7 +176,7 @@ dc.ui.SearchBox = Backbone.View.extend({
   
   // Render a single facet, using its category and query value.
   renderFacet : function(facet, position) {
-    var view = new dc.ui.SearchFacet({
+    var view = new VS.ui.SearchFacet({
       model : facet,
       order : position
     });
@@ -194,7 +194,7 @@ dc.ui.SearchBox = Backbone.View.extend({
   
   // Render a single input, used to create and autocomplete facets
   renderSearchInput : function() {
-    var input = new dc.ui.SearchInput({position: this.inputViews.length});
+    var input = new VS.ui.SearchInput({position: this.inputViews.length});
     this.$('.search_inner').append(input.render().el);
     this.inputViews.push(input);
   },
@@ -343,7 +343,7 @@ dc.ui.SearchBox = Backbone.View.extend({
       {title: 'Access', onClick: _.bind(this.addFacet, this, 'access', '')}
     ];
     
-    var menu = this.facetCategoryMenu || (this.facetCategoryMenu = new dc.ui.Menu({
+    var menu = this.facetCategoryMenu || (this.facetCategoryMenu = new VS.ui.Menu({
       items       : items,
       standalone  : true
     }));
@@ -354,16 +354,16 @@ dc.ui.SearchBox = Backbone.View.extend({
   
   // Hide the spinner and remove the search lock when finished searching.
   doneSearching : function() {
-    var count      = dc.app.paginator.query.total;
+    var count      = VS.app.paginator.query.total;
     var documents  = dc.inflector.pluralize('Document', count);
-    var searchType = SearchQuery.searchType();
+    var searchType = VS.app.searchQuery.searchType();
     
-    if (dc.app.searcher.flags.related) {
-      this.titleBox.text(count + ' ' + documents + ' Related to "' + dc.inflector.truncate(dc.app.searcher.relatedDoc.get('title'), 100) + '"');
-    } else if (dc.app.searcher.flags.specific) {
+    if (VS.app.searcher.flags.related) {
+      this.titleBox.text(count + ' ' + documents + ' Related to "' + dc.inflector.truncate(VS.app.searcher.relatedDoc.get('title'), 100) + '"');
+    } else if (VS.app.searcher.flags.specific) {
       this.titleBox.text(count + ' ' + documents);
     } else if (searchType == 'search') {
-      var quote  = SearchQuery.has('project');
+      var quote  = VS.app.searchQuery.has('project');
       var suffix = ' in ' + (quote ? '“' : '') + this.titleBox.html() + (quote ? '”' : '');
       var prefix = count ? count + ' ' + dc.inflector.pluralize('Result', count) : 'No Results';
       this.titleBox.html(prefix + suffix);
@@ -373,8 +373,8 @@ dc.ui.SearchBox = Backbone.View.extend({
       var explanation = this.NO_RESULTS[searchType] || this.NO_RESULTS['search'];
       $('#no_results .explanation').text(explanation);
     }
-    dc.ui.spinner.hide();
-    dc.app.scroller.checkLater();
+    VS.ui.spinner.hide();
+    VS.app.scroller.checkLater();
   }
   
 });

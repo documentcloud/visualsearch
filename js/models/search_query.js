@@ -1,6 +1,6 @@
-dc.model.SearchQuery = Backbone.Collection.extend({
+VS.model.SearchQuery = Backbone.Collection.extend({
   
-  model : dc.model.SearchFacet,
+  model : VS.model.SearchFacet,
   
   value : function() {
     return this.map(function(facet) {
@@ -78,5 +78,3 @@ dc.model.SearchQuery = Backbone.Collection.extend({
   }
     
 });
-
-window.SearchQuery = new dc.model.SearchQuery();

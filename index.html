@@ -8,29 +8,31 @@
     body {
       font-size: 16px;
       line-height: 24px;
-      background: #E9E9BF;
-      color: #252519;
+      background: #FEF3CA;
+      color: #022;
+      font-family: Arial;
       font-family: "Palatino Linotype", "Book Antiqua", Palatino, FreeSerif, serif;
     }
     div.container {
       width: 720px;
       margin: 50px 0 50px 50px;
     }
-    p {
+    p, li {
+      margin: 16px 0 16px 0;
       width: 550px;
     }
-      #documentation p {
-        margin-bottom: 4px;
+      p.break {
+        margin-top: 35px;
       }
     a, a:visited {
       padding: 0 2px;
       text-decoration: none;
-      background: #dadaba;
+      background: #f0c095;
       color: #252519;
     }
     a:active, a:hover {
-      color: #000;
-      background: #f0c095;
+      color: #FFF;
+      background: #C25D00;
     }
     h1, h2, h3, h4, h5, h6 {
       margin-top: 40px;
@@ -43,17 +45,24 @@
       font-style: italic;
       margin-left: 20px;
     }
-    table, tr, td {
-      margin: 0; padding: 0;
+    table {
+      margin: 16px 0; padding: 0;
     }
-      td {
-        padding: 2px 12px 2px 0;
+      tr, td {
+        margin: 0; padding: 0;
       }
+        td {
+          padding: 9px 15px 9px 0;
+        }
+          td.definition {
+            line-height: 18px;
+            font-size: 14px;
+          }
     code, pre, tt {
       font-family: Monaco, Consolas, "Lucida Console", monospace;
       font-size: 12px;
       line-height: 18px;
-      color: #555529;
+      color: #444;
     }
       code {
         margin-left: 20px;
@@ -61,25 +70,60 @@
       pre {
         font-size: 12px;
         padding: 2px 0 2px 12px;
-        border-left: 6px solid #aaaa99;
-        margin: 0px 0 30px;
+        border-left: 6px solid #55aaaa;
+        margin: 0px 0 10px;
       }
+        li pre {
+          padding: 0;
+          border-left: 0;
+          margin: 6px 0 6px 0;
+        }
+    #diagram {
+      margin: 20px 0 0 0;
+    }
   </style>
+
+  <!-- <link rel="stylesheet" href="public/visualsearch-datauri.css" type="text/css" media="screen" charset="utf-8"> -->
+  <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="css/workspace.css" type="text/css" media="screen" charset="utf-8">
+
+  <!-- <script src="public/visualsearch.js" type="text/javascript" charset="utf-8"></script> -->
+  <script src="vendor/jquery-1.6.1.js" type="text/javascript" charset="utf-8"></script>
+  <script src="vendor/jquery.ui.core.js" type="text/javascript" charset="utf-8"></script>
+  <script src="vendor/jquery.ui.widget.js" type="text/javascript" charset="utf-8"></script>
+  <script src="vendor/jquery.ui.position.js" type="text/javascript" charset="utf-8"></script>
+  <script src="vendor/jquery.ui.autocomplete.js" type="text/javascript" charset="utf-8"></script>
+  <script src="vendor/underscore-1.1.5.js" type="text/javascript" charset="utf-8"></script>
+  <script src="vendor/backbone-0.3.3.js" type="text/javascript" charset="utf-8"></script>
+  <script src="js/visual_search.js" type="text/javascript" charset="utf-8"></script>
+  <script src="js/views/search_box.js" type="text/javascript" charset="utf-8"></script>
+  <script src="js/views/search_facet.js" type="text/javascript" charset="utf-8"></script>
+  <script src="js/views/search_input.js" type="text/javascript" charset="utf-8"></script>
+  <script src="js/models/search_facets.js" type="text/javascript" charset="utf-8"></script>
+  <script src="js/models/search_query.js" type="text/javascript" charset="utf-8"></script>
+  <script src="js/utils/backbone_extensions.js" type="text/javascript" charset="utf-8"></script>
+  <script src="js/utils/hotkeys.js" type="text/javascript" charset="utf-8"></script>
+  <script src="js/utils/jquery_extensions.js" type="text/javascript" charset="utf-8"></script>
+  <script src="js/utils/search_parser.js" type="text/javascript" charset="utf-8"></script>
+  <script src="js/utils/inflector.js" type="text/javascript" charset="utf-8"></script>
+  <script src="public/visualsearch_templates.js" type="text/javascript" charset="utf-8"></script>
+  
 </head>
 <body>
 
   <div class="container">
 
-    <h1>DocumentCloud's VisualSearch.js</h1>
+    <h1>VisualSearch.js</h1>
 
     <p>
-      DocumentCloud's VisualSearch.js is an auto-completing textbox with multiple facets. This
+      <a href="http://github.com/documentcloud/visualsearch">VisualSearch.js</a> is an auto-completing textbox with multiple facets. This
       textbox replaces ordinary search boxes with a search box that autocompletes individual
       facet categories and then autocompletes the expected values of those categories.
     </p>
 
     <p>
-      You may also read through the <a href="docs/underscore.html">annotated source code</a>.
+      <a href="docs/visualsearch.html">The complete annotated source code</a>
+      is also available.
     </p>
 
     <p>
@@ -95,6 +139,19 @@
       <i>VisualSearch.js is an open-source component of <a href="http://documentcloud.org/">DocumentCloud</a>.</i>
     </p>
 
+    <h2>Demo</h2>
+    
+    <div id="search_box_container"></div>
+    
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+        VS.init({
+          container : $('#search_box_container'),
+          query     : 'account: 123-samuel filter: published access: public'
+        });
+      });
+    </script>
+    
     <h2>Downloads <i style="padding-left: 12px; font-size:12px;">(Right-click, and use "Save As")</i></h2>
 
     <table>
@@ -108,24 +165,38 @@
       </tr>
     </table>
 
-    <h2>Table of Contents</h2>
+    <h2>Usage</h2>
     
-    <div id="documentation">
-      
-      <h2 id="changelog">Change Log</h2>
-      
-      <p>
-        <b class="header">0.1.0</b><br />
-        Initial release of VisualSearch.js.
-      </p>
+    <p>To use VisualSearch.js on your site, insert...</p>
+    
+    <p>Options available:</p>
+    
+    <table>
+      <tr>
+        <th>option key</th>
+        <th>example</th>
+        <th>description</th>
+      </tr>
+      <tr>
+        <td>container</td>
+        <td><tt>$('#search_box_container')</tt></td>
+        <td>jQuery object or selector where the visual search will be inserted.</td>
+      </tr>
+    </table>
+    
+    
+    <h2 id="changelog">Change Log</h2>
+    
+    <p>
+      <b class="header">0.1.0</b><br />
+      Initial release of VisualSearch.js.
+    </p>
 
-      <p>
-        <a href="http://documentcloud.org/" title="A DocumentCloud Project" style="background:none;">
-          <img src="http://jashkenas.s3.amazonaws.com/images/a_documentcloud_project.png" alt="A DocumentCloud Project" />
-        </a>
-      </p>
-
-    </div>
+    <p>
+      <a href="http://documentcloud.org/" title="A DocumentCloud Project" style="background:none;">
+        <img src="http://jashkenas.s3.amazonaws.com/images/a_documentcloud_project.png" alt="A DocumentCloud Project" />
+      </a>
+    </p>
 
   </div>
 

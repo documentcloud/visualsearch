@@ -1,4 +1,4 @@
-dc.model.SearchFacet = Backbone.Model.extend({
+VS.model.SearchFacet = Backbone.Model.extend({
   
   UNQUOTABLE_CATEGORIES : [
     'text',
@@ -13,7 +13,7 @@ dc.model.SearchFacet = Backbone.Model.extend({
     
   serialize : function() {
     var category = this.get('category');
-    var value    = dc.inflector.trim(this.get('value'));
+    var value    = VS.utils.inflector.trim(this.get('value'));
     
     if (!value) return '';
     

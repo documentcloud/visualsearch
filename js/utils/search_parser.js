@@ -1,6 +1,6 @@
 // A parallel partial JS implementation of lib/dc/search/parser.rb
 // Used to extract keywords from the free text search.
-dc.app.SearchParser = {
+VS.app.SearchParser = {
 
   ALL_FIELDS        : /('.+?'|".+?"|[^'"\s]{2}\S*):\s*('.+?'|".+?"|[^'"\s]{2}\S*)/g,
   // ALL_FIELDS        : /\w+:\s?(('.+?'|".+?")|([^'"]{2}\S*))/g,
@@ -13,7 +13,7 @@ dc.app.SearchParser = {
 
   parse : function(query) {
     var searchFacets = this.extractAllFacets(query);
-    SearchQuery.refresh(searchFacets);
+    VS.app.searchQuery.refresh(searchFacets);
   },
   
   extractAllFacets : function(query) {
@@ -27,21 +27,21 @@ dc.app.SearchParser = {
       if (!field) {
         category = 'text';
         value    = this.extractSearchText(query);
-        query    = dc.inflector.trim(query.replace(value, ''));
+        query    = VS.utils.inflector.trim(query.replace(value, ''));
       } else if (field.indexOf(':') != -1) {
         category = field.match(this.FIELD)[1];
         value    = field.replace(this.FIELD, '').replace(/(^['"]|['"]$)/g, '');
-        query    = dc.inflector.trim(query.replace(field, ''));
+        query    = VS.utils.inflector.trim(query.replace(field, ''));
       } else if (field.indexOf(':') == -1) {
         category = 'text';
         value    = field;
-        query    = dc.inflector.trim(query.replace(value, ''));
+        query    = VS.utils.inflector.trim(query.replace(value, ''));
       }
       // console.log(['extractAllFacets', query, category, value, field]);
       if (category && value) {
-          var searchFacet = new dc.model.SearchFacet({
+          var searchFacet = new VS.model.SearchFacet({
             category : category,
-            value    : dc.inflector.trim(value)
+            value    : VS.utils.inflector.trim(value)
           });
           facets.push(searchFacet);
       }
@@ -69,7 +69,7 @@ dc.app.SearchParser = {
   
   extractSearchText : function(query) {
     query = query || '';
-    var text = dc.inflector.trim(query.replace(this.ALL_FIELDS, ''));
+    var text = VS.utils.inflector.trim(query.replace(this.ALL_FIELDS, ''));
     console.log(['extractSearchText', query, text]);
     return text;
   },
