@@ -38,7 +38,6 @@ VS.ui.SearchBox = Backbone.View.extend({
 
   render : function() {
     $(this.el).append(JST['search_box']({}));
-    this.titleBox = this.$('#title_box_inner');
     $(document.body).setMode('no', 'search');
         
     return this;
@@ -46,24 +45,6 @@ VS.ui.SearchBox = Backbone.View.extend({
 
   hideSearch : function() {
     $(document.body).setMode(null, 'search');
-  },
-
-  showDocuments : function() {
-    var query       = this.value();
-    var title       = VS.model.DocumentSet.entitle(query);
-    var projectName = VS.app.searchQuery.find('project');
-    var groupName   = VS.app.searchQuery.find('group');
-
-    $(document.body).setMode('active', 'search');
-    this.titleBox.html(title);
-    VS.app.organizer.highlight(projectName, groupName);
-  },
-
-  // 
-  startSearch : function() {
-    VS.ui.spinner.show();
-    VS.app.paginator.hide();
-    _.defer(VS.app.toolbar.checkFloat);
   },
 
   // Handles keydown events on the document. Used to complete the Cmd+A deletion, and
@@ -90,9 +71,9 @@ VS.ui.SearchBox = Backbone.View.extend({
   // Used to launch a search. Hitting enter or clicking the search button.
   searchEvent : function(e) {
     var query = this.value();
-    console.log(['real searchEvent', e, query]);
-    if (!VS.app.searcher.flags.outstandingSearch) VS.app.searcher.search(query);
+    console.log(['real searchEvent', e, query, VS.options.callbacks]);
     this.focusSearch();
+    VS.options.callbacks.search(query);
   },
   
   // Either gets a serialized query string or sets the faceted query from a query string.
@@ -350,31 +331,6 @@ VS.ui.SearchBox = Backbone.View.extend({
     
     this.$('.search_glyph').after(menu.render().open().content);
     return false;
-  },
-  
-  // Hide the spinner and remove the search lock when finished searching.
-  doneSearching : function() {
-    var count      = VS.app.paginator.query.total;
-    var documents  = dc.inflector.pluralize('Document', count);
-    var searchType = VS.app.searchQuery.searchType();
-    
-    if (VS.app.searcher.flags.related) {
-      this.titleBox.text(count + ' ' + documents + ' Related to "' + dc.inflector.truncate(VS.app.searcher.relatedDoc.get('title'), 100) + '"');
-    } else if (VS.app.searcher.flags.specific) {
-      this.titleBox.text(count + ' ' + documents);
-    } else if (searchType == 'search') {
-      var quote  = VS.app.searchQuery.has('project');
-      var suffix = ' in ' + (quote ? '“' : '') + this.titleBox.html() + (quote ? '”' : '');
-      var prefix = count ? count + ' ' + dc.inflector.pluralize('Result', count) : 'No Results';
-      this.titleBox.html(prefix + suffix);
-    }
-    if (count <= 0) {
-      $(document.body).setMode('empty', 'search');
-      var explanation = this.NO_RESULTS[searchType] || this.NO_RESULTS['search'];
-      $('#no_results .explanation').text(explanation);
-    }
-    VS.ui.spinner.hide();
-    VS.app.scroller.checkLater();
   }
   
 });

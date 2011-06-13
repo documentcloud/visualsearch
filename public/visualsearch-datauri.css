@@ -1,3 +1,23 @@
+.VS-search .icon {
+  background-repeat: no-repeat;
+  background-position: center center;
+  vertical-align: middle;
+  width: 16px; height: 16px;
+}
+.VS-search .icon.cancel_search {
+  width: 11px; height: 11px;
+  background-position: center 0;
+  background-image: url(../Users/conesus/cloud/visual-search/images/cancel_search.png?1281992275);
+  cursor: pointer;
+}
+  .VS-search .icon.cancel_search:hover {
+    background-position: center -11px;
+  }
+.VS-search .icon.search_glyph {
+  width: 12px; height: 12px;
+  background-image: url(../Users/conesus/cloud/visual-search/images/search_glyph.png?1278683131);
+}
+
 /*------------------------------ RESET + DEFAULT STYLES ---------------------------------*/
 
 /* 
@@ -5,8 +25,8 @@ Eric Meyer's final reset.css
 Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/ 
 */
 .VS-search div, .VS-search span, .VS-search a, .VS-search img, 
-.VS-search ul, .VS-search li,
-.VS-search form, .VS-search label {
+.VS-search ul, .VS-search li, .VS-search form, .VS-search label,
+.ui-autocomplete ul, .ui-autocomplete li, .ui-autocomplete {
   margin: 0;
   padding: 0;
   border: 0;
@@ -24,16 +44,34 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
 .VS-search {
   line-height: 1;
   color: black;
-  background: white;
 }
 .VS-search ol, .VS-search ul {
   list-style: none;
 }
 
-.interface, .dialog, input, .text_area {
-  font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;
+.VS-search {
+  font-family: Arial, sans-serif;
+  color: #373737;
+  font-size: 12px;
+}
+.VS-search input {
+    display: block;
+    border: none;
+    outline: none;
+    margin: 0; padding: 4px;
+    background: transparent;
+    font-size: 16px;
+    line-height: 20px;
+    width: 100%;
 }
 
+.VS-search .interface, .VS-search .dialog, .VS-search input {
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;
+}
+.VS-search .text_input {
+  position: relative;
+  height: 30px;
+}
   #search_button {
     float: right;
     margin: 3px 29px 0 6px;
@@ -85,6 +123,10 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   .ui-autocomplete .ui-menu-item .ui-state-hover {
     background-color: #2A61CD;
     color: white;
+  }
+  .ui-autocomplete li {
+    list-style: none;
+    width: auto;
   }
   div.text_input.search {
     background: transparent;
