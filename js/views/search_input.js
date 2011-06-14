@@ -6,30 +6,6 @@ VS.ui.SearchInput = Backbone.View.extend({
   
   className : 'search_input',
   
-  PREFIXES : [
-    { label: 'project',       category: '' },
-    { label: 'text',          category: '' },
-    { label: 'title',         category: '' },
-    { label: 'description',   category: '' },
-    { label: 'source',        category: '' },
-    { label: 'account',       category: '' },
-    { label: 'document',      category: '' },
-    { label: 'filter',        category: '' },
-    { label: 'group',         category: '' },
-    { label: 'access',        category: '' },
-    { label: 'related',       category: '' },
-    { label: 'projectid',     category: '' },
-    { label: 'city',          category: 'entities' },
-    { label: 'country',       category: 'entities' },
-    { label: 'term',          category: 'entities' },
-    { label: 'state',         category: 'entities' },
-    { label: 'person',        category: 'entities' },
-    { label: 'place',         category: 'entities' },
-    { label: 'organization',  category: 'entities' },
-    { label: 'email',         category: 'entities' },
-    { label: 'phone',         category: 'entities' }
-  ],
-
   events : {
     'keypress input'            : 'keypress',
     'keydown input'             : 'keydown'
@@ -85,24 +61,14 @@ VS.ui.SearchInput = Backbone.View.extend({
   },
   
   autocompleteValues : function(req, resp) {
-    var prefixes = this.PREFIXES;
     var searchTerm = req.term;
-    
-    var metadata = _.map(_.keys(Documents.reduce(function(memo, doc) {
-      if (_.size(doc.get('data'))) _.extend(memo, doc.get('data'));
-      return memo;
-    }, {})), function(key) {
-      return {label: key, category: 'data'};
-    });
-    
-    prefixes = prefixes.concat(metadata);
-    
-    // Autocomplete only last word.
-    var lastWord = searchTerm.match(/\w+$/);
-    var re = VS.utils.inflector.escapeRegExp(lastWord && lastWord[0] || ' ');
+    var lastWord   = searchTerm.match(/\w+$/); // Autocomplete only last word.
+    var re         = VS.utils.inflector.escapeRegExp(lastWord && lastWord[0] || ' ');
+    var prefixes   = VS.options.callbacks.categoryMatches() || [];
+        
     // Only match from the beginning of the word.
-    var matcher = new RegExp('^' + re, 'i');
-    var matches = $.grep(prefixes, function(item) {
+    var matcher    = new RegExp('^' + re, 'i');
+    var matches    = $.grep(prefixes, function(item) {
       return matcher.test(item.label);
     });
 
@@ -185,8 +151,9 @@ VS.ui.SearchInput = Backbone.View.extend({
       return VS.app.searchBox.searchEvent(e);
     } else if (VS.app.hotkeys.colon(e)) {
       this.box.trigger('resize.autogrow', e);
-      var query = this.box.val();
-      if (_.contains(_.pluck(this.PREFIXES, 'label'), query)) {
+      var query    = this.box.val();
+      var prefixes = VS.options.callbacks.categoryMatches() || [];
+      if (_.contains(_.pluck(prefixes, 'label'), query)) {
         e.preventDefault();
         var remainder = this.addTextFacetRemainder(query);
         VS.app.searchBox.addFacet(query, '', this.options.position + (remainder?1:0));

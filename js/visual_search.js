@@ -9,7 +9,10 @@
   VS.init = function(options) {
     var defaults = {
       callbacks : {
-        search: $.noop
+        search          : $.noop,
+        focus           : $.noop,
+        categoryMatches : $.noop,
+        facetMatches    : $.noop
       }
     };
     VS.options = _.extend({}, defaults, options);

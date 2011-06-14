@@ -1,17 +1,5 @@
 // The search box is responsible for managing the many facet views and input views.
 VS.ui.SearchBox = Backbone.View.extend({
-
-  // Error messages to display when your search returns no results.
-  NO_RESULTS : {
-    project   : "This project does not contain any documents.",
-    account   : "This account does not have any documents.",
-    group     : "This organization does not have any documents.",
-    related   : "There are no documents related to this document.",
-    published : "This account does not have any published documents.",
-    annotated : "There are no annotated documents.",
-    search    : "Your search did not match any documents.",
-    all       : "There are no documents."
-  },
   
   flags : {
     allSelected : false
@@ -299,7 +287,7 @@ VS.ui.SearchBox = Backbone.View.extend({
   
   // Used to show the user is focused on some input inside the search box.
   addFocus : function() {
-    Documents.deselectAll();
+    VS.options.callbacks.focus();
     this.$('.search').addClass('focus');
   },
 
@@ -324,7 +312,7 @@ VS.ui.SearchBox = Backbone.View.extend({
       {title: 'Access', onClick: _.bind(this.addFacet, this, 'access', '')}
     ];
     
-    var menu = this.facetCategoryMenu || (this.facetCategoryMenu = new VS.ui.Menu({
+    var menu = this.facetCategoryMenu || (this.facetCategoryMenu = new dc.ui.Menu({
       items       : items,
       standalone  : true
     }));

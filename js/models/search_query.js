@@ -38,37 +38,6 @@ VS.model.SearchQuery = Backbone.Collection.extend({
     });
   },
   
-  searchType : function() {
-    var single   = false;
-    var multiple = false;
-    
-    this.each(function(facet) {
-      var category = facet.get('category');
-      var value    = facet.get('value');
-      
-      if (value) {
-        if (!single && !multiple) {
-          single = category;
-        } else {
-          multiple = true;
-          single = false;
-        }
-      }
-    });
-
-    if (single == 'filter') {
-      return this.get('value');
-    } else if (single == 'projectid') {
-      return 'project';
-    } else if (_.contains(['project', 'group', 'account'], single)) {
-      return single;
-    } else if (!single && !multiple) {
-      return 'all';
-    }
-    
-    return 'search';
-  },
-  
   withoutCategory : function(category) {
     var query = this.map(function(facet) {
       if (facet.get('category') != category) return facet.serialize();

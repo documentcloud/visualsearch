@@ -171,26 +171,9 @@ VS.ui.SearchFacet = Backbone.View.extend({
   autocompleteValues : function(req, resp) {
     var category = this.model.get('category');
     var value    = this.model.get('value');
-    var matches  = [];
     var searchTerm = req.term;
     
-    if (category == 'account') {
-      matches = Accounts.map(function(a) { return {value: a.get('slug'), label: a.fullName()}; });
-    } else if (category == 'project') {
-      matches = Projects.pluck('title');
-    } else if (category == 'filter') {
-      matches = ['published', 'annotated'];
-    } else if (category == 'access') {
-      matches = ['public', 'private', 'organization'];
-    } else if (category == 'title') {
-      matches = _.uniq(Documents.pluck('title'));
-    } else {
-      // Meta data
-      matches = _.compact(_.uniq(Documents.reduce(function(memo, doc) {
-        if (_.size(doc.get('data'))) memo.push(doc.get('data')[category]);
-        return memo;
-      }, [])));
-    }
+    var matches = VS.options.callbacks.facetMatches(category) || [];
     
     if (searchTerm && value != searchTerm) {
       var re = VS.utils.inflector.escapeRegExp(searchTerm || '');
