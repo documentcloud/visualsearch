@@ -58,35 +58,35 @@
             line-height: 18px;
             font-size: 14px;
           }
-    code, pre, tt {
+    #VS code, #VS pre, #VS tt {
       font-family: Monaco, Consolas, "Lucida Console", monospace;
       font-size: 12px;
       line-height: 18px;
       color: #444;
+      background: none;
     }
-      code {
-        margin-left: 20px;
+      #VS code {
+        margin-left: 8px;
+        padding: 0 0 0 12px;
       }
-      pre {
+      #VS pre {
         font-size: 12px;
-        padding: 2px 0 2px 12px;
-        border-left: 6px solid #55aaaa;
-        margin: 0px 0 10px;
+        padding: 2px 0 2px 0;
+        border-left: 6px solid #829C37;
+        margin: 12px 0;
       }
-        li pre {
-          padding: 0;
-          border-left: 0;
-          margin: 6px 0 6px 0;
-        }
-    #diagram {
-      margin: 20px 0 0 0;
+    #search_query {
+      margin: 18px 0 0;
+      opacity: 0;
     }
   </style>
 
   <!-- <link rel="stylesheet" href="public/visualsearch-datauri.css" type="text/css" media="screen" charset="utf-8"> -->
-  <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" charset="utf-8">
-  <link rel="stylesheet" href="css/icons.css" type="text/css" media="screen" charset="utf-8">
-  <link rel="stylesheet" href="css/workspace.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="public/css/reset.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="public/css/icons.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="public/css/workspace.css" type="text/css" media="screen" charset="utf-8">
+  
+  <link rel="stylesheet" href="demo/github.css" type="text/css" media="screen" charset="utf-8">
 
   <!-- <script src="public/visualsearch.js" type="text/javascript" charset="utf-8"></script> -->
   <script src="vendor/jquery-1.6.1.js" type="text/javascript" charset="utf-8"></script>
@@ -96,23 +96,31 @@
   <script src="vendor/jquery.ui.autocomplete.js" type="text/javascript" charset="utf-8"></script>
   <script src="vendor/underscore-1.1.5.js" type="text/javascript" charset="utf-8"></script>
   <script src="vendor/backbone-0.3.3.js" type="text/javascript" charset="utf-8"></script>
-  <script src="js/visual_search.js" type="text/javascript" charset="utf-8"></script>
-  <script src="js/views/search_box.js" type="text/javascript" charset="utf-8"></script>
-  <script src="js/views/search_facet.js" type="text/javascript" charset="utf-8"></script>
-  <script src="js/views/search_input.js" type="text/javascript" charset="utf-8"></script>
-  <script src="js/models/search_facets.js" type="text/javascript" charset="utf-8"></script>
-  <script src="js/models/search_query.js" type="text/javascript" charset="utf-8"></script>
-  <script src="js/utils/backbone_extensions.js" type="text/javascript" charset="utf-8"></script>
-  <script src="js/utils/hotkeys.js" type="text/javascript" charset="utf-8"></script>
-  <script src="js/utils/jquery_extensions.js" type="text/javascript" charset="utf-8"></script>
-  <script src="js/utils/search_parser.js" type="text/javascript" charset="utf-8"></script>
-  <script src="js/utils/inflector.js" type="text/javascript" charset="utf-8"></script>
-  <script src="public/visualsearch_templates.js" type="text/javascript" charset="utf-8"></script>
+  <script src="public/js/visual_search.js" type="text/javascript" charset="utf-8"></script>
+  <script src="public/js/views/search_box.js" type="text/javascript" charset="utf-8"></script>
+  <script src="public/js/views/search_facet.js" type="text/javascript" charset="utf-8"></script>
+  <script src="public/js/views/search_input.js" type="text/javascript" charset="utf-8"></script>
+  <script src="public/js/models/search_facets.js" type="text/javascript" charset="utf-8"></script>
+  <script src="public/js/models/search_query.js" type="text/javascript" charset="utf-8"></script>
+  <script src="public/js/utils/backbone_extensions.js" type="text/javascript" charset="utf-8"></script>
+  <script src="public/js/utils/hotkeys.js" type="text/javascript" charset="utf-8"></script>
+  <script src="public/js/utils/jquery_extensions.js" type="text/javascript" charset="utf-8"></script>
+  <script src="public/js/utils/search_parser.js" type="text/javascript" charset="utf-8"></script>
+  <script src="public/js/utils/inflector.js" type="text/javascript" charset="utf-8"></script>
+  <script src="build/visualsearch_templates.js" type="text/javascript" charset="utf-8"></script>
+  
+  <script src="demo/highlight.js" type="text/javascript" charset="utf-8"></script>
+  <script src="demo/javascript.js" type="text/javascript" charset="utf-8"></script>
+  <script src="demo/xml.js" type="text/javascript" charset="utf-8"></script>
+  <script>
+    hljs.tabReplace = '    ';
+    hljs.initHighlightingOnLoad();
+  </script>
   
 </head>
 <body>
 
-  <div class="container">
+  <div class="container" id="VS">
 
     <h1>VisualSearch.js</h1>
 
@@ -123,7 +131,7 @@
     </p>
 
     <p>
-      <a href="docs/visualsearch.html">The complete annotated source code</a>
+      <a href="docs/visual_search.html">The complete annotated source code</a>
       is also available.
     </p>
 
@@ -143,12 +151,83 @@
     <h2>Demo</h2>
     
     <div id="search_box_container"></div>
+    <div id="search_query">&nbsp;</div>
     
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
         VS.init({
           container : $('#search_box_container'),
-          query     : 'account: 123-samuel filter: published access: public'
+          query     : 'account: 5-samuel access: private title: "Pentagon Papers"',
+          callbacks : {
+            search : function(query) {
+              var $query = $('#search_query');
+              $query.stop().animate({opacity : 1}, {duration: 300, queue: false});
+              $query.html('You searched for: <b>' + query + '</b>');
+              clearTimeout(window.queryHideDelay);
+              window.queryHideDelay = setTimeout(function() {
+                $query.animate({
+                  opacity : 0
+                }, {
+                  duration: 1000,
+                  queue: false
+                });
+              }, 2000);
+            },
+            facetMatches : function(category) {
+              switch (category) {
+              case 'account':
+                  return [
+                    { value: '1-amanda', label: 'Amanda' },
+                    { value: '2-aron',   label: 'Aron' },
+                    { value: '3-eric',   label: 'Eric' },
+                    { value: '4-jeremy', label: 'Jeremy' },
+                    { value: '5-samuel', label: 'Samuel' },
+                    { value: '6-scott',  label: 'Scott' }
+                  ];
+                  break;
+                case 'filter':
+                  return ['published', 'unpublished', 'draft'];
+                  break;
+                case 'access':
+                  return ['public', 'private', 'protected'];
+                  break;
+                case 'title':
+                  return [
+                    'Pentagon Papers',
+                    'CoffeeScript Manual',
+                    'Laboratory for Object Oriented Thinking',
+                    'A Repository Grows in Brooklyn'
+                  ]
+                  break;
+                case 'city':
+                  return [
+                    'Cleveland',
+                    'New York City',
+                    'Brooklyn',
+                    'Manhattan',
+                    'Queens',
+                    'The Bronx',
+                    'Staten Island',
+                    'San Francisco',
+                    'Los Angeles',
+                    'Seattle',
+                    'London',
+                    'Portland',
+                    'Chicago',
+                    'Boston'
+                  ]
+              }
+            },
+            categoryMatches : function() {
+              return [
+                'account', 'filter', 'access', 'title',
+                { label: 'city',    category: 'location' },
+                { label: 'address', category: 'location' },
+                { label: 'country', category: 'location' },
+                { label: 'state',   category: 'location' },
+              ];
+            }
+          }
         });
       });
     </script>
@@ -168,7 +247,83 @@
 
     <h2>Usage</h2>
     
-    <p>To use VisualSearch.js on your site, insert...</p>
+    <p>To use VisualSearch.js on your site, follow these instructions on installation, configuration, and customization.</p>
+    
+    <ol>
+      <li class="xml">Insert the JavaScript and CSS into your page:<br />
+        <pre><code>&lt;script src="visualsearch.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;!--[if (!IE)|(gte IE 8)]&gt;&lt;!--&gt;
+  &lt;link href="visualsearch-datauri.css" media="screen" rel="stylesheet" type="text/css" /&gt;
+&lt;!--&lt;![endif]--&gt;
+&lt;!--[if lte IE 7]&gt;
+  &lt;link href="visualsearch.css" media="screen" rel="stylesheet" type="text/css" /&gt;
+&lt;![endif]--&gt;</code></pre>
+      </li>
+      <li>Initialize the Visual Search box:<br />
+        <pre class="javascript"><code>&lt;div class="visual_search"&gt;&lt;/div&gt;
+          
+&lt;script type="text/javascript" charset="utf-8"&gt;
+  $(document).ready(function() {
+    VS.init({
+      container : $('.visual_search'),
+      query     : '',
+      callbacks : {
+        search          : function(query) {},
+        facetMatches    : function(category) {},
+        categoryMatches : function() {}
+      }
+    });
+  });
+&lt;/script&gt;</code></pre>
+      </li>
+      <li class="javascript">Customize the categories and autocompleted category facets:
+        <pre><code>callbacks : {
+  ...
+  // These are the categories that will be autocompleted in an empty input.
+  categoryMatches : function() {
+    return [
+      'account', 'filter', 'access', 'title',
+      { label: 'city',    category: 'location' },
+      { label: 'address', category: 'location' },
+      { label: 'country', category: 'location' },
+      { label: 'state',   category: 'location' },
+    ];
+  }
+  ...
+  // These are the values that match specific categories, autocompleted
+  // in a category's input field.
+  facetMatches : function(category) {
+    switch (category) {
+    case 'account':
+        return [
+          { value: '1-amanda', label: 'Amanda' },
+          { value: '2-aron',   label: 'Aron' },
+          { value: '3-eric',   label: 'Eric' },
+          { value: '4-jeremy', label: 'Jeremy' },
+          { value: '5-samuel', label: 'Samuel' },
+          { value: '6-scott',  label: 'Scott' }
+        ];
+        break;
+      case 'filter':
+        return ['published', 'unpublished', 'draft'];
+        break;
+      case 'access':
+        return ['public', 'private', 'protected'];
+        break;
+      case 'title':
+        return [
+          'Pentagon Papers',
+          'CoffeeScript Manual',
+          'Laboratory for Object Oriented Thinking',
+          'A Repository Grows in Brooklyn'
+        ]
+        break;
+    }
+  }
+...
+}</code></pre>
+      </li>
+    </ol>
     
     <p>Options available:</p>
     

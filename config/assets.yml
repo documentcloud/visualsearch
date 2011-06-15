@@ -1,8 +1,8 @@
 embed_assets: datauri
 javascript_compressor: closure
 template_function: _.template
-package_path: ""
-compress_assets: off
+gzip_assets: <% if $VS_MIN %>on<% else %>off<% end %>
+compress_assets: <% if $VS_MIN %>on<% else %>off<% end %>
 
 javascripts:
   dependencies:
@@ -13,15 +13,15 @@ javascripts:
     - vendor/jquery.ui.*.js
     - vendor/underscore-*.js
     - vendor/backbone-*.js
-  visualsearch:
-    - js/visual_search.js
-    - js/views/*.js
-    - js/utils/*.js
-    - js/models/*.js
-    - js/templates/*.jst
+  visualsearch<% if $VS_MIN %>-min<% end %>:
+    - public/js/visual_search.js
+    - public/js/views/*.js
+    - public/js/utils/*.js
+    - public/js/models/*.js
+    - public/js/templates/*.jst
   visualsearch_templates:
-    - js/templates/*.jst
+    - public/js/templates/*.jst
 
 stylesheets:
   visualsearch:
-    - css/*.css
+    - public/css/*.css
