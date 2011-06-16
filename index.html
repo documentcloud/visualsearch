@@ -24,6 +24,13 @@
       p.break {
         margin-top: 35px;
       }
+    ol {
+      padding-left: 24px;
+    }
+      ol li {
+        font-weight: bold;
+        margin-left: 0;
+      }
     a, a:visited {
       padding: 0 2px;
       text-decoration: none;
@@ -52,8 +59,14 @@
         margin: 0; padding: 0;
         text-align: left;
       }
+        th {
+          padding: 24px 0 0;
+        }
+        tr:first-child th {
+          padding-top: 0;
+        }
         td {
-          padding: 9px 15px 9px 0;
+          padding: 6px 15px 6px 0;
         }
           td.definition {
             line-height: 18px;
@@ -61,6 +74,11 @@
           }
     table.downloads td {
       padding-left: 18px;
+    }
+    .demo-hint {
+      font-size: 13px;
+      margin: 0 0 12px 12px;
+      font-weight: normal;
     }
     #VS code, #VS pre, #VS tt {
       font-family: Monaco, Consolas, "Lucida Console", monospace;
@@ -72,6 +90,7 @@
       #VS code {
         margin-left: 8px;
         padding: 0 0 0 12px;
+        font-weight: normal;
       }
       #VS pre {
         font-size: 12px;
@@ -80,9 +99,15 @@
         margin: 12px 0;
       }
     #search_query {
-      margin: 18px 0 0;
+      margin: 18px 0 -24px;
       opacity: 0;
     }
+      #search_query .raquo {
+        font-size: 18px;
+        line-height: 12px;
+        font-weight: bold;
+        margin-right: 4px;
+      }
   </style>
 
   <!-- <link rel="stylesheet" href="public/visualsearch-datauri.css" type="text/css" media="screen" charset="utf-8"> -->
@@ -117,7 +142,6 @@
   <script src="demo/javascript.js" type="text/javascript" charset="utf-8"></script>
   <script src="demo/xml.js" type="text/javascript" charset="utf-8"></script>
   <script>
-    hljs.tabReplace = '    ';
     hljs.initHighlightingOnLoad();
   </script>
   
@@ -152,7 +176,14 @@
       <i>VisualSearch.js is an open-source component of <a href="http://documentcloud.org/">DocumentCloud</a>.</i>
     </p>
 
-    <h2>Demo</h2>
+    <h2>Table of Contents</h2>
+    
+    <a href="#demo">Demo</a> | <a href="#downloads">Downloads</a> | <a href="#usage">Usage</a> | <a href="#changelog">Change Log</a>
+    
+    
+    <h2 id="demo">Demo <span class="demo-hint"><i>Try searching for: <b>account</b>, <b>filter</b>, <b>access</b>, <b>title</b>, <b>city</b>, <b>state</b>.</i></span></h2>
+    
+    
     
     <div id="search_box_container"></div>
     <div id="search_query">&nbsp;</div>
@@ -166,7 +197,7 @@
             search : function(query) {
               var $query = $('#search_query');
               $query.stop().animate({opacity : 1}, {duration: 300, queue: false});
-              $query.html('You searched for: <b>' + query + '</b>');
+              $query.html('<span class="raquo">&raquo;</span> You searched for: <b>' + query + '</b>');
               clearTimeout(window.queryHideDelay);
               window.queryHideDelay = setTimeout(function() {
                 $query.animate({
@@ -188,13 +219,10 @@
                     { value: '5-samuel', label: 'Samuel' },
                     { value: '6-scott',  label: 'Scott' }
                   ];
-                  break;
                 case 'filter':
                   return ['published', 'unpublished', 'draft'];
-                  break;
                 case 'access':
                   return ['public', 'private', 'protected'];
-                  break;
                 case 'title':
                   return [
                     'Pentagon Papers',
@@ -202,7 +230,6 @@
                     'Laboratory for Object Oriented Thinking',
                     'A Repository Grows in Brooklyn'
                   ]
-                  break;
                 case 'city':
                   return [
                     'Cleveland',
@@ -220,6 +247,20 @@
                     'Chicago',
                     'Boston'
                   ]
+                case 'state':
+                  return [
+                    "Alabama", "Alaska", "Arizona", "Arkansas", "California",
+                    "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida",
+                    "Georgia", "Guam", "Hawaii", "Idaho", "Illinois",
+                    "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana",
+                    "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota",
+                    "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada",
+                    "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina",
+                    "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania",
+                    "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota", "Tennessee",
+                    "Texas", "Utah", "Vermont", "Virginia", "Virgin Islands",
+                    "Washington", "West Virginia", "Wisconsin", "Wyoming"
+                  ];
               }
             },
             categoryMatches : function() {
@@ -236,7 +277,7 @@
       });
     </script>
     
-    <h2>Downloads <i style="padding-left: 12px; font-size:12px;">(Right-click, and use "Save As")</i></h2>
+    <h2 id="downloads">Downloads <i style="padding-left: 12px; font-size:12px;">(Right-click, and use "Save As")</i></h2>
 
     <table class="downloads">
       
@@ -315,7 +356,7 @@
       
     </table>
 
-    <h2>Usage</h2>
+    <h2 id="usage">Usage</h2>
     
     <p>To use VisualSearch.js on your site, follow these instructions on installation, configuration, and customization.</p>
     
@@ -325,9 +366,9 @@
 &lt;!--[if (!IE)|(gte IE 8)]&gt;&lt;!--&gt;
   &lt;link href="visualsearch-datauri.css" media="screen" rel="stylesheet" type="text/css" /&gt;
 &lt;!--&lt;![endif]--&gt;
-&lt;!--[if lte IE 7]&gt;
+&lt;!--[if lte IE 7]&gt;&lt;!--&gt;
   &lt;link href="visualsearch.css" media="screen" rel="stylesheet" type="text/css" /&gt;
-&lt;![endif]--&gt;</code></pre>
+&lt;!--&lt;![endif]--&gt;</code></pre>
       </li>
       <li>Initialize the Visual Search box:<br />
         <pre class="javascript"><code>&lt;div class="visual_search"&gt;&lt;/div&gt;
