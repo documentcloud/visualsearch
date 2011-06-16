@@ -1,0 +1,233 @@
+/* ===================== */
+/* = General and Reset = */
+/* ===================== */
+
+.VS-search {
+  font-family: Arial, sans-serif;
+  color: #373737;
+  font-size: 12px;
+}
+.VS-search input {
+  display: block;
+  border: none;
+  outline: none;
+  margin: 0; padding: 4px;
+  background: transparent;
+  font-size: 16px;
+  line-height: 20px;
+  width: 100%;
+}
+.VS-interface, .VS-search .dialog, .VS-search input {
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;
+  line-height: 1.1em;
+}
+
+/* ========== */
+/* = Layout = */
+/* ========== */
+
+#search_button {
+  float: right;
+  margin: 3px 29px 0 6px;
+}
+#search_box_wrapper {
+}
+  input.search_box {
+    width: 10px;
+    z-index: 100;
+    position: relative;
+  }
+  #search_box_wrapper .menu_content {
+    z-index: 100;
+  }
+  
+.VS-search .VS-search-box {
+  cursor: text;
+  position: relative;
+  background: transparent;
+  border: 2px solid #ccc;
+  border-radius: 16px; -webkit-border-radius: 16px; -moz-border-radius: 16px;
+  background-color: #fafafa;
+  -webkit-box-shadow: inset 0px 0px 3px #ccc;
+  -moz-box-shadow: inset 0px 0px 3px #ccc;
+  box-shadow: inset 0px 0px 3px #ccc;
+  min-height: 29px;
+  height: auto;
+}
+  .VS-search .VS-search-box.VS-focus {
+    border-color: #acf;
+    -webkit-box-shadow: inset 0px 0px 3px #acf;
+    -moz-box-shadow: inset 0px 0px 3px #acf;
+    box-shadow: inset 0px 0px 3px #acf;
+  }
+  .VS-search .search_inner {
+    position: relative;
+    margin: 0 25px 0 18px;
+    padding: 0 3px;
+    overflow: hidden;
+  }
+    .VS-search .search_facets {
+    }
+    .VS-search .search_facet {
+      float: left;
+      margin: 0;
+      padding: 0 0 0 13px;
+      position: relative;
+    }
+      .VS-search .search_facet.is_selected {
+        margin: 5px -3px 5px -3px;
+        -webkit-border-radius: 16px;
+        -moz-border-radius: 16px;
+        border-radius: 16px;
+      }
+      .VS-search .search_facet.is_selected {
+        background-color: #CBD1F1;
+        background-image: -moz-linear-gradient(top, #CBD1F1, #AFB5EC); /* FF3.6 */
+        background-image: -ms-linear-gradient(top, #CBD1F1, #AFB5EC); /* IE10 */
+        background-image: -o-linear-gradient(top, #CBD1F1, #AFB5EC); /* Opera 11.10+ */
+        background-image: -webkit-gradient(linear, left top, left bottom, from(#CBD1F1), to(#AFB5EC)); /* Saf4+, Chrome */
+        background-image: -webkit-linear-gradient(top, #CBD1F1, #AFB5EC); /* Chrome 10+, Saf5.1+ */
+        background-image: linear-gradient(top, #CBD1F1, #AFB5EC);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#CBD1F1', EndColorStr='#AFB5EC'); /* IE6–IE9 */
+      }
+      .VS-search .search_facet .category {
+        float: left;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 10px;
+        color: #B0B0B0;
+        text-shadow: 1px 1px 0 #FFF;
+        padding: 9px 0 6px;
+        line-height: 13px;
+        cursor: pointer;
+      }
+      .VS-search .search_facet.is_selected .category {
+        padding: 4px 0 0;
+        margin-left: 3px;
+        text-shadow: 1px 1px 0 #D0D0D0;
+      }
+      .VS-search .search_facet .search_facet_input_container {
+        float: left;
+      }
+      .VS-search .search_facet input {
+        margin: 0;
+        padding: 0;
+        color: #999;
+        font-size: 13px;
+        line-height: 16px;
+        padding: 6px 0 7px 4px;
+        height: 16px;
+        width: auto;          
+        z-index: 100;
+        position: relative;
+
+      }
+      .VS-search .search_facet.is_selected input {
+        padding-top: 1px;
+        padding-bottom: 2px;
+        padding-right: 3px;
+      }
+      .VS-search .search_facet.is_editing input,
+      .VS-search .search_facet.is_selected input {
+        color: #202020;
+      }
+      .VS-search .search_facet .search_facet_remove {
+        position: absolute;
+        left: 0;
+        top: 9px;
+        opacity: .5;
+      }
+        .VS-search .search_facet.is_selected .search_facet_remove {
+          top: 4px;
+          left: 3px;
+        }
+        .VS-search .search_facet .search_facet_remove:hover {
+          opacity: 1;
+        }
+      .VS-search .search_facet.is_editing .category,
+      .VS-search .search_facet.is_selected .category {
+        color: darkblue;
+      }
+      .VS-search .search_facet.search_facet_maybe_delete .category,
+      .VS-search .search_facet.search_facet_maybe_delete input {
+        color: darkred;
+      }
+    .VS-search .search_input {
+      height: 28px;
+      float: left;
+    }
+      .VS-search .search_input input {
+        padding: 6px 2px 7px 2px;
+      }
+    .VS-search input {
+      width: 100px;
+    }
+    .VS-search input,
+    .VS-search .input_width_tester {
+      padding: 6px 0;
+      float: left;
+    }
+      .VS-search input, 
+      .VS-search .placeholder,
+      .VS-search .input_width_tester {
+        color: #808080;
+        font: 13px/17px Helvetica, Arial;
+      }
+      .VS-search.VS-focus .search_facet.is_editing input {
+        color: #000;
+      }
+      .VS-search.VS-focus input {
+        color: #606060;
+      }
+  .VS-search .search_glyph {
+    position: absolute;
+    left: 9px; top: 8px;
+  }
+  .VS-search .cancel_search {
+    position: absolute;
+    right: 9px; top: 8px;
+  }
+  
+/* ================ */
+/* = Autocomplete = */
+/* ================ */
+
+.ui-autocomplete {
+  position: absolute;
+  border: 1px solid #C0C0C0;
+  background-color: #F6F6F6;
+  cursor: pointer;
+  z-index: 10000;
+  width: auto;
+  min-width: 80px;
+  max-width: 220px;
+  max-height: 240px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  font-size: 13px;
+}
+  .ui-autocomplete .ui-autocomplete-category {
+    text-transform: capitalize;
+    font-size: 11px;
+    padding: 4px 4px 4px;
+    border-top: 1px solid #A2A2A2;
+    border-bottom: 1px solid #A2A2A2;
+    background-color: #B7B7B7;
+    text-shadow: 0 -1px 0 #999;
+    font-weight: bold;
+    color: white;
+    cursor: default;
+  }
+  .ui-autocomplete .ui-menu-item a {
+    display: block;
+    padding: 3px 3px 5px;
+  }
+  .ui-autocomplete .ui-menu-item .ui-state-hover {
+    background-color: #2A61CD;
+    color: white;
+  }
+  .ui-autocomplete li {
+    list-style: none;
+    width: auto;
+  }
+  

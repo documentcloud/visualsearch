@@ -48,8 +48,9 @@
     table {
       margin: 16px 0; padding: 0;
     }
-      tr, td {
+      tr, td, th {
         margin: 0; padding: 0;
+        text-align: left;
       }
         td {
           padding: 9px 15px 9px 0;
@@ -58,6 +59,9 @@
             line-height: 18px;
             font-size: 14px;
           }
+    table.downloads td {
+      padding-left: 18px;
+    }
     #VS code, #VS pre, #VS tt {
       font-family: Monaco, Consolas, "Lucida Console", monospace;
       font-size: 12px;
@@ -137,9 +141,9 @@
 
     <p>
       The project is
-      <a href="http://github.com/documentcloud/visual-search/">hosted on GitHub</a>.
+      <a href="http://github.com/documentcloud/visualsearch/">hosted on GitHub</a>.
       You can report bugs and discuss features on the
-      <a href="http://github.com/documentcloud/visual-search/issues">issues page</a>,
+      <a href="http://github.com/documentcloud/visualsearch/issues">issues page</a>,
       on Freenode in the <tt>#documentcloud</tt> channel,
       or send tweets to <a href="http://twitter.com/documentcloud">@documentcloud</a>.
     </p>
@@ -234,15 +238,81 @@
     
     <h2>Downloads <i style="padding-left: 12px; font-size:12px;">(Right-click, and use "Save As")</i></h2>
 
-    <table>
+    <table class="downloads">
+      
       <tr>
-        <td><a href="visualsearch.js">Development Version (0.1.0)</a></td>
-        <td><i>28kb, Uncompressed with Comments</i></td>
+        <th colspan="2">1. VisualSearch JavaScript (<tt>visualsearch.js</tt>)</th>
       </tr>
       <tr>
-        <td><a href="visualsearch-min.js">Production Version (0.1.0)</a></td>
-        <td><i>3kb, Minified and Gzipped</i></td>
+        <td><a href="build-min/visualsearch.js">Production Version (0.1.0)</a></td>
+        <td><i>8kb, Minified and Gzipped</i></td>
       </tr>
+      <tr>
+        <td><a href="build/visualsearch.js">Development Version (0.1.0)</a></td>
+        <td><i>45kb, Uncompressed with Comments</i></td>
+      </tr>
+      
+      <tr>
+        <th colspan="2">2. VisualSearch Stylesheets (<tt>visualsearch.css</tt>)</th>
+      </tr>
+      <tr>
+        <td colspan="2"><i>You should include both the datauri and image urls versions. <a href="#css">See how to include both</a></i></td>
+      </tr>
+      <tr>
+        <td><a href="build-min/visualsearch-datauri.css">Production Version - datauri</a></td>
+        <td><i>4kb, Minified and Gzipped</i></td>
+      </tr>
+      <tr>
+        <td><a href="build-min/visualsearch.css">Production Version - image urls</a></td>
+        <td><i>4kb, Minified and Gzipped</i></td>
+      </tr>
+      <tr>
+        <td><a href="build/visualsearch.css">Development Version</a></td>
+        <td><i>8kb, Uncompressed with Comments</i></td>
+      </tr>
+      <tr>
+        <th colspan="2">3. VisualSearch Images</th>
+      </tr>
+      <tr>
+        <td><img src="public/images/embed/icons/search_glyph.png"> <a href="public/images/embed/icons/search_glyph.png">Search Glyph</a></td>
+        <td><i>4kb, embedded in visualsearch-datauri.css</i></td>
+      </tr>
+      <tr>
+        <td><img src="public/images/embed/icons/cancel_search.png"> <a href="public/images/embed/icons/cancel_search.png">Cancel Button</a></td>
+        <td><i>4kb, embedded in visualsearch-datauri.css</i></td>
+      </tr>
+      
+      <tr>
+        <th colspan="2">4. VisualSearch Dependencies (<tt>jQuery, jQuery UI, Underscore.js, Backbone.js</tt>)</th>
+      </tr>
+      <tr>
+        <td colspan="2"><i>You should only include the dependencies you don't already have.</i></td>
+      </tr>
+      <tr>
+        <td><a href="build-min/dependencies.js">Production Version - All</a></td>
+        <td><i>49kb, Minified and Gzipped</i></td>
+      </tr>
+      <tr>
+        <td><a href="build/dependencies.js">Development Version - All</a></td>
+        <td><i>340kb, Uncompressed with Comments</i></td>
+      </tr>
+      <tr>
+        <td><a href="vendor/jquery-1.6.1.js">jQuery 1.6.1</a></td>
+        <td><i>238kb, Uncompressed with Comments</i></td>
+      </tr>
+      <tr>
+        <td>jQuery UI 1.8.13: <br /><a href="vendor/jquery.ui.core.js">Core</a> <a href="vendor/jquery.ui.position.js">Position</a> <a href="vendor/jquery.ui.widget.js">Widget</a> <a href="vendor/jquery.ui.autocomplete.js">Autocomplete</a></td>
+        <td><i>48kb, Uncompressed with Comments</i></td>
+      </tr>
+      <tr>
+        <td><a href="vendor/underscore-1.1.5.js">Underscore 1.1.5</a></td>
+        <td><i>29kb, Uncompressed with Comments</i></td>
+      </tr>
+      <tr>
+        <td><a href="vendor/backbone-0.3.3.js">Backbone 0.3.3</a></td>
+        <td><i>41kb, Uncompressed with Comments</i></td>
+      </tr>
+      
     </table>
 
     <h2>Usage</h2>
@@ -250,7 +320,7 @@
     <p>To use VisualSearch.js on your site, follow these instructions on installation, configuration, and customization.</p>
     
     <ol>
-      <li class="xml">Insert the JavaScript and CSS into your page:<br />
+      <li class="xml" id="css">Insert the JavaScript and CSS into your page:<br />
         <pre><code>&lt;script src="visualsearch.js" type="text/javascript"&gt;&lt;/script&gt;
 &lt;!--[if (!IE)|(gte IE 8)]&gt;&lt;!--&gt;
   &lt;link href="visualsearch-datauri.css" media="screen" rel="stylesheet" type="text/css" /&gt;

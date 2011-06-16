@@ -1,0 +1,72 @@
+<!DOCTYPE html>  <html> <head>   <title>hotkeys.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="search_facets.html">                 search_facets.js               </a>                                           <a class="source" href="search_query.html">                 search_query.js               </a>                                           <a class="source" href="backbone_extensions.html">                 backbone_extensions.js               </a>                                           <a class="source" href="hotkeys.html">                 hotkeys.js               </a>                                           <a class="source" href="inflector.html">                 inflector.js               </a>                                           <a class="source" href="jquery_extensions.html">                 jquery_extensions.js               </a>                                           <a class="source" href="search_parser.html">                 search_parser.js               </a>                                           <a class="source" href="search_box.html">                 search_box.js               </a>                                           <a class="source" href="search_facet.html">                 search_facet.js               </a>                                           <a class="source" href="search_input.html">                 search_input.js               </a>                                           <a class="source" href="visual_search.html">                 visual_search.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               hotkeys.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p>DocumentCloud workspace hotkeys. To tell if a key is currently being pressed,
+just ask: <code>VS.app.hotkeys.control</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">VS</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">hotkeys</span> <span class="o">=</span> <span class="p">{</span>
+
+  <span class="nx">KEYS</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s1">&#39;16&#39;</span><span class="o">:</span>  <span class="s1">&#39;shift&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;17&#39;</span><span class="o">:</span>  <span class="s1">&#39;control&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;91&#39;</span><span class="o">:</span>  <span class="s1">&#39;command&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;93&#39;</span><span class="o">:</span>  <span class="s1">&#39;command&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;224&#39;</span><span class="o">:</span> <span class="s1">&#39;command&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;13&#39;</span><span class="o">:</span>  <span class="s1">&#39;enter&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;37&#39;</span><span class="o">:</span>  <span class="s1">&#39;left&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;38&#39;</span><span class="o">:</span>  <span class="s1">&#39;upArrow&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;39&#39;</span><span class="o">:</span>  <span class="s1">&#39;right&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;40&#39;</span><span class="o">:</span>  <span class="s1">&#39;downArrow&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;46&#39;</span><span class="o">:</span>  <span class="s1">&#39;delete&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;8&#39;</span><span class="o">:</span>   <span class="s1">&#39;backspace&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;9&#39;</span><span class="o">:</span>   <span class="s1">&#39;tab&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;188&#39;</span><span class="o">:</span> <span class="s1">&#39;comma&#39;</span>
+  <span class="p">},</span>
+
+  <span class="nx">initialize</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">_</span><span class="p">.</span><span class="nx">bindAll</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s1">&#39;down&#39;</span><span class="p">,</span> <span class="s1">&#39;up&#39;</span><span class="p">,</span> <span class="s1">&#39;blur&#39;</span><span class="p">);</span>
+    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">down</span><span class="p">);</span>
+    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;keyup&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">up</span><span class="p">);</span>
+    <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;blur&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">blur</span><span class="p">);</span>
+  <span class="p">},</span>
+
+  <span class="nx">down</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">KEYS</span><span class="p">[</span><span class="nx">e</span><span class="p">.</span><span class="nx">which</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="k">this</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="p">},</span>
+
+  <span class="nx">up</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">KEYS</span><span class="p">[</span><span class="nx">e</span><span class="p">.</span><span class="nx">which</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="k">this</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="p">},</span>
+
+  <span class="nx">blur</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="k">this</span><span class="p">.</span><span class="nx">KEYS</span><span class="p">)</span> <span class="k">this</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">KEYS</span><span class="p">[</span><span class="nx">key</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="p">},</span>
+  
+  <span class="nx">key</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">KEYS</span><span class="p">[</span><span class="nx">e</span><span class="p">.</span><span class="nx">which</span><span class="p">];</span>
+  <span class="p">},</span>
+  
+  <span class="nx">colon</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Colon is special, since the value is different between browsers.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">charCode</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">which</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">charCode</span> <span class="o">&amp;&amp;</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="nx">charCode</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;:&quot;</span><span class="p">;</span>
+  <span class="p">},</span>
+  
+  <span class="nx">printable</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">code</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">which</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">type</span> <span class="o">==</span> <span class="s1">&#39;keydown&#39;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">code</span> <span class="o">==</span> <span class="mi">32</span> <span class="o">||</span>                      <span class="c1">// space</span>
+          <span class="p">(</span><span class="nx">code</span> <span class="o">&gt;=</span> <span class="mi">48</span> <span class="o">&amp;&amp;</span> <span class="nx">code</span> <span class="o">&lt;=</span> <span class="mi">90</span><span class="p">)</span> <span class="o">||</span>      <span class="c1">// 0-1a-z</span>
+          <span class="p">(</span><span class="nx">code</span> <span class="o">&gt;=</span> <span class="mi">96</span> <span class="o">&amp;&amp;</span> <span class="nx">code</span> <span class="o">&lt;=</span> <span class="mi">111</span><span class="p">)</span> <span class="o">||</span>     <span class="c1">// 0-9+-/*.</span>
+          <span class="p">(</span><span class="nx">code</span> <span class="o">&gt;=</span> <span class="mi">186</span> <span class="o">&amp;&amp;</span> <span class="nx">code</span> <span class="o">&lt;=</span> <span class="mi">192</span><span class="p">)</span> <span class="o">||</span>    <span class="c1">// ;=,-./^</span>
+          <span class="p">(</span><span class="nx">code</span> <span class="o">&gt;=</span> <span class="mi">219</span> <span class="o">&amp;&amp;</span> <span class="nx">code</span> <span class="o">&lt;=</span> <span class="mi">222</span><span class="p">))</span> <span class="p">{</span>    <span class="c1">// (\)&#39;</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">((</span><span class="nx">code</span> <span class="o">&gt;=</span> <span class="mi">32</span> <span class="o">&amp;&amp;</span> <span class="nx">code</span> <span class="o">&lt;=</span> <span class="mi">126</span><span class="p">)</span>  <span class="o">||</span> <span class="c1">// [space]!&quot;#$%&amp;&#39;()*+,-.0-9:;&lt;=&gt;?@A-Z[\]^_`a-z{|}</span>
+          <span class="p">(</span><span class="nx">code</span> <span class="o">&gt;=</span> <span class="mi">160</span> <span class="o">&amp;&amp;</span> <span class="nx">code</span> <span class="o">&lt;=</span> <span class="mi">500</span><span class="p">)</span> <span class="o">||</span> <span class="c1">// unicode</span>
+          <span class="p">(</span><span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="nx">code</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;:&quot;</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+      <span class="p">}</span>      
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="p">}</span>
+
+<span class="p">};</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

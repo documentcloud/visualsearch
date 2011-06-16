@@ -1,0 +1,51 @@
+<!DOCTYPE html>  <html> <head>   <title>search_query.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="search_facets.html">                 search_facets.js               </a>                                           <a class="source" href="search_query.html">                 search_query.js               </a>                                           <a class="source" href="backbone_extensions.html">                 backbone_extensions.js               </a>                                           <a class="source" href="hotkeys.html">                 hotkeys.js               </a>                                           <a class="source" href="inflector.html">                 inflector.js               </a>                                           <a class="source" href="jquery_extensions.html">                 jquery_extensions.js               </a>                                           <a class="source" href="search_parser.html">                 search_parser.js               </a>                                           <a class="source" href="search_box.html">                 search_box.js               </a>                                           <a class="source" href="search_facet.html">                 search_facet.js               </a>                                           <a class="source" href="search_input.html">                 search_input.js               </a>                                           <a class="source" href="visual_search.html">                 visual_search.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               search_query.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nx">VS</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">SearchQuery</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Collection</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  
+  <span class="nx">model</span> <span class="o">:</span> <span class="nx">VS</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">SearchFacet</span><span class="p">,</span>
+  
+  <span class="nx">value</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">facet</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">facet</span><span class="p">.</span><span class="nx">serialize</span><span class="p">();</span>
+    <span class="p">}).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span>
+  <span class="p">},</span>
+  
+  <span class="nx">find</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">category</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">facet</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">detect</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">facet</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">facet</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="nx">category</span><span class="p">;</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="nx">facet</span> <span class="o">&amp;&amp;</span> <span class="nx">facet</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">);</span>
+  <span class="p">},</span>
+  
+  <span class="nx">count</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">category</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">facet</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">facet</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="nx">category</span><span class="p">;</span>
+    <span class="p">}).</span><span class="nx">length</span><span class="p">;</span>
+  <span class="p">},</span>
+  
+  <span class="nx">values</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">category</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">facets</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">facet</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">facet</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="nx">category</span><span class="p">;</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">facets</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">facet</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">facet</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">);</span> <span class="p">});</span>
+  <span class="p">},</span>
+  
+  <span class="nx">has</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">category</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">any</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">facet</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">facet</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="nx">category</span> <span class="o">&amp;&amp;</span> <span class="nx">facet</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="nx">value</span><span class="p">;</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">facet</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="nx">category</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+  <span class="p">},</span>
+  
+  <span class="nx">withoutCategory</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">category</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">query</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">facet</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">facet</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="nx">category</span><span class="p">)</span> <span class="k">return</span> <span class="nx">facet</span><span class="p">.</span><span class="nx">serialize</span><span class="p">();</span>
+    <span class="p">}).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="nx">query</span><span class="p">;</span>
+  <span class="p">}</span>
+    
+<span class="p">});</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
