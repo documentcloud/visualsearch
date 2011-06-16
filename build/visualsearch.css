@@ -7,7 +7,7 @@
 .VS-search .icon.cancel_search {
   width: 11px; height: 11px;
   background-position: center 0;
-  background-image: url(../images/embed/icons/cancel_search.png?1281992275);
+  background-image: url(../Users/conesus/cloud/visualsearch/lib/images/embed/icons/cancel_search.png?1281992275);
   cursor: pointer;
 }
   .VS-search .icon.cancel_search:hover {
@@ -15,7 +15,7 @@
   }
 .VS-search .icon.search_glyph {
   width: 12px; height: 12px;
-  background-image: url(../images/embed/icons/search_glyph.png?1278683131);
+  background-image: url(../Users/conesus/cloud/visualsearch/lib/images/embed/icons/search_glyph.png?1278683131);
 }
 
 /*------------------------------ RESET + DEFAULT STYLES ---------------------------------*/

@@ -1,3 +1,10 @@
+/*
+ VisualSearch.js 0.1.0
+ (c) 2011 Samuel Clay, @samuelclay, DocumentCloud Inc.
+ VisualSearch.js may be freely distributed under the MIT license.
+ For all details and documentation:
+ http://documentcloud.github.com/visualsearch
+*/
 (function(){if(!window.VS)window.VS={};if(!VS.app)VS.app={};if(!VS.ui)VS.ui={};if(!VS.model)VS.model={};if(!VS.utils)VS.utils={};VS.init=function(a){var b={callbacks:{search:$.noop,focus:$.noop,categoryMatches:$.noop,facetMatches:$.noop}};VS.options=_.extend({},b,a);VS.options.callbacks=_.extend({},b.callbacks,a.callbacks);VS.app.hotkeys.initialize();VS.app.searchQuery=new VS.model.SearchQuery;VS.app.searchBox=new VS.ui.SearchBox(a);if(a.container){b=VS.app.searchBox.render().el;$(a.container).html(b)}VS.app.searchBox.value(a.query||
 "");return VS.app.searchBox}})();
 VS.ui.SearchBox=Backbone.View.extend({id:"search",events:{"click .search_glyph":"showFacetCategoryMenu","click .cancel_search_box":"clearSearch","mousedown .VS-search-box":"focusSearch","dblclick .VS-search-box":"highlightSearch","click #search_button":"searchEvent"},initialize:function(){this.flags={allSelected:false};this.facetViews=[];this.inputViews=[];_.bindAll(this,"hideSearch","renderFacets","_maybeDisableFacets","disableFacets");VS.app.searchQuery.bind("refresh",this.renderFacets);$(document).bind("keydown",

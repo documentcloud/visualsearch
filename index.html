@@ -110,37 +110,14 @@
       }
   </style>
 
-  <!-- <link rel="stylesheet" href="public/visualsearch-datauri.css" type="text/css" media="screen" charset="utf-8"> -->
-  <link rel="stylesheet" href="public/css/reset.css" type="text/css" media="screen" charset="utf-8">
-  <link rel="stylesheet" href="public/css/icons.css" type="text/css" media="screen" charset="utf-8">
-  <link rel="stylesheet" href="public/css/workspace.css" type="text/css" media="screen" charset="utf-8">
-  
-  <link rel="stylesheet" href="demo/github.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="build-min/visualsearch-datauri.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="docs/assets/github.css" type="text/css" media="screen" charset="utf-8">
 
-  <!-- <script src="public/visualsearch.js" type="text/javascript" charset="utf-8"></script> -->
-  <script src="vendor/jquery-1.6.1.js" type="text/javascript" charset="utf-8"></script>
-  <script src="vendor/jquery.ui.core.js" type="text/javascript" charset="utf-8"></script>
-  <script src="vendor/jquery.ui.widget.js" type="text/javascript" charset="utf-8"></script>
-  <script src="vendor/jquery.ui.position.js" type="text/javascript" charset="utf-8"></script>
-  <script src="vendor/jquery.ui.autocomplete.js" type="text/javascript" charset="utf-8"></script>
-  <script src="vendor/underscore-1.1.5.js" type="text/javascript" charset="utf-8"></script>
-  <script src="vendor/backbone-0.3.3.js" type="text/javascript" charset="utf-8"></script>
-  <script src="public/js/visual_search.js" type="text/javascript" charset="utf-8"></script>
-  <script src="public/js/views/search_box.js" type="text/javascript" charset="utf-8"></script>
-  <script src="public/js/views/search_facet.js" type="text/javascript" charset="utf-8"></script>
-  <script src="public/js/views/search_input.js" type="text/javascript" charset="utf-8"></script>
-  <script src="public/js/models/search_facets.js" type="text/javascript" charset="utf-8"></script>
-  <script src="public/js/models/search_query.js" type="text/javascript" charset="utf-8"></script>
-  <script src="public/js/utils/backbone_extensions.js" type="text/javascript" charset="utf-8"></script>
-  <script src="public/js/utils/hotkeys.js" type="text/javascript" charset="utf-8"></script>
-  <script src="public/js/utils/jquery_extensions.js" type="text/javascript" charset="utf-8"></script>
-  <script src="public/js/utils/search_parser.js" type="text/javascript" charset="utf-8"></script>
-  <script src="public/js/utils/inflector.js" type="text/javascript" charset="utf-8"></script>
-  <script src="build/visualsearch_templates.js" type="text/javascript" charset="utf-8"></script>
-  
-  <script src="demo/highlight.js" type="text/javascript" charset="utf-8"></script>
-  <script src="demo/javascript.js" type="text/javascript" charset="utf-8"></script>
-  <script src="demo/xml.js" type="text/javascript" charset="utf-8"></script>
+  <script src="build-min/dependencies.js" type="text/javascript" charset="utf-8"></script>
+  <script src="build-min/visualsearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="docs/assets/highlight.js" type="text/javascript" charset="utf-8"></script>
+  <script src="docs/assets/javascript.js" type="text/javascript" charset="utf-8"></script>
+  <script src="docs/assets/xml.js" type="text/javascript" charset="utf-8"></script>
   <script>
     hljs.initHighlightingOnLoad();
   </script>
@@ -181,7 +158,7 @@
     <a href="#demo">Demo</a> | <a href="#downloads">Downloads</a> | <a href="#usage">Usage</a> | <a href="#changelog">Change Log</a>
     
     
-    <h2 id="demo">Demo <span class="demo-hint"><i>Try searching for: <b>account</b>, <b>filter</b>, <b>access</b>, <b>title</b>, <b>city</b>, <b>state</b>.</i></span></h2>
+    <h2 id="demo">Demo <span class="demo-hint"><i>Try searching for: <b>account</b>, <b>filter</b>, <b>access</b>, <b>title</b>, <b>city</b>, <b>state</b>, or <b>country</b>.</i></span></h2>
     
     
     
@@ -191,9 +168,15 @@
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
         VS.init({
-          container : $('#search_box_container'),
-          query     : 'account: 5-samuel access: private title: "Pentagon Papers"',
-          callbacks : {
+          container  : $('#search_box_container'),
+          query      : 'account: 5-samuel country: "South Africa" title: "Pentagon Papers"',
+          unquotable : [
+            'text',
+            'account',
+            'filter',
+            'access'
+          ],
+          callbacks  : {
             search : function(query) {
               var $query = $('#search_query');
               $query.stop().animate({opacity : 1}, {duration: 300, queue: false});
@@ -261,13 +244,38 @@
                     "Texas", "Utah", "Vermont", "Virginia", "Virgin Islands",
                     "Washington", "West Virginia", "Wisconsin", "Wyoming"
                   ];
+                case 'country':
+                  return [
+                    "China", "India", "United States", "Indonesia", "Brazil",
+                    "Pakistan", "Bangladesh", "Nigeria", "Russia", "Japan",
+                    "Mexico", "Philippines", "Vietnam", "Ethiopia", "Egypt",
+                    "Germany", "Turkey", "Iran", "Thailand", "Democratic Republic of the Congo",
+                    "France", "United Kingdom", "Italy", "Myanmar", "South Africa",
+                    "South Korea", "Colombia", "Ukraine", "Spain", "Tanzania",
+                    "Sudan", "Kenya", "Argentina", "Poland", "Algeria",
+                    "Canada", "Uganda", "Morocco", "Iraq", "Nepal",
+                    "Peru", "Afghanistan", "Venezuela", "Malaysia", "Uzbekistan",
+                    "Saudi Arabia", "Ghana", "Yemen", "North Korea", "Mozambique",
+                    "Taiwan", "Syria", "Ivory Coast", "Australia", "Romania",
+                    "Sri Lanka", "Madagascar", "Cameroon", "Angola", "Chile",
+                    "Netherlands", "Burkina Faso", "Niger", "Kazakhstan", "Malawi",
+                    "Cambodia", "Guatemala", "Ecuador", "Mali", "Zambia",
+                    "Senegal", "Zimbabwe", "Chad", "Cuba", "Greece",
+                    "Portugal", "Belgium", "Czech Republic", "Tunisia", "Guinea",
+                    "Rwanda", "Dominican Republic", "Haiti", "Bolivia", "Hungary",
+                    "Belarus", "Somalia", "Sweden", "Benin", "Azerbaijan",
+                    "Burundi", "Austria", "Honduras", "Switzerland", "Bulgaria",
+                    "Serbia", "Israel", "Tajikistan", "Hong Kong", "Papua New Guinea",
+                    "Togo", "Libya", "Jordan", "Paraguay", "Laos",
+                    "El Salvador", "Sierra Leone", "Nicaragua", "Kyrgyzstan", "Denmark",
+                    "Slovakia", "Finland", "Eritrea", "Turkmenistan"
+                  ];
               }
             },
             categoryMatches : function() {
               return [
                 'account', 'filter', 'access', 'title',
                 { label: 'city',    category: 'location' },
-                { label: 'address', category: 'location' },
                 { label: 'country', category: 'location' },
                 { label: 'state',   category: 'location' },
               ];
@@ -280,6 +288,13 @@
     <h2 id="downloads">Downloads <i style="padding-left: 12px; font-size:12px;">(Right-click, and use "Save As")</i></h2>
 
     <table class="downloads">
+      
+      <tr>
+        <th colspan="2">0. Everything (<tt>visualsearch.zip</tt>)</th>
+      </tr>
+      <tr>
+        <td><a href="https://github.com/documentcloud/visualsearch/zipball/master">Download everything</a></td>
+      </tr>
       
       <tr>
         <th colspan="2">1. VisualSearch JavaScript (<tt>visualsearch.js</tt>)</th>
@@ -315,11 +330,11 @@
         <th colspan="2">3. VisualSearch Images</th>
       </tr>
       <tr>
-        <td><img src="public/images/embed/icons/search_glyph.png"> <a href="public/images/embed/icons/search_glyph.png">Search Glyph</a></td>
+        <td><img src="lib/images/embed/icons/search_glyph.png"> <a href="lib/images/embed/icons/search_glyph.png">Search Glyph</a></td>
         <td><i>4kb, embedded in visualsearch-datauri.css</i></td>
       </tr>
       <tr>
-        <td><img src="public/images/embed/icons/cancel_search.png"> <a href="public/images/embed/icons/cancel_search.png">Cancel Button</a></td>
+        <td><img src="lib/images/embed/icons/cancel_search.png"> <a href="lib/images/embed/icons/cancel_search.png">Cancel Button</a></td>
         <td><i>4kb, embedded in visualsearch-datauri.css</i></td>
       </tr>
       
