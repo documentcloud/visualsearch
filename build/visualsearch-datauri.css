@@ -217,13 +217,12 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
       width: 100px;
     }
     .VS-search input,
-    .VS-search .input_width_tester {
+    .VS-search .VS-input-width-tester {
       padding: 6px 0;
       float: left;
     }
       .VS-search input, 
-      .VS-search .placeholder,
-      .VS-search .input_width_tester {
+      .VS-search .VS-input-width-tester {
         color: #808080;
         font: 13px/17px Helvetica, Arial;
       }

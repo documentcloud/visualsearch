@@ -14,7 +14,7 @@ javascripts:
     - vendor/underscore-*.js
     - vendor/backbone-*.js
   visualsearch<% if $VS_MIN %>-min<% end %>:
-    - lib/js/visual_search.js
+    - lib/js/visualsearch.js
     - lib/js/views/*.js
     - lib/js/utils/*.js
     - lib/js/models/*.js
