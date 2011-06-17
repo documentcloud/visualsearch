@@ -7,7 +7,7 @@
 .VS-search .icon.cancel_search {
   width: 11px; height: 11px;
   background-position: center 0;
-  background-image: url(../Users/conesus/cloud/visualsearch/lib/images/embed/icons/cancel_search.png?1281992275);
+  background-image: url(../Users/conesus/cloud/visualsearch/lib/images/embed/icons/cancel_search.png?1308268129);
   cursor: pointer;
 }
   .VS-search .icon.cancel_search:hover {
@@ -15,7 +15,7 @@
   }
 .VS-search .icon.search_glyph {
   width: 12px; height: 12px;
-  background-image: url(../Users/conesus/cloud/visualsearch/lib/images/embed/icons/search_glyph.png?1278683131);
+  background-image: url(../Users/conesus/cloud/visualsearch/lib/images/embed/icons/search_glyph.png?1308268129);
 }
 
 /*------------------------------ RESET + DEFAULT STYLES ---------------------------------*/
@@ -209,6 +209,9 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     }
       .VS-search .search_input input {
         padding: 6px 2px 7px 2px;
+      }
+      .VS-search .search_input.is_editing input {
+        color: #202020;
       }
     .VS-search input {
       width: 100px;

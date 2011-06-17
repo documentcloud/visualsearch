@@ -17,7 +17,10 @@
   // Entry-point used to tie all parts of VisualSearch together.
   VS.init = function(options) {
     var defaults = {
-      callbacks : {
+      container   : '',
+      query       : '',
+      unquotable  : [],
+      callbacks   : {
         search          : $.noop,
         focus           : $.noop,
         categoryMatches : $.noop,
@@ -36,6 +39,9 @@
       $(options.container).html(searchBox);
     }
     VS.app.searchBox.value(options.query || '');
+    
+    // Disable page caching for browsers that incorrectly cache the visual search inputs.
+    $(window).bind('unload', function(e) {});
     
     // Gives the user back a reference to the `searchBox` so they 
     // can use public methods.
@@ -706,6 +712,7 @@ VS.ui.SearchInput = Backbone.View.extend({
   render : function() {
     $(this.el).html(JST['search_input']({}));
     
+    this.setMode('not', 'editing');
     this.box = this.$('input');
     this.box.autoGrowInput();
     this.box.bind('updated.autogrow', this.moveAutocomplete);
@@ -813,12 +820,14 @@ VS.ui.SearchInput = Backbone.View.extend({
   removeFocus : function(e) {
     console.log(['removeFocus', e]);
     VS.app.searchBox.removeFocus();
+    this.setMode('not', 'editing');
   },
   
   addFocus : function(e) {
     console.log(['addFocus', e]);
     VS.app.searchBox.disableFacets(this);
     VS.app.searchBox.addFocus();
+    this.setMode('is', 'editing');
   },
   
   isFocused : function() {
@@ -841,7 +850,7 @@ VS.ui.SearchInput = Backbone.View.extend({
   // Callback fired on key press in the search box. We search when they hit return.
   keypress : function(e) {
     var key = VS.app.hotkeys.key(e);
-    console.log(['input keypress', e.keyCode, key, this.box.getCursorPosition()]);
+    console.log(['input keypress', e.keyCode, key, this.box.getCursorPosition(), VS.app.hotkeys.colon(e)]);
     
     if (key == 'enter') {
       return VS.app.searchBox.searchEvent(e);
@@ -853,7 +862,7 @@ VS.ui.SearchInput = Backbone.View.extend({
         if (prefix.label) return prefix.label;
         else              return prefix;
       });
-      if (_.contains(_.pluck(prefixes, 'label'), query)) {
+      if (_.contains(labels, query)) {
         e.preventDefault();
         var remainder = this.addTextFacetRemainder(query);
         VS.app.searchBox.addFacet(query, '', this.options.position + (remainder?1:0));
@@ -1096,9 +1105,7 @@ VS.utils.inflector = {
             var position = $input.getCursorPosition();
             if (position > 0) value = value.slice(0, position-1) + value.slice(position, value.length);              
           } else if (VS.app.hotkeys.printable(e) && !VS.app.hotkeys.command) {
-            value += VS.app.hotkeys.shift ? 
-                     String.fromCharCode(e.which) : 
-                     String.fromCharCode(e.which).toLowerCase();
+            value += String.fromCharCode(e.which);
           }
           value = value.replace(/&/g, '&amp;')
                        .replace(/\s/g,'&nbsp;')
@@ -1269,26 +1276,16 @@ VS.app.SearchParser = {
   }
 
 };
+// Model 
 VS.model.SearchFacet = Backbone.Model.extend({
   
-  UNQUOTABLE_CATEGORIES : [
-    'text',
-    'account',
-    'document',
-    'filter',
-    'group',
-    'access',
-    'related',
-    'projectid'
-  ],
-    
   serialize : function() {
     var category = this.get('category');
     var value    = VS.utils.inflector.trim(this.get('value'));
     
     if (!value) return '';
     
-    if (!_.contains(this.UNQUOTABLE_CATEGORIES, category)) value = '"' + value + '"';
+    if (!_.contains(VS.options.unquotable || [], category)) value = '"' + value + '"';
     
     if (category != 'text') {
       category = category + ': ';

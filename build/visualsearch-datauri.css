@@ -210,6 +210,9 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
       .VS-search .search_input input {
         padding: 6px 2px 7px 2px;
       }
+      .VS-search .search_input.is_editing input {
+        color: #202020;
+      }
     .VS-search input {
       width: 100px;
     }
