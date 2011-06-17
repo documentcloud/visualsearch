@@ -49,47 +49,51 @@
   };
   
 })();
+(function() {
+
 // The search box is responsible for managing the many facet views and input views.
 VS.ui.SearchBox = Backbone.View.extend({
   
   id  : 'search',
   
   events : {
-    'click .search_glyph'       : 'showFacetCategoryMenu',
+    // 'click .search_glyph'       : 'showFacetCategoryMenu',
     'click .cancel_search_box'  : 'clearSearch',
     'mousedown .VS-search-box'  : 'focusSearch',
     'dblclick .VS-search-box'   : 'highlightSearch',
     'click #search_button'      : 'searchEvent'
   },
 
-  // Creating a new SearchBox registers handlers for 
+  // Creating a new SearchBox registers handlers for re-rendering facets when necessary,
+  // as well as handling typing when a facet is selected.
   initialize : function() {
     this.flags = {
       allSelected : false
     };
     this.facetViews = [];
     this.inputViews = [];
-    _.bindAll(this, 'hideSearch', 'renderFacets', '_maybeDisableFacets', 'disableFacets');
+    _.bindAll(this, 'renderFacets', '_maybeDisableFacets', 'disableFacets');
     VS.app.searchQuery.bind('refresh', this.renderFacets);
     $(document).bind('keydown', this._maybeDisableFacets);
+    // this.disableDeleteButton();
   },
 
+  // Renders the search box, but requires placement on the page through `this.el`.
   render : function() {
     $(this.el).append(JST['search_box']({}));
     $(document.body).setMode('no', 'search');
         
     return this;
   },
-
-  hideSearch : function() {
-    $(document.body).setMode(null, 'search');
-  },
-
+  
   // Handles keydown events on the document. Used to complete the Cmd+A deletion, and
   // blurring focus.
   _maybeDisableFacets : function(e) {
-    if (this.flags.allSelected && 
-        (VS.app.hotkeys.key(e) == 'backspace' || VS.app.hotkeys.printable(e))) {
+    if (this.flags.allSelected && VS.app.hotkeys.key(e) == 'backspace') {
+      e.preventDefault();
+      this.clearSearch();
+      return false;
+    } else if (this.flags.allSelected && VS.app.hotkeys.printable(e)) {
       this.clearSearch();
     } else if (this.flags.allSelected) {
       console.log(['_maybeDisableFacets', this.flags.allSelected]);
@@ -279,11 +283,11 @@ VS.ui.SearchBox = Backbone.View.extend({
   
   // Command+A selects all facets.
   selectAllFacets : function() {
+    _.each(this.inputViews, function(inputView, i) {
+      inputView.selectText(true);
+    });
     _.each(this.facetViews, function(facetView, i) {
       facetView.selectFacet(null, true);
-    });
-    _.each(this.inputViews, function(inputView, i) {
-      inputView.selectText();
     });
     this.flags.allSelected = true;
     
@@ -379,6 +383,10 @@ VS.ui.SearchBox = Backbone.View.extend({
   }
   
 });
+
+})();
+(function() {
+
 // This is the visual search facet that holds the category and its autocompleted 
 // input field.
 VS.ui.SearchFacet = Backbone.View.extend({
@@ -516,11 +524,13 @@ VS.ui.SearchFacet = Backbone.View.extend({
   selectFacet : function(e, selectAll) {
     console.log(['selectFacet', this.model.get('category'), selectAll]);
     this.canClose = false;
-    this.box.setCursorPosition(0);
-    if (this.box.is(':focus')) this.box.blur();
+    if (this.box.is(':focus')) {
+        this.box.setCursorPosition(0);
+        this.box.blur();
+    }
+    this.closeAutocomplete();
     this.setMode('is', 'selected');
     this.setMode('not', 'editing');
-    this.closeAutocomplete();
     if (!selectAll) {
       $(document).unbind('keydown.facet', this.keydown);
       $(document).unbind('click.facet', this.deselectFacet);
@@ -692,6 +702,10 @@ VS.ui.SearchFacet = Backbone.View.extend({
   }
   
 });
+
+})();
+(function() {
+
 // This is the visual search input that is responsible for creating new facets.
 // There is one input placed in between all facets.
 VS.ui.SearchInput = Backbone.View.extend({
@@ -842,9 +856,11 @@ VS.ui.SearchInput = Backbone.View.extend({
     return this.box.val();
   },
   
-  selectText : function() {
+  selectText : function(selectAll) {
     this.box.selectRange(0, this.box.val().length);
-    this.box.focus();
+    if (!selectAll) {
+        this.box.focus();
+    }
   },
   
   // Callback fired on key press in the search box. We search when they hit return.
@@ -907,7 +923,7 @@ VS.ui.SearchInput = Backbone.View.extend({
       } else {
         VS.app.searchBox.focusNextFacet(this, 0, {skipToFacet: true, selectText: true});
       }
-    } else if (VS.app.hotkeys.command && (e.which == 97 || e.which == 65)) {
+    } else if (VS.app.hotkeys.command && String.fromCharCode(e.which).toLowerCase() == 'a') {
       e.preventDefault();
       VS.app.searchBox.selectAllFacets();
       return false;
@@ -921,6 +937,8 @@ VS.ui.SearchInput = Backbone.View.extend({
   }
   
 });
+
+})();
 (function(){
 
   // Makes the view enter a mode. Modes have both a 'mode' and a 'group',
@@ -936,6 +954,8 @@ VS.ui.SearchInput = Backbone.View.extend({
   };
 
 })();
+(function() {
+
 // DocumentCloud workspace hotkeys. To tell if a key is currently being pressed,
 // just ask: `VS.app.hotkeys.control`
 VS.app.hotkeys = {
@@ -1009,6 +1029,10 @@ VS.app.hotkeys = {
   }
 
 };
+
+})();
+(function() {
+
 // Naive English transformations on words.
 VS.utils.inflector = {
 
@@ -1068,6 +1092,8 @@ VS.utils.inflector = {
     return s.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
   }
 };
+
+})();
 (function($) {
 
   $.fn.extend({
@@ -1113,7 +1139,7 @@ VS.utils.inflector = {
                        .replace(/>/g, '&gt;');
           
           $tester.html(value);
-          console.log(['autoGrow', e.type, e.which, VS.app.hotkeys.printable(e), value]);
+          // console.log(['autoGrow', e.type, e.which, VS.app.hotkeys.printable(e), value]);
           $input.width($tester.width() + 3);
           $input.trigger('updated.autogrow');
         });
@@ -1188,35 +1214,36 @@ VS.utils.inflector = {
   
 })(jQuery);
     
-// A parallel partial JS implementation of lib/dc/search/parser.rb
-// Used to extract keywords from the free text search.
+(function() {
+
+// Used to extract keywords and facets from the free text search.
 VS.app.SearchParser = {
 
+  // Matches `category: "free text"`, with and without quotes.
   ALL_FIELDS        : /('.+?'|".+?"|[^'"\s]{2}\S*):\s*('.+?'|".+?"|[^'"\s]{2}\S*)/g,
-  // ALL_FIELDS        : /\w+:\s?(('.+?'|".+?")|([^'"]{2}\S*))/g,
   
+  // Matches a single category without the text. Used to correctly extract facets.
   FIELD             : /(.+?):\s*/,
   
-  ONE_ENTITY        : /(city|country|term|state|person|place|organization|email|phone):\s*(([^'"][^'"]\S*)|'(.+?)'|"(.+?)")/i,
-
-  ALL_ENTITIES      : /(city|country|term|state|person|place|organization|email|phone):\s*(([^'"][^'"]\S*)|'(.+?)'|"(.+?)")/ig,
-
+  // Called to parse a query into a collection of `SearchFacet` models.
   parse : function(query) {
-    var searchFacets = this.extractAllFacets(query);
+    var searchFacets = this._extractAllFacets(query);
     VS.app.searchQuery.refresh(searchFacets);
+    return searchFacets;
   },
   
-  extractAllFacets : function(query) {
+  // Walks the query and extracts facets, categories, and free text.
+  _extractAllFacets : function(query) {
     var facets = [];
     var originalQuery = query;
     
     while (query) {
       var category, value;
       originalQuery = query;
-      var field = this.extractNextField(query);
+      var field = this._extractNextField(query);
       if (!field) {
         category = 'text';
-        value    = this.extractSearchText(query);
+        value    = this._extractSearchText(query);
         query    = VS.utils.inflector.trim(query.replace(value, ''));
       } else if (field.indexOf(':') != -1) {
         category = field.match(this.FIELD)[1];
@@ -1227,7 +1254,7 @@ VS.app.SearchParser = {
         value    = field;
         query    = VS.utils.inflector.trim(query.replace(value, ''));
       }
-      // console.log(['extractAllFacets', query, category, value, field]);
+
       if (category && value) {
           var searchFacet = new VS.model.SearchFacet({
             category : category,
@@ -1241,41 +1268,36 @@ VS.app.SearchParser = {
     return facets;
   },
   
-  extractNextField : function(query) {
+  // Extracts the first field found, capturing any free text that comes
+  // before the category.
+  _extractNextField : function(query) {
     var textRe = /^\s*(\S+)\s+(?=\w+:\s?(('.+?'|".+?")|([^'"]{2}\S*)))/;
     var textMatch = query.match(textRe);
-    console.log(['extractNextField', query, textMatch]);
     if (textMatch && textMatch.length >= 1) {
       return textMatch[1];
     } else {
-      return this.extractFirstField(query);
+      return this._extractFirstField(query);
     }
   },
   
-  extractFirstField : function(query) {
+  // If there is no free text before the facet, extract the category and value.
+  _extractFirstField : function(query) {
     var fields = query.match(this.ALL_FIELDS);
     return fields && fields.length && fields[0];
   },
   
-  extractSearchText : function(query) {
+  // If the found match is not a category and facet, extract the trimmed free text.
+  _extractSearchText : function(query) {
     query = query || '';
     var text = VS.utils.inflector.trim(query.replace(this.ALL_FIELDS, ''));
-    console.log(['extractSearchText', query, text]);
     return text;
-  },
-
-  extractEntities : function(query) {
-    var all = this.ALL_ENTITIES, one = this.ONE_ENTITY;
-    var entities = query.match(all) || [];
-    return _.sortBy(_.map(entities, function(ent){
-      var match = ent.match(one);
-      return {type : match[1], value : match[3] || match[4] || match[5]};
-    }), function(ent) {
-      return ent.value.toLowerCase();
-    }).reverse();
   }
 
 };
+
+})();
+(function() {
+
 // Model 
 VS.model.SearchFacet = Backbone.Model.extend({
   
@@ -1297,6 +1319,10 @@ VS.model.SearchFacet = Backbone.Model.extend({
   }
   
 });
+
+})();
+(function() {
+
 VS.model.SearchQuery = Backbone.Collection.extend({
   
   model : VS.model.SearchFacet,
@@ -1345,7 +1371,9 @@ VS.model.SearchQuery = Backbone.Collection.extend({
     return query;
   }
     
-});(function(){
+});
+
+})();(function(){
 window.JST = window.JST || {};
 
 window.JST['search_box'] = _.template('<div class="VS-search">  <div id="search_container">    <div id="search_button" class="minibutton">Search</div>    <div id="search_box_wrapper" class="VS-search-box">      <div class="icon search_glyph"></div>      <div class="search_inner"></div>      <div class="icon cancel_search cancel_search_box" title="clear search"></div>    </div>  </div></div>');
