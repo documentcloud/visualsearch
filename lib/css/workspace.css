@@ -26,10 +26,6 @@
 /* = Layout = */
 /* ========== */
 
-#search_button {
-  float: right;
-  margin: 3px 29px 0 6px;
-}
 #search_box_wrapper {
 }
   input.search_box {
@@ -62,7 +58,7 @@
   }
   .VS-search .search_inner {
     position: relative;
-    margin: 0 25px 0 18px;
+    margin: 0 0 0 18px;
     padding: 0 3px;
     overflow: hidden;
   }
