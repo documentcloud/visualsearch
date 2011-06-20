@@ -468,6 +468,7 @@ VS.ui.SearchFacet = Backbone.View.extend({
       minLength : 0,
       delay     : 0,
       autoFocus : true,
+      position  : { my: "left top", at: "left bottom", collision: "flip", offset: "0 2" },
       select    : _.bind(function(e, ui) {
         e.preventDefault();
         var originalValue = this.model.get('value');
