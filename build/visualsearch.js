@@ -119,7 +119,6 @@ VS.ui.SearchBox = Backbone.View.extend({
     if (inputViewsCount) {
       query.push(this.inputViews[inputViewsCount-1].value());
     }
-    console.log(['getQuery', query, _.compact(query)]);
     
     return _.compact(query).join(' ');
   },
@@ -142,7 +141,6 @@ VS.ui.SearchBox = Backbone.View.extend({
   // Used to launch a search. Hitting enter or clicking the search button.
   searchEvent : function(e) {
     var query = this.value();
-    console.log(['real searchEvent', e, query, VS.options.callbacks]);
     this.focusSearch();
     if (VS.options.callbacks.search(query) !== false) {
       this.value(query);
@@ -158,7 +156,6 @@ VS.ui.SearchBox = Backbone.View.extend({
     initialQuery = VS.utils.inflector.trim(initialQuery || '');
     if (!category) return;
     
-    console.log(['addFacet', category, initialQuery, position]);
     var model = new VS.model.SearchFacet({
       category : category,
       value    : initialQuery || ''
@@ -214,10 +211,10 @@ VS.ui.SearchBox = Backbone.View.extend({
   // # Modifying Facets #
   
   // Clears out the search box. Command+A + delete can trigger this, as can a cancel button.
-  clearSearch : function() {
+  clearSearch : function(e) {
     this.value('');
     this.flags.allSelected = false;
-    this.focusSearch();
+    this.focusSearch(e);
   },
   
   // When setting the entire query, clear out old inputs in between facets.
@@ -229,19 +226,20 @@ VS.ui.SearchBox = Backbone.View.extend({
   
   // Command+A selects all facets.
   selectAllFacets : function() {
+    this.flags.allSelected = true;
     _.each(this.inputViews, function(inputView, i) {
-      inputView.selectText(true);
+      inputView.selectText();
     });
     _.each(this.facetViews, function(facetView, i) {
-      facetView.selectFacet(null, true);
+      facetView.selectFacet();
     });
-    this.flags.allSelected = true;
     
     $(document).one('click', this.disableFacets);
   },
   
   // Used by facets and input to see if all facets are currently selected.
-  allSelected : function() {
+  allSelected : function(deselect) {
+    if (deselect) this.flags.allSelected = false;
     return this.flags.allSelected;
   },
   
@@ -250,13 +248,12 @@ VS.ui.SearchBox = Backbone.View.extend({
   disableFacets : function(keepView) {
     _.each(this.facetViews, function(view) {
       if (view != keepView &&
-          (view.modes.editing == 'is' ||
-           view.modes.selected == 'is')) {
-        console.log(['disabling view', view.model.get('category')]);
+          (view.modes.editing == 'is' || view.modes.selected == 'is')) {
         view.disableEdit();
         view.deselectFacet();
       }
     });
+    this.flags.allSelected = false;
     this.removeFocus();
   },
   
@@ -275,12 +272,11 @@ VS.ui.SearchBox = Backbone.View.extend({
   _maybeDisableFacets : function(e) {
     if (this.flags.allSelected && VS.app.hotkeys.key(e) == 'backspace') {
       e.preventDefault();
-      this.clearSearch();
+      this.clearSearch(e);
       return false;
     } else if (this.flags.allSelected && VS.app.hotkeys.printable(e)) {
-      this.clearSearch();
+      this.clearSearch(e);
     } else if (this.flags.allSelected) {
-      console.log(['_maybeDisableFacets', this.flags.allSelected]);
       this.flags.allSelected = false;
       this.disableFacets();
     }
@@ -329,7 +325,6 @@ VS.ui.SearchBox = Backbone.View.extend({
         }
       } else {
         view = this.inputViews[next];
-        console.log(['next view', next, view]);
         view.focus();
         if (options.selectText) view.selectText();
       }
@@ -340,8 +335,18 @@ VS.ui.SearchBox = Backbone.View.extend({
 
   // Bring focus to last input field.
   focusSearch : function(e, selectText) {
-    if (!e || $(e.target).is('.VS-search-box') || $(e.target).is('.search_inner')) {
+    var view = this.inputViews[this.inputViews.length-1];
+    if (!e || 
+        $(e.target).is('.VS-search-box') || 
+        $(e.target).is('.search_inner') || 
+        e.type == 'keydown') {
       this.disableFacets();
+      if (selectText) view.focus(selectText);
+      else            view.setCursorAtEnd(-1);
+      if (e && e.type == 'keydown') {
+        view.keydown(e);
+        view.box.trigger('keydown');
+      }
       _.defer(_.bind(function() {
         if (!this.$('input:focus').length) {
           this.inputViews[this.inputViews.length-1].focus(selectText);
@@ -374,7 +379,6 @@ VS.ui.SearchBox = Backbone.View.extend({
   showFacetCategoryMenu : function(e) {
     e.preventDefault();
     e.stopPropagation();
-    console.log(['showFacetCategoryMenu', e]);
     if (this.facetCategoryMenu && this.facetCategoryMenu.modes.open == 'is') {
       return this.facetCategoryMenu.close();
     }
@@ -468,7 +472,6 @@ VS.ui.SearchFacet = Backbone.View.extend({
       minLength : 0,
       delay     : 0,
       autoFocus : true,
-      position  : { my: "left top", at: "left bottom", collision: "flip", offset: "0 2" },
       select    : _.bind(function(e, ui) {
         e.preventDefault();
         var originalValue = this.model.get('value');
@@ -490,10 +493,11 @@ VS.ui.SearchFacet = Backbone.View.extend({
     var autocomplete = this.box.data('autocomplete');
     if (autocomplete) {
       autocomplete.menu.element.position({
-        my: "left top",
-        at: "left bottom",
-        of: this.box.data('autocomplete').element,
-        collision: "none"
+        my        : "left top",
+        at        : "left bottom",
+        of        : this.box.data('autocomplete').element,
+        collision : "flip",
+        offset    : "0 0"
       });
     }
   },
@@ -613,23 +617,28 @@ VS.ui.SearchFacet = Backbone.View.extend({
   // If this is the only facet being selected (and not part of a select all event),
   // we attach a mouse/keyboard watcher to check if the next action by the user
   // should delete this facet or just deselect it.
-  selectFacet : function(e, selectAll) {
+  selectFacet : function() {
     this.flags.canClose = false;
+    var allSelected = VS.app.searchBox.allSelected();
+    if (!allSelected) {
+      VS.app.searchBox.disableFacets(this);
+    }
     if (this.box.is(':focus')) {
         this.box.setCursorPosition(0);
         this.box.blur();
     }
+
     this.closeAutocomplete();
     this.setMode('is', 'selected');
     this.setMode('not', 'editing');
-    if (!selectAll) {
+
+    if (!allSelected) {
       $(document).unbind('keydown.facet', this.keydown);
       $(document).unbind('click.facet', this.deselectFacet);
       _.defer(_.bind(function() {
         $(document).unbind('keydown.facet').bind('keydown.facet', this.keydown);
         $(document).unbind('click.facet').one('click.facet', this.deselectFacet);
       }, this));
-      VS.app.searchBox.disableFacets(this);
       VS.app.searchBox.addFocus();
     }
   },
@@ -892,7 +901,6 @@ VS.ui.SearchInput = Backbone.View.extend({
   // because this is not called by a focus event. This instead calls a
   // focus event causing the input to become focused.
   focus : function(selectText) {
-    console.log(['input focus', selectText]);
     this.addFocus();
     this.box.focus();
     if (selectText) {
@@ -901,20 +909,17 @@ VS.ui.SearchInput = Backbone.View.extend({
   },
   
   blur : function() {
-    console.log(['input blur']);
     this.box.blur();
     this.removeFocus();
   },
 
   removeFocus : function(e) {
-    console.log(['removeFocus', e]);
     VS.app.searchBox.removeFocus();
     this.setMode('not', 'editing');
     this.setMode('not', 'selected');
   },
   
   addFocus : function(e) {
-    console.log(['addFocus', e]);
     VS.app.searchBox.disableFacets(this);
     VS.app.searchBox.addFocus();
     this.setMode('is', 'editing');
@@ -933,10 +938,21 @@ VS.ui.SearchInput = Backbone.View.extend({
     return this.box.val();
   },
   
-  selectText : function(selectAll) {
-    this.box.selectRange(0, this.box.val().length);
-    if (!selectAll) {
-        this.box.focus();
+  // When switching between facets and inputs, depending on the direction the cursor 
+  // is coming from, the cursor in this facet's input field should match the original
+  // direction.
+  setCursorAtEnd : function(direction) {
+    if (direction == -1) {
+      this.box.setCursorPosition(this.box.val().length);
+    } else {
+      this.box.setCursorPosition(0);
+    }
+  },
+  
+  selectText : function() {
+    if (!VS.app.searchBox.allSelected()) {
+      this.box.selectRange(0, this.box.val().length);
+      this.box.focus();
     } else {
       this.setMode('is', 'selected');
     }
@@ -945,7 +961,6 @@ VS.ui.SearchInput = Backbone.View.extend({
   // Callback fired on key press in the search box. We search when they hit return.
   keypress : function(e) {
     var key = VS.app.hotkeys.key(e);
-    console.log(['input keypress', e.keyCode, key, this.box.getCursorPosition(), VS.app.hotkeys.colon(e)]);
     
     if (key == 'enter') {
       return VS.app.searchBox.searchEvent(e);
@@ -977,8 +992,6 @@ VS.ui.SearchInput = Backbone.View.extend({
   
   keydown : function(e) {
     var key = VS.app.hotkeys.key(e);
-    console.log(['input keydown', key, e.which, this.box.getCursorPosition()]);
-    this.box.trigger('resize.autogrow', e);
     
     if (key == 'left') {
       if (this.box.getCursorPosition() == 0) {
@@ -1013,6 +1026,8 @@ VS.ui.SearchInput = Backbone.View.extend({
         return false;
       }
     }
+    
+    this.box.trigger('resize.autogrow', e);
   }
   
 });
@@ -1071,7 +1086,7 @@ VS.app.hotkeys = {
     _.bindAll(this, 'down', 'up', 'blur');
     $(document).bind('keydown', this.down);
     $(document).bind('keyup', this.up);
-    $(window).bind('blur', this.blur);
+    // $(window).bind('blur', this.blur);
   },
   
   // On `keydown`, turn on all keys that match.
@@ -1199,7 +1214,6 @@ VS.utils.inflector = {
         $input.unbind(events).bind(events, function(e, realEvent) {
           if (realEvent) e = realEvent;
           var value = $input.val();
-          VS.app.hotkeys.down(e);
           
           // Watching for the backspace key is tricky because it may not 
           // actually be deleting the character, but instead the key gets 
