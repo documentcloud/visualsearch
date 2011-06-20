@@ -13,6 +13,8 @@
  */
 
 (function() {
+
+  var $ = jQuery; // Handle namespaced jQuery
   
   // Setting up VisualSearch globals. These will eventually be made instance-based.
   if (!window.VS) window.VS = {};
@@ -20,9 +22,6 @@
   if (!VS.ui)     VS.ui     = {};
   if (!VS.model)  VS.model  = {};
   if (!VS.utils)  VS.utils  = {};
-  
-  // Use namespaced jQuery.
-  var $ = jQuery;
   
   // Entry-point used to tie all parts of VisualSearch together. It will either attach
   // itself to `options.container`, or pass back the `searchBox` so it can be rendered
@@ -64,15 +63,17 @@
 })();
 (function() {
 
+var $ = jQuery; // Handle namespaced jQuery
+
 // The search box is responsible for managing the many facet views and input views.
 VS.ui.SearchBox = Backbone.View.extend({
   
   id  : 'search',
   
   events : {
-    'click .cancel_search_box'  : 'clearSearch',
-    'mousedown .VS-search-box'  : 'focusSearch',
-    'dblclick .VS-search-box'   : 'highlightSearch'
+    'click .VS-cancel-search-box' : 'clearSearch',
+    'mousedown .VS-search-box'    : 'focusSearch',
+    'dblclick .VS-search-box'     : 'highlightSearch'
   },
 
   // Creating a new SearchBox registers handlers for re-rendering facets when necessary,
@@ -390,7 +391,7 @@ VS.ui.SearchBox = Backbone.View.extend({
       standalone  : true
     }));
     
-    this.$('.search_glyph').after(menu.render().open().content);
+    this.$('.VS-icon-search').after(menu.render().open().content);
     return false;
   }
   
@@ -398,6 +399,8 @@ VS.ui.SearchBox = Backbone.View.extend({
 
 })();
 (function() {
+
+var $ = jQuery; // Handle namespaced jQuery
 
 // This is the visual search facet that holds the category and its autocompleted 
 // input field.
@@ -411,9 +414,9 @@ VS.ui.SearchFacet = Backbone.View.extend({
     'click .category'           : 'selectFacet',
     'keydown input'             : 'keydown',
     'mousedown input'           : 'enableEdit',
-    'mouseover .cancel_search'  : 'showDelete',
-    'mouseout .cancel_search'   : 'hideDelete',
-    'click .cancel_search'      : 'remove'
+    'mouseover .VS-icon-cancel' : 'showDelete',
+    'mouseout .VS-icon-cancel'  : 'hideDelete',
+    'click .VS-icon-cancel'     : 'remove'
   },
   
   initialize : function(options) {
@@ -763,6 +766,8 @@ VS.ui.SearchFacet = Backbone.View.extend({
 })();
 (function() {
 
+var $ = jQuery; // Handle namespaced jQuery
+
 // This is the visual search input that is responsible for creating new facets.
 // There is one input placed in between all facets.
 VS.ui.SearchInput = Backbone.View.extend({
@@ -1014,6 +1019,8 @@ VS.ui.SearchInput = Backbone.View.extend({
 })();
 (function(){
 
+  var $ = jQuery; // Handle namespaced jQuery
+
   // Makes the view enter a mode. Modes have both a 'mode' and a 'group',
   // and are mutually exclusive with any other modes in the same group.
   // Setting will update the view's modes hash, as well as set an HTML class
@@ -1028,6 +1035,8 @@ VS.ui.SearchInput = Backbone.View.extend({
 
 })();
 (function() {
+
+var $ = jQuery; // Handle namespaced jQuery
 
 // DocumentCloud workspace hotkeys. To tell if a key is currently being pressed,
 // just ask `VS.app.hotkeys.[key]` on `keypress`, or ask `VS.app.hotkeys.key(e)`
@@ -1124,6 +1133,8 @@ VS.app.hotkeys = {
 })();
 (function() {
 
+var $ = jQuery; // Handle namespaced jQuery
+
 // Naive English transformations on words. Only used for a few transformations 
 // in VisualSearch.js.
 VS.utils.inflector = {
@@ -1141,7 +1152,9 @@ VS.utils.inflector = {
 };
 
 })();
-(function($) {
+(function() {
+
+  var $ = jQuery; // Handle namespaced jQuery
 
   $.fn.extend({
 
@@ -1294,9 +1307,11 @@ VS.utils.inflector = {
     
   });
   
-})(jQuery);
+})();
     
 (function() {
+
+var $ = jQuery; // Handle namespaced jQuery
 
 // Used to extract keywords and facets from the free text search.
 VS.app.SearchParser = {
@@ -1380,6 +1395,8 @@ VS.app.SearchParser = {
 })();
 (function() {
 
+var $ = jQuery; // Handle namespaced jQuery
+
 // The model that holds individual search facets and their categories.
 // Held in a collection by `VS.app.searchQuery`.
 VS.model.SearchFacet = Backbone.Model.extend({
@@ -1410,6 +1427,8 @@ VS.model.SearchFacet = Backbone.Model.extend({
 
 })();
 (function() {
+
+var $ = jQuery; // Handle namespaced jQuery
 
 // Collection which holds all of the individual facets (category: value). 
 // Used for finding and removing specific facets.
@@ -1474,7 +1493,7 @@ VS.model.SearchQuery = Backbone.Collection.extend({
 })();(function(){
 window.JST = window.JST || {};
 
-window.JST['search_box'] = _.template('<div class="VS-search">  <div id="search_container">    <div id="search_box_wrapper" class="VS-search-box">      <div class="icon search_glyph"></div>      <div class="search_inner"></div>      <div class="icon cancel_search cancel_search_box" title="clear search"></div>    </div>  </div></div>');
-window.JST['search_facet'] = _.template('<% if (model.has(\'category\')) { %>  <div class="category"><%= model.get(\'category\') %>:</div><% } %><div class="search_facet_input_container">  <input type="text" class="search_facet_input VS-interface" value="" /></div><div class="search_facet_remove icon cancel_search"></div>');
-window.JST['search_input'] = _.template('<input class="search_box" type="text" />');
+window.JST['search_box'] = _.template('<div class="VS-search">  <div id="search_container">    <div class="VS-search-box-wrapper VS-search-box">      <div class="icon VS-icon-search"></div>      <div class="search_inner"></div>      <div class="icon VS-icon-cancel VS-cancel-search-box" title="clear search"></div>    </div>  </div></div>');
+window.JST['search_facet'] = _.template('<% if (model.has(\'category\')) { %>  <div class="category"><%= model.get(\'category\') %>:</div><% } %><div class="search_facet_input_container">  <input type="text" class="search_facet_input VS-interface" value="" /></div><div class="search_facet_remove icon VS-icon-cancel"></div>');
+window.JST['search_input'] = _.template('<input type="text" />');
 })();

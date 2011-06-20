@@ -4,16 +4,16 @@
   vertical-align: middle;
   width: 16px; height: 16px;
 }
-.VS-search .icon.cancel_search {
+.VS-search .icon.VS-icon-cancel {
   width: 11px; height: 11px;
   background-position: center 0;
   background-image: url(../Users/conesus/cloud/visualsearch/lib/images/embed/icons/cancel_search.png?1308268129);
   cursor: pointer;
 }
-  .VS-search .icon.cancel_search:hover {
+  .VS-search .icon.VS-icon-cancel:hover {
     background-position: center -11px;
   }
-.VS-search .icon.search_glyph {
+.VS-search .icon.VS-icon-search {
   width: 12px; height: 12px;
   background-image: url(../Users/conesus/cloud/visualsearch/lib/images/embed/icons/search_glyph.png?1308268129);
 }
@@ -77,17 +77,6 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
 /* = Layout = */
 /* ========== */
 
-#search_box_wrapper {
-}
-  input.search_box {
-    width: 10px;
-    z-index: 100;
-    position: relative;
-  }
-  #search_box_wrapper .menu_content {
-    z-index: 100;
-  }
-  
 .VS-search .VS-search-box {
   cursor: text;
   position: relative;
@@ -113,128 +102,133 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     padding: 0 3px;
     overflow: hidden;
   }
-    .VS-search .search_facets {
-    }
-    .VS-search .search_facet {
-      float: left;
-      margin: 0;
-      padding: 0 0 0 13px;
-      position: relative;
-    }
-      .VS-search .search_facet.is_selected {
-        margin: 5px -3px 5px -3px;
-        -webkit-border-radius: 16px;
-        -moz-border-radius: 16px;
-        border-radius: 16px;
-      }
-      .VS-search .search_facet.is_selected {
-        background-color: #CBD1F1;
-        background-image: -moz-linear-gradient(top, #CBD1F1, #AFB5EC); /* FF3.6 */
-        background-image: -ms-linear-gradient(top, #CBD1F1, #AFB5EC); /* IE10 */
-        background-image: -o-linear-gradient(top, #CBD1F1, #AFB5EC); /* Opera 11.10+ */
-        background-image: -webkit-gradient(linear, left top, left bottom, from(#CBD1F1), to(#AFB5EC)); /* Saf4+, Chrome */
-        background-image: -webkit-linear-gradient(top, #CBD1F1, #AFB5EC); /* Chrome 10+, Saf5.1+ */
-        background-image: linear-gradient(top, #CBD1F1, #AFB5EC);
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#CBD1F1', EndColorStr='#AFB5EC'); /* IE6–IE9 */
-      }
-      .VS-search .search_facet .category {
-        float: left;
-        text-transform: uppercase;
-        font-weight: bold;
-        font-size: 10px;
-        color: #B0B0B0;
-        text-shadow: 1px 1px 0 #FFF;
-        padding: 9px 0 6px;
-        line-height: 13px;
-        cursor: pointer;
-      }
-      .VS-search .search_facet.is_selected .category {
-        padding: 4px 0 0;
-        margin-left: 3px;
-        text-shadow: 1px 1px 0 #D0D0D0;
-      }
-      .VS-search .search_facet .search_facet_input_container {
-        float: left;
-      }
-      .VS-search .search_facet input {
-        margin: 0;
-        padding: 0;
-        color: #999;
-        font-size: 13px;
-        line-height: 16px;
-        padding: 6px 0 7px 4px;
-        height: 16px;
-        width: auto;          
-        z-index: 100;
-        position: relative;
-
-      }
-      .VS-search .search_facet.is_selected input {
-        padding-top: 1px;
-        padding-bottom: 2px;
-        padding-right: 3px;
-      }
-      .VS-search .search_facet.is_editing input,
-      .VS-search .search_facet.is_selected input {
-        color: #202020;
-      }
-      .VS-search .search_facet .search_facet_remove {
-        position: absolute;
-        left: 0;
-        top: 9px;
-        opacity: .5;
-      }
-        .VS-search .search_facet.is_selected .search_facet_remove {
-          top: 4px;
-          left: 3px;
-        }
-        .VS-search .search_facet .search_facet_remove:hover {
-          opacity: 1;
-        }
-      .VS-search .search_facet.is_editing .category,
-      .VS-search .search_facet.is_selected .category {
-        color: darkblue;
-      }
-      .VS-search .search_facet.search_facet_maybe_delete .category,
-      .VS-search .search_facet.search_facet_maybe_delete input {
-        color: darkred;
-      }
-    .VS-search .search_input {
-      height: 28px;
-      float: left;
-    }
-      .VS-search .search_input input {
-        padding: 6px 2px 7px 2px;
-      }
-      .VS-search .search_input.is_editing input {
-        color: #202020;
-      }
-    .VS-search input {
-      width: 100px;
-    }
-    .VS-search input,
-    .VS-search .VS-input-width-tester {
-      padding: 6px 0;
-      float: left;
-    }
-      .VS-search input, 
-      .VS-search .VS-input-width-tester {
-        color: #808080;
-        font: 13px/17px Helvetica, Arial;
-      }
-      .VS-search.VS-focus .search_facet.is_editing input {
-        color: #000;
-      }
-      .VS-search.VS-focus input {
-        color: #606060;
-      }
-  .VS-search .search_glyph {
+  .VS-search input {
+    width: 100px;
+  }
+  .VS-search input,
+  .VS-search .VS-input-width-tester {
+    padding: 6px 0;
+    float: left;
+    color: #808080;
+    font: 13px/17px Helvetica, Arial;
+  }
+  .VS-search.VS-focus input {
+    color: #606060;
+  }
+  .VS-search .VS-icon-search {
     position: absolute;
     left: 9px; top: 8px;
   }
-  .VS-search .cancel_search {
+  .VS-search .VS-icon-cancel {
     position: absolute;
     right: 9px; top: 8px;
+  }
+  
+/* ================ */
+/* = Search Facet = */
+/* ================ */
+
+.VS-search .search_facet {
+  float: left;
+  margin: 0;
+  padding: 0 0 0 13px;
+  position: relative;
+}
+  .VS-search .search_facet.is_selected {
+    margin: 5px -3px 5px -3px;
+    -webkit-border-radius: 16px;
+    -moz-border-radius: 16px;
+    border-radius: 16px;
+  }
+  .VS-search .search_facet.is_selected {
+    background-color: #CBD1F1;
+    background-image: -moz-linear-gradient(top, #CBD1F1, #AFB5EC); /* FF3.6 */
+    background-image: -ms-linear-gradient(top, #CBD1F1, #AFB5EC); /* IE10 */
+    background-image: -o-linear-gradient(top, #CBD1F1, #AFB5EC); /* Opera 11.10+ */
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#CBD1F1), to(#AFB5EC)); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient(top, #CBD1F1, #AFB5EC); /* Chrome 10+, Saf5.1+ */
+    background-image: linear-gradient(top, #CBD1F1, #AFB5EC);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#CBD1F1', EndColorStr='#AFB5EC'); /* IE6–IE9 */
+  }
+  .VS-search .search_facet .category {
+    float: left;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 10px;
+    color: #808080;
+    text-shadow: 1px 1px 0 #FFF;
+    padding: 9px 0 6px;
+    line-height: 13px;
+    cursor: pointer;
+  }
+  .VS-search .search_facet.is_selected .category {
+    padding: 4px 0 0;
+    margin-left: 3px;
+    text-shadow: 1px 1px 0 #D0D0D0;
+  }
+  .VS-search .search_facet .search_facet_input_container {
+    float: left;
+  }
+  .VS-search .search_facet input {
+    margin: 0;
+    padding: 0;
+    color: #505050;
+    font-size: 13px;
+    line-height: 16px;
+    padding: 6px 0 7px 4px;
+    height: 16px;
+    width: auto;          
+    z-index: 100;
+    position: relative;
+
+  }
+  .VS-search .search_facet.is_selected input {
+    padding-top: 1px;
+    padding-bottom: 2px;
+    padding-right: 3px;
+  }
+  .VS-search .search_facet.is_editing input,
+  .VS-search .search_facet.is_selected input {
+    color: #202020;
+  }
+  .VS-search .search_facet .search_facet_remove {
+    position: absolute;
+    left: 0;
+    top: 9px;
+    opacity: .6;
+  }
+    .VS-search .search_facet.is_selected .search_facet_remove {
+      top: 4px;
+      left: 3px;
+    }
+    .VS-search .search_facet .search_facet_remove:hover {
+      opacity: 1;
+    }
+  .VS-search .search_facet.is_editing .category,
+  .VS-search .search_facet.is_selected .category {
+    color: darkblue;
+  }
+  .VS-search .search_facet.search_facet_maybe_delete .category,
+  .VS-search .search_facet.search_facet_maybe_delete input {
+    color: darkred;
+  }
+      
+/* ================ */
+/* = Search Input = */
+/* ================ */      
+
+.VS-search .search_input {
+  height: 28px;
+  float: left;
+}
+  .VS-search .search_input input {
+    padding: 6px 2px 7px 2px;
+    width: 10px;
+    z-index: 100;
+    position: relative;
+  }
+  .VS-search .search_input.is_editing input {
+    color: #202020;
   }
   
 /* ================ */
@@ -254,6 +248,9 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   overflow-y: auto;
   overflow-x: hidden;
   font-size: 13px;
+  top: 1px;
+  opacity: 0.97; filter: alpha(opacity=97);
+  box-shadow: 3px 4px 5px -2px rgba(0, 0, 0, 0.5); -webkit-box-shadow: 3px 4px 5px -2px rgba(0, 0, 0, 0.5); -moz-box-shadow: 3px 4px 5px -2px rgba(0, 0, 0, 0.5);
 }
   .ui-autocomplete .ui-autocomplete-category {
     text-transform: capitalize;
@@ -268,11 +265,34 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     cursor: default;
   }
   .ui-autocomplete .ui-menu-item a {
+    outline: none;
     display: block;
-    padding: 3px 3px 5px;
+    padding: 3px 4px 5px;
+    background-color: #F8F8F8;
+    background-image: -moz-linear-gradient(top, #F8F8F8, #F3F3F3); /* FF3.6 */
+    background-image: -ms-linear-gradient(top, #F8F8F8, #F3F3F3); /* IE10 */
+    background-image: -o-linear-gradient(top, #F8F8F8, #F3F3F3); /* Opera 11.10+ */
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#F8F8F8), to(#F3F3F3)); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient(top, #F8F8F8, #F3F3F3); /* Chrome 10+, Saf5.1+ */
+    background-image: linear-gradient(top, #F8F8F8, #F3F3F3);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#F8F8F8', EndColorStr='#F3F3F3'); /* IE6–IE9 */
+    border-top: 1px solid #FAFAFA;
+    border-bottom: 1px solid #F2F2F2;
+  }
+  .ui-autocomplete .ui-menu-item a:active {
+    outline: none;
   }
   .ui-autocomplete .ui-menu-item .ui-state-hover {
-    background-color: #2A61CD;
+    background-color: #6483F7;
+    background-image: -moz-linear-gradient(top, #6483F7, #2254F6); /* FF3.6 */
+    background-image: -ms-linear-gradient(top, #6483F7, #2254F6); /* IE10 */
+    background-image: -o-linear-gradient(top, #6483F7, #2254F6); /* Opera 11.10+ */
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#6483F7), to(#2254F6)); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient(top, #6483F7, #2254F6); /* Chrome 10+, Saf5.1+ */
+    background-image: linear-gradient(top, #6483F7, #2254F6);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#6483F7', EndColorStr='#2254F6'); /* IE6–IE9 */
+    border-top: 1px solid #5A7BEE;
+    border-bottom: 1px solid #1048EC;
     color: white;
   }
   .ui-autocomplete li {

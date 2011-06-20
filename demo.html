@@ -10,7 +10,8 @@
       line-height: 24px;
       background: #FEF3CA;
       color: #022;
-      font-family: Arial;
+      height: 100%;
+      overflow: hidden;
       font-family: "Palatino Linotype", "Book Antiqua", Palatino, FreeSerif, serif;
     }
     div.container {
@@ -148,9 +149,15 @@
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
         VS.init({
-          container : $('#search_box_container'),
-          query     : 'account: 5-samuel country: "South Africa" title: "Pentagon Papers"',
-          callbacks : {
+          container  : $('#search_box_container'),
+          query      : 'country: "South Africa" account: 5-samuel title: "Pentagon Papers"',
+          unquotable : [
+            'text',
+            'account',
+            'filter',
+            'access'
+          ],
+          callbacks  : {
             search : function(query) {
               var $query = $('#search_query');
               $query.stop().animate({opacity : 1}, {duration: 300, queue: false});
