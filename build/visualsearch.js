@@ -23,6 +23,9 @@
   if (!VS.model)  VS.model  = {};
   if (!VS.utils)  VS.utils  = {};
   
+  // Sets the version for VisualSearch to be used programatically elsewhere.
+  VS.VERSION = '0.1.0';
+  
   // Entry-point used to tie all parts of VisualSearch together. It will either attach
   // itself to `options.container`, or pass back the `searchBox` so it can be rendered
   // at will.
@@ -228,11 +231,11 @@ VS.ui.SearchBox = Backbone.View.extend({
   // Command+A selects all facets.
   selectAllFacets : function() {
     this.flags.allSelected = true;
-    _.each(this.inputViews, function(inputView, i) {
-      inputView.selectText();
-    });
     _.each(this.facetViews, function(facetView, i) {
       facetView.selectFacet();
+    });
+    _.each(this.inputViews, function(inputView, i) {
+      inputView.selectText();
     });
     
     $(document).one('click.selectAllFacets', this.disableFacets);
@@ -519,6 +522,7 @@ VS.ui.SearchFacet = Backbone.View.extend({
       });
     }
   },
+  
   // When a user enters a facet and it is being edited, immediately show
   // the autocomplete menu and size it to match the contents.
   searchAutocomplete : function(e) {
@@ -648,15 +652,12 @@ VS.ui.SearchFacet = Backbone.View.extend({
   selectFacet : function() {
     var allSelected = VS.app.searchBox.allSelected();
 
-    this.flags.canClose = false;
-    if (!allSelected) {
-      VS.app.searchBox.disableFacets(this);
-    }
     if (this.box.is(':focus')) {
         this.box.setCursorPosition(0);
         this.box.blur();
     }
 
+    this.flags.canClose = false;
     this.closeAutocomplete();
     this.setMode('is', 'selected');
     this.setMode('not', 'editing');
@@ -668,6 +669,7 @@ VS.ui.SearchFacet = Backbone.View.extend({
         $(document).unbind('keydown.facet').bind('keydown.facet', this.keydown);
         $(document).unbind('click.facet').one('click.facet', this.deselectFacet);
       }, this));
+      VS.app.searchBox.disableFacets(this);
       VS.app.searchBox.addFocus();
     }
   },
@@ -899,6 +901,13 @@ VS.ui.SearchInput = Backbone.View.extend({
     }));
   },
   
+  // Closes the autocomplete menu. Called on disabling, selecting, deselecting,
+  // and anything else that takes focus out of the facet's input field.
+  closeAutocomplete : function() {
+    var autocomplete = this.box.data('autocomplete');
+    if (autocomplete) autocomplete.close();
+  },
+  
   // As the input field grows, it may move to the next line in the
   // search box. `autoGrowInput` triggers an `updated` event on the input
   // field, which is bound to this method to move the autocomplete menu.
@@ -911,6 +920,23 @@ VS.ui.SearchInput = Backbone.View.extend({
         of: this.box.data('autocomplete').element,
         collision: "none"
       });
+    }
+  },
+  
+  // When a user enters a facet and it is being edited, immediately show
+  // the autocomplete menu and size it to match the contents.
+  searchAutocomplete : function(e) {
+    var autocomplete = this.box.data('autocomplete');
+    if (autocomplete) {
+      var menu = autocomplete.menu.element;
+      autocomplete.search();
+      
+      // Resize the menu based on the correctly measured width of what's bigger:
+      // the menu's original size or the menu items' new size.
+      menu.outerWidth(Math.max(
+        menu.width('').outerWidth(),
+        autocomplete.element.outerWidth()
+      ));
     }
   },
   
@@ -948,13 +974,17 @@ VS.ui.SearchInput = Backbone.View.extend({
     VS.app.searchBox.removeFocus();
     this.setMode('not', 'editing');
     this.setMode('not', 'selected');
+    this.closeAutocomplete();
   },
   
   addFocus : function(e) {
-    VS.app.searchBox.disableFacets(this);
+    if (!VS.app.searchBox.allSelected()) {
+      VS.app.searchBox.disableFacets(this);
+    }
     VS.app.searchBox.addFocus();
     this.setMode('is', 'editing');
     this.setMode('not', 'selected');
+    this.searchAutocomplete();
   },
   
   // Starts a timer that will cause a triple-click, which highlights all facets.
@@ -996,8 +1026,8 @@ VS.ui.SearchInput = Backbone.View.extend({
   },
   
   selectText : function() {
+    this.box.selectRange(0, this.box.val().length);
     if (!VS.app.searchBox.allSelected()) {
-      this.box.selectRange(0, this.box.val().length);
       this.box.focus();
     } else {
       this.setMode('is', 'selected');
@@ -1378,10 +1408,10 @@ var $ = jQuery; // Handle namespaced jQuery
 VS.app.SearchParser = {
 
   // Matches `category: "free text"`, with and without quotes.
-  ALL_FIELDS        : /('.+?'|".+?"|[^'"\s]{2}\S*):\s*('.+?'|".+?"|[^'"\s]{2}\S*)/g,
+  ALL_FIELDS : /('.+?'|".+?"|[^'"\s]{2}\S*):\s*('.+?'|".+?"|[^'"\s]\S*)/g,
   
   // Matches a single category without the text. Used to correctly extract facets.
-  FIELD             : /(.+?):\s*/,
+  FIELD      : /(.+?):\s*/,
   
   // Called to parse a query into a collection of `SearchFacet` models.
   parse : function(query) {

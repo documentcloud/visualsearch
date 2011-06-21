@@ -18,6 +18,17 @@ task :build do
   
   # Move the JSTs back to lib to accomodate the demo page.
   FileUtils.mv("build/visualsearch_templates.js", "lib/js/templates/templates.js")
+      
+  # Fix image url paths.
+  ['build', 'build-min'].each do |build|
+    File.open("#{build}/visualsearch.css", 'r+') do |file|
+      css = file.read
+      css.gsub!(/url\((.*?)images\/embed\/icons/, 'url(../images/embed/icons')
+      file.rewind
+      file.write(css)
+      file.truncate(css.length)
+    end
+  end
 end
 
 desc "Build the docco documentation"
