@@ -6,7 +6,7 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
 */
 .VS-search div, .VS-search span, .VS-search a, .VS-search img, 
 .VS-search ul, .VS-search li, .VS-search form, .VS-search label,
-.ui-autocomplete ul, .ui-autocomplete li, .ui-autocomplete {
+.VS-interface ul, .VS-interface li, .VS-interface {
   margin: 0;
   padding: 0;
   border: 0;

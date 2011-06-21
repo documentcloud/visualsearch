@@ -4,16 +4,16 @@
   vertical-align: middle;
   width: 16px; height: 16px;
 }
-.VS-search .icon.VS-icon-cancel {
-  width: 11px; height: 11px;
-  background-position: center 0;
-  background-image: url('../images/embed/icons/cancel_search.png');
-  cursor: pointer;
-}
-  .VS-search .icon.VS-icon-cancel:hover {
-    background-position: center -11px;
+  .VS-search .VS-icon-cancel {
+    width: 11px; height: 11px;
+    background-position: center 0;
+    background-image: url('../images/embed/icons/cancel_search.png');
+    cursor: pointer;
   }
-.VS-search .icon.VS-icon-search {
-  width: 12px; height: 12px;
-  background-image: url('../images/embed/icons/search_glyph.png');
-}
+    .VS-search .VS-icon-cancel:hover {
+      background-position: center -11px;
+    }
+  .VS-search .VS-icon-search {
+    width: 12px; height: 12px;
+    background-image: url('../images/embed/icons/search_glyph.png');
+  }
