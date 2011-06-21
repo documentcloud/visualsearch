@@ -1,4 +1,4 @@
-.VS-search .icon {
+.VS-search .VS-icon {
   background-repeat: no-repeat;
   background-position: center center;
   vertical-align: middle;
@@ -96,10 +96,9 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     -moz-box-shadow: inset 0px 0px 3px #acf;
     box-shadow: inset 0px 0px 3px #acf;
   }
-  .VS-search .search_inner {
+  .VS-search .VS-search-inner {
     position: relative;
-    margin: 0 0 0 18px;
-    padding: 0 3px;
+    margin: 0 18px 0 18px;
     overflow: hidden;
   }
   .VS-search input {
