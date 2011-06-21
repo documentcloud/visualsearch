@@ -131,7 +131,6 @@ VS.ui.SearchBox = Backbone.View.extend({
   setQuery : function(query) {
     this.currentQuery = query;
     VS.app.SearchParser.parse(query);
-    this.clearInputs();
   },
   
   // Returns the position of a facet/input view. Useful when moving between facets.
@@ -221,13 +220,6 @@ VS.ui.SearchBox = Backbone.View.extend({
     this.focusSearch(e);
   },
   
-  // When setting the entire query, clear out old inputs in between facets.
-  clearInputs : function() {
-    _.each(this.inputViews, function(input) {
-      input.clear();
-    });
-  },
-  
   // Command+A selects all facets.
   selectAllFacets : function() {
     this.flags.allSelected = true;
@@ -253,7 +245,7 @@ VS.ui.SearchBox = Backbone.View.extend({
     _.each(this.inputViews, function(view) {
       if (view != keepView &&
           (view.modes.editing == 'is' || view.modes.selected == 'is')) {
-        view.blur();
+        view.disableEdit();
       }
     });
     _.each(this.facetViews, function(view) {
@@ -326,7 +318,7 @@ VS.ui.SearchBox = Backbone.View.extend({
         var view;
         if (next >= viewCount || next < 0) {
           view = _.last(this.inputViews);
-          view.focus();
+          view.enableEdit();
         } else {
           view = this.facetViews[next];
           view.enableEdit();
@@ -334,7 +326,7 @@ VS.ui.SearchBox = Backbone.View.extend({
         }
       } else {
         view = this.inputViews[next];
-        view.focus();
+        view.enableEdit();
         if (options.selectText) view.selectText();
       }
     }
@@ -350,7 +342,7 @@ VS.ui.SearchBox = Backbone.View.extend({
         $(e.target).is('.search_inner') || 
         e.type == 'keydown') {
       this.disableFacets();
-      if (selectText) view.focus(selectText);
+      if (selectText) view.enableEdit(selectText);
       else            view.setCursorAtEnd(-1);
       if (e && e.type == 'keydown') {
         view.keydown(e);
@@ -358,7 +350,7 @@ VS.ui.SearchBox = Backbone.View.extend({
       }
       _.defer(_.bind(function() {
         if (!this.$('input:focus').length) {
-          this.inputViews[this.inputViews.length-1].focus(selectText);
+          this.inputViews[this.inputViews.length-1].enableEdit(selectText);
         }
       }, this));
     }
@@ -821,7 +813,10 @@ VS.ui.SearchInput = Backbone.View.extend({
   },
   
   initialize : function() {
-    _.bindAll(this, 'removeFocus', 'addFocus', 'moveAutocomplete');
+    this.flags = {
+      canClose : false
+    };
+    _.bindAll(this, 'removeFocus', 'addFocus', 'moveAutocomplete', 'deferDisableEdit');
   },
   
   // Rendering the input sets up autocomplete, events on focusing and blurring
@@ -834,7 +829,7 @@ VS.ui.SearchInput = Backbone.View.extend({
     this.box = this.$('input');
     this.box.autoGrowInput();
     this.box.bind('updated.autogrow', this.moveAutocomplete);
-    this.box.bind('blur',  this.removeFocus);
+    this.box.bind('blur',  this.deferDisableEdit);
     this.box.bind('focus', this.addFocus);
     this.setupAutocomplete();
     
@@ -855,8 +850,8 @@ VS.ui.SearchInput = Backbone.View.extend({
         e.preventDefault();
         e.stopPropagation();
         var remainder = this.addTextFacetRemainder(ui.item.value);
-        VS.app.searchBox.addFacet(ui.item.value, '', this.options.position + (remainder?1:0));
-        this.clear();
+        var position  = this.options.position + (remainder ? 1 : 0);
+        VS.app.searchBox.addFacet(ui.item.value, '', position);
         return false;
       }, this)
     });
@@ -866,7 +861,7 @@ VS.ui.SearchInput = Backbone.View.extend({
       var category = '';
       _.each(items, _.bind(function(item, i) {
         if (item.category && item.category != category) {
-          ul.append('<li class="ui-autocomplete-category">' + item.category + '</li>');
+          ul.append('<li class="ui-autocomplete-category">'+item.category+'</li>');
           category = item.category;
         }
         this._renderItem(ul, item);
@@ -942,7 +937,9 @@ VS.ui.SearchInput = Backbone.View.extend({
   addTextFacetRemainder : function(facetValue) {
     var boxValue = this.box.val();
     var lastWord = boxValue.match(/\b(\w+)$/);
-    if (lastWord && facetValue.indexOf(lastWord[0]) == 0) boxValue = boxValue.replace(/\b(\w+)$/, '');
+    if (lastWord && facetValue.indexOf(lastWord[0]) == 0) {
+      boxValue = boxValue.replace(/\b(\w+)$/, '');
+    }
     boxValue = boxValue.replace('^\s+|\s+$', '');
     if (boxValue) {
       VS.app.searchBox.addFacet('text', boxValue, this.options.position);
@@ -953,27 +950,18 @@ VS.ui.SearchInput = Backbone.View.extend({
   // Directly called to focus the input. This is different from `addFocus`
   // because this is not called by a focus event. This instead calls a
   // focus event causing the input to become focused.
-  focus : function(selectText) {
-    this.addFocus();
+  enableEdit : function(selectText) {
     this.box.focus();
+    this.addFocus();
     if (selectText) {
       this.selectText();
     }
   },
   
-  blur : function() {
-    this.box.blur();
-    this.removeFocus();
-  },
-
-  removeFocus : function(e) {
-    VS.app.searchBox.removeFocus();
-    this.setMode('not', 'editing');
-    this.setMode('not', 'selected');
-    this.closeAutocomplete();
-  },
-  
-  addFocus : function(e) {
+  // Event called on user focus on the input. Tells all other input and facets
+  // to give up focus, and starts revving the autocomplete.
+  addFocus : function() {
+    this.flags.canClose = false;
     if (!VS.app.searchBox.allSelected()) {
       VS.app.searchBox.disableFacets(this);
     }
@@ -983,6 +971,41 @@ VS.ui.SearchInput = Backbone.View.extend({
     this.searchAutocomplete();
   },
   
+  // Directly called to blur the input. This is different from `removeFocus`
+  // because this is not called by a blur event.
+  disableEdit : function() {
+    this.box.blur();
+    this.removeFocus();
+  },
+
+  // Event called when user blur's the input, either through the keyboard tabbing
+  // away or the mouse clicking off. Cleans up 
+  removeFocus : function() {
+    this.flags.canClose = false;
+    VS.app.searchBox.removeFocus();
+    this.setMode('not', 'editing');
+    this.setMode('not', 'selected');
+    this.closeAutocomplete();
+  },
+  
+  // When the user blurs the input, they may either be going to another input
+  // or off the search box entirely. If they go to another input, this facet
+  // will be instantly disabled, and the canClose flag will be turned back off.
+  // 
+  // However, if the user clicks elsewhere on the page, this method starts a timer
+  // that checks if any of the other inputs are selected or are being edited. If
+  // not, then it can finally close itself and its autocomplete menu.
+  deferDisableEdit : function() {
+    this.flags.canClose = true;
+    _.delay(_.bind(function() {
+      if (this.flags.canClose && 
+          !this.box.is(':focus') && 
+          this.modes.editing == 'is') {
+        this.disableEdit();
+      }
+    }, this), 250);
+  },
+  
   // Starts a timer that will cause a triple-click, which highlights all facets.
   startTripleClickTimer : function() {
     this.tripleClickTimer = setTimeout(_.bind(function() {
@@ -990,6 +1013,9 @@ VS.ui.SearchInput = Backbone.View.extend({
     }, this), 500);
   },
   
+  // Event on click that checks if a triple click is in play. The 
+  // `tripleClickTimer` is counting down, ready to be engaged and intercept
+  // the click event to force a select all instead.
   maybeTripleClick : function(e) {
     if (!!this.tripleClickTimer) {
       e.preventDefault();
@@ -998,14 +1024,14 @@ VS.ui.SearchInput = Backbone.View.extend({
     }
   },
   
+  // Is the user currently focused in the input field?
   isFocused : function() {
     return this.box.is(':focus');
   },
   
-  clear : function() {
-    this.box.val('');
-  },
-  
+  // When serializing the facets, the inputs need to also have their values represented,
+  // in case they contain text that is not yet faceted (but will be once the search is
+  // completed).
   value : function() {
     return this.box.val();
   },
@@ -1021,6 +1047,8 @@ VS.ui.SearchInput = Backbone.View.extend({
     }
   },
   
+  // Selects the entire range of text in the input. Useful when tabbing between inputs
+  // and facets.
   selectText : function() {
     this.box.selectRange(0, this.box.val().length);
     if (!VS.app.searchBox.allSelected()) {
@@ -1047,8 +1075,8 @@ VS.ui.SearchInput = Backbone.View.extend({
       if (_.contains(labels, query)) {
         e.preventDefault();
         var remainder = this.addTextFacetRemainder(query);
-        VS.app.searchBox.addFacet(query, '', this.options.position + (remainder?1:0));
-        this.clear();
+        var position  = this.options.position + (remainder?1:0);
+        VS.app.searchBox.addFacet(query, '', position);
         return false;
       }
     } else if (key == 'backspace') {
@@ -1062,6 +1090,9 @@ VS.ui.SearchInput = Backbone.View.extend({
     }
   },
   
+  // Handles all keyboard inputs when in the input field. This checks
+  // for movement between facets and inputs, entering a new value that needs
+  // to be autocompleted, as well as stepping between facets with backspace.
   keydown : function(e) {
     var key = VS.app.hotkeys.key(e);
     
@@ -1083,11 +1114,16 @@ VS.ui.SearchInput = Backbone.View.extend({
       var value = this.box.val();
       if (value.length) {
         var remainder = this.addTextFacetRemainder(value);
-        VS.app.searchBox.addFacet(value, '', this.options.position + (remainder?1:0));
+        var position  = this.options.position + (remainder?1:0);
+        VS.app.searchBox.addFacet(value, '', position);
       } else {
-        VS.app.searchBox.focusNextFacet(this, 0, {skipToFacet: true, selectText: true});
+        VS.app.searchBox.focusNextFacet(this, 0, {
+          skipToFacet: true, 
+          selectText: true
+        });
       }
-    } else if (VS.app.hotkeys.command && String.fromCharCode(e.which).toLowerCase() == 'a') {
+    } else if (VS.app.hotkeys.command && 
+               String.fromCharCode(e.which).toLowerCase() == 'a') {
       e.preventDefault();
       VS.app.searchBox.selectAllFacets();
       return false;
@@ -1242,160 +1278,160 @@ VS.utils.inflector = {
 })();
 (function() {
 
-  var $ = jQuery; // Handle namespaced jQuery
+var $ = jQuery; // Handle namespaced jQuery
 
-  $.fn.extend({
+$.fn.extend({
 
-    // Makes the selector enter a mode. Modes have both a 'mode' and a 'group',
-    // and are mutually exclusive with any other modes in the same group.
-    // Setting will update the view's modes hash, as well as set an HTML class
-    // of *[mode]_[group]* on the view's element. Convenient way to swap styles
-    // and behavior.
-    setMode : function(state, group) {
-      group    = group || 'mode';
-      var re   = new RegExp("\\w+_" + group + "(\\s|$)", 'g');
-      var mode = (state === null) ? "" : state + "_" + group;
-      this.each(function() {
-        this.className = (this.className.replace(re, '')+' '+mode)
-                         .replace(/\s\s/g, ' ');
-      });
-      return mode;
-    },
-    
-    // When attached to an input element, this will cause the width of the input
-    // to match its contents. This calculates the width of the contents of the input
-    // by measuring a hidden shadow div that should match the styling of the input.
-    autoGrowInput: function() {
-      return this.each(function() {
-        var $input  = $(this);
-        var $tester = $('<div />').css({
-          opacity     : 0,
-          top         : -9999,
-          left        : -9999,
-          position    : 'absolute',
-          whiteSpace  : 'nowrap'
-        }).addClass('VS-input-width-tester').addClass('VS-interface');
-        
-        // Watch for input value changes on all of these events. `resize` 
-        // event is called explicitly when the input has been changed without 
-        // a single keypress.
-        var events = 'keydown.autogrow keypress.autogrow ' +
-                     'resize.autogrow change.autogrow';
-        $input.next('.VS-input-width-tester').remove();
-        $input.after($tester);
-        $input.unbind(events).bind(events, function(e, realEvent) {
-          if (realEvent) e = realEvent;
-          var value = $input.val();
-          
-          // Watching for the backspace key is tricky because it may not 
-          // actually be deleting the character, but instead the key gets 
-          // redirected to move the cursor from facet to facet.
-          if (VS.app.hotkeys.key(e) == 'backspace') {
-            var position = $input.getCursorPosition();
-            if (position > 0) value = value.slice(0, position-1) + 
-                                      value.slice(position, value.length);
-          } else if (VS.app.hotkeys.printable(e) && 
-                     !VS.app.hotkeys.command) {
-            value += String.fromCharCode(e.which);
-          }
-          value = value.replace(/&/g, '&amp;')
-                       .replace(/\s/g,'&nbsp;')
-                       .replace(/</g, '&lt;')
-                       .replace(/>/g, '&gt;');
-          
-          $tester.html(value);
-          $input.width($tester.width() + 3);
-          $input.trigger('updated.autogrow');
-        });
-        
-        // Sets the width of the input on initialization.
-        $input.trigger('resize.autogrow');
-      });
-    },
-    
-    
-    // Cross-browser method used for calculating where the cursor is in an 
-    // input field.
-    getCursorPosition: function() {
-      var position = 0;
-      var input    = this.get(0);
+  // Makes the selector enter a mode. Modes have both a 'mode' and a 'group',
+  // and are mutually exclusive with any other modes in the same group.
+  // Setting will update the view's modes hash, as well as set an HTML class
+  // of *[mode]_[group]* on the view's element. Convenient way to swap styles
+  // and behavior.
+  setMode : function(state, group) {
+    group    = group || 'mode';
+    var re   = new RegExp("\\w+_" + group + "(\\s|$)", 'g');
+    var mode = (state === null) ? "" : state + "_" + group;
+    this.each(function() {
+      this.className = (this.className.replace(re, '')+' '+mode)
+                       .replace(/\s\s/g, ' ');
+    });
+    return mode;
+  },
 
-      if (document.selection) { // IE
-        input.focus();
-        var sel    = document.selection.createRange();
-        var selLen = document.selection.createRange().text.length;
-        sel.moveStart('character', -input.value.length);
-        position   = sel.text.length - selLen;
-      } else if (input && $(input).is(':visible') && 
-                 input.selectionStart != null) { // Firefox/Safari
-        position = input.selectionStart;
-      }
+  // When attached to an input element, this will cause the width of the input
+  // to match its contents. This calculates the width of the contents of the input
+  // by measuring a hidden shadow div that should match the styling of the input.
+  autoGrowInput: function() {
+    return this.each(function() {
+      var $input  = $(this);
+      var $tester = $('<div />').css({
+        opacity     : 0,
+        top         : -9999,
+        left        : -9999,
+        position    : 'absolute',
+        whiteSpace  : 'nowrap'
+      }).addClass('VS-input-width-tester').addClass('VS-interface');
 
-      return position;
-    },
-    
-    // A simple proxy for `selectRange` that sets the cursor position in an 
-    // input field.
-    setCursorPosition: function(position) {
-      return this.each(function() {
-        return $(this).selectRange(position, position);
-      });
-    },
+      // Watch for input value changes on all of these events. `resize`
+      // event is called explicitly when the input has been changed without
+      // a single keypress.
+      var events = 'keydown.autogrow keypress.autogrow ' +
+                   'resize.autogrow change.autogrow';
+      $input.next('.VS-input-width-tester').remove();
+      $input.after($tester);
+      $input.unbind(events).bind(events, function(e, realEvent) {
+        if (realEvent) e = realEvent;
+        var value = $input.val();
 
-    // Cross-browser way to select text in an input field.
-    selectRange: function(start, end) {
-      return this.each(function() {
-        if (this.setSelectionRange) { // FF/Webkit
-          this.focus();
-          this.setSelectionRange(start, end);
-        } else if (this.createTextRange) { // IE
-          var range = this.createTextRange();
-          range.collapse(true);
-          range.moveEnd('character', end);
-          range.moveStart('character', start);
-          range.select();
+        // Watching for the backspace key is tricky because it may not
+        // actually be deleting the character, but instead the key gets
+        // redirected to move the cursor from facet to facet.
+        if (VS.app.hotkeys.key(e) == 'backspace') {
+          var position = $input.getCursorPosition();
+          if (position > 0) value = value.slice(0, position-1) +
+                                    value.slice(position, value.length);
+        } else if (VS.app.hotkeys.printable(e) &&
+                   !VS.app.hotkeys.command) {
+          value += String.fromCharCode(e.which);
         }
-      });
-    },
-    
-    // Returns an object that contains the text selection range values for
-    // an input field.
-    getSelection: function() {
-      var input = this[0];
+        value = value.replace(/&/g, '&amp;')
+                     .replace(/\s/g,'&nbsp;')
+                     .replace(/</g, '&lt;')
+                     .replace(/>/g, '&gt;');
 
-      if (input.selectionStart != null) { // FF/Webkit
-        var start = input.selectionStart;
-        var end   = input.selectionEnd;
-        return {
-          start   : start, 
-          end     : end, 
-          length  : end-start, 
-          text    : input.value.substr(start, end-start)
-        };
-      } else if (document.selection) { // IE
-        var range = document.selection.createRange();
-        if (range) {
-          var textRange = input.createTextRange();
-          var copyRange = textRange.duplicate();
-          textRange.moveToBookmark(range.getBookmark());
-          copyRange.setEndPoint('EndToStart', textRange);
-          var start = copyRange.text.length;
-          var end   = start + range.text.length;
-          return {
-            start   : start, 
-            end     : end, 
-            length  : end-start, 
-            text    : range.text
-          };
-        }
-      }
-      return {start: 0, end: 0, length: 0};
+        $tester.html(value);
+        $input.width($tester.width() + 3);
+        $input.trigger('updated.autogrow');
+      });
+
+      // Sets the width of the input on initialization.
+      $input.trigger('resize.autogrow');
+    });
+  },
+
+
+  // Cross-browser method used for calculating where the cursor is in an
+  // input field.
+  getCursorPosition: function() {
+    var position = 0;
+    var input    = this.get(0);
+
+    if (document.selection) { // IE
+      input.focus();
+      var sel    = document.selection.createRange();
+      var selLen = document.selection.createRange().text.length;
+      sel.moveStart('character', -input.value.length);
+      position   = sel.text.length - selLen;
+    } else if (input && $(input).is(':visible') &&
+               input.selectionStart != null) { // Firefox/Safari
+      position = input.selectionStart;
     }
-    
-  });
-  
+
+    return position;
+  },
+
+  // A simple proxy for `selectRange` that sets the cursor position in an
+  // input field.
+  setCursorPosition: function(position) {
+    return this.each(function() {
+      return $(this).selectRange(position, position);
+    });
+  },
+
+  // Cross-browser way to select text in an input field.
+  selectRange: function(start, end) {
+    return this.each(function() {
+      if (this.setSelectionRange) { // FF/Webkit
+        this.focus();
+        this.setSelectionRange(start, end);
+      } else if (this.createTextRange) { // IE
+        var range = this.createTextRange();
+        range.collapse(true);
+        range.moveEnd('character', end);
+        range.moveStart('character', start);
+        range.select();
+      }
+    });
+  },
+
+  // Returns an object that contains the text selection range values for
+  // an input field.
+  getSelection: function() {
+    var input = this[0];
+
+    if (input.selectionStart != null) { // FF/Webkit
+      var start = input.selectionStart;
+      var end   = input.selectionEnd;
+      return {
+        start   : start,
+        end     : end,
+        length  : end-start,
+        text    : input.value.substr(start, end-start)
+      };
+    } else if (document.selection) { // IE
+      var range = document.selection.createRange();
+      if (range) {
+        var textRange = input.createTextRange();
+        var copyRange = textRange.duplicate();
+        textRange.moveToBookmark(range.getBookmark());
+        copyRange.setEndPoint('EndToStart', textRange);
+        var start = copyRange.text.length;
+        var end   = start + range.text.length;
+        return {
+          start   : start,
+          end     : end,
+          length  : end-start,
+          text    : range.text
+        };
+      }
+    }
+    return {start: 0, end: 0, length: 0};
+  }
+
+});
+
 })();
-    
+
 (function() {
 
 var $ = jQuery; // Handle namespaced jQuery
@@ -1405,22 +1441,22 @@ VS.app.SearchParser = {
 
   // Matches `category: "free text"`, with and without quotes.
   ALL_FIELDS : /('.+?'|".+?"|[^'"\s]{2}\S*):\s*('.+?'|".+?"|[^'"\s]\S*)/g,
-  
+
   // Matches a single category without the text. Used to correctly extract facets.
-  FIELD      : /(.+?):\s*/,
-  
+  CATEGORY   : /('.+?'|".+?"|[^'"\s]{2}\S*):\s*/,
+
   // Called to parse a query into a collection of `SearchFacet` models.
   parse : function(query) {
     var searchFacets = this._extractAllFacets(query);
     VS.app.searchQuery.refresh(searchFacets);
     return searchFacets;
   },
-  
+
   // Walks the query and extracts facets, categories, and free text.
   _extractAllFacets : function(query) {
     var facets = [];
     var originalQuery = query;
-    
+
     while (query) {
       var category, value;
       originalQuery = query;
@@ -1430,8 +1466,8 @@ VS.app.SearchParser = {
         value    = this._extractSearchText(query);
         query    = VS.utils.inflector.trim(query.replace(value, ''));
       } else if (field.indexOf(':') != -1) {
-        category = field.match(this.FIELD)[1];
-        value    = field.replace(this.FIELD, '').replace(/(^['"]|['"]$)/g, '');
+        category = field.match(this.CATEGORY)[1].replace(/(^['"]|['"]$)/g, '');
+        value    = field.replace(this.CATEGORY, '').replace(/(^['"]|['"]$)/g, '');
         query    = VS.utils.inflector.trim(query.replace(field, ''));
       } else if (field.indexOf(':') == -1) {
         category = 'text';
@@ -1448,10 +1484,10 @@ VS.app.SearchParser = {
       }
       if (originalQuery == query) break;
     }
-    
+
     return facets;
   },
-  
+
   // Extracts the first field found, capturing any free text that comes
   // before the category.
   _extractNextField : function(query) {
@@ -1463,13 +1499,13 @@ VS.app.SearchParser = {
       return this._extractFirstField(query);
     }
   },
-  
+
   // If there is no free text before the facet, extract the category and value.
   _extractFirstField : function(query) {
     var fields = query.match(this.ALL_FIELDS);
     return fields && fields.length && fields[0];
   },
-  
+
   // If the found match is not a category and facet, extract the trimmed free text.
   _extractSearchText : function(query) {
     query = query || '';
@@ -1487,29 +1523,57 @@ var $ = jQuery; // Handle namespaced jQuery
 // The model that holds individual search facets and their categories.
 // Held in a collection by `VS.app.searchQuery`.
 VS.model.SearchFacet = Backbone.Model.extend({
-  
+
   // Extract the category and value and serialize it in preparation for
   // turning the entire searchBox into a search query that can be sent
   // to the server for parsing and searching.
   serialize : function() {
-    var category = this.get('category');
+    var category = this.quoteCategory(this.get('category'));
     var value    = VS.utils.inflector.trim(this.get('value'));
-    
+
     if (!value) return '';
-    
+
     if (!_.contains(VS.options.unquotable || [], category) && category != 'text') {
-      value = '"' + value + '"';
+      value = this.quoteValue(value);
     }
-    
+
     if (category != 'text') {
       category = category + ': ';
     } else {
       category = "";
     }
-    
     return category + value;
-  }
+  },
   
+  // Wrap categories that have spaces or any kind of quote with opposite matching
+  // quotes to preserve the complex category during serialization.
+  quoteCategory : function(category) {
+    var hasDoubleQuote = (/"/).test(category);
+    var hasSingleQuote = (/'/).test(category);
+    var hasSpace       = (/\s/).test(category);
+    
+    if (hasDoubleQuote && !hasSingleQuote) {
+      return "'" + category + "'";
+    } else if (hasSpace || (hasSingleQuote && !hasDoubleQuote)) {
+      return '"' + category + '"';
+    } else {
+      return category;
+    }
+  },
+  
+  // Wrap values that have quotes in opposite matching quotes. If a value has
+  // both single and double quotes, just use the double quotes.
+  quoteValue : function(value) {
+    var hasDoubleQuote = (/"/).test(value);
+    var hasSingleQuote = (/'/).test(value);
+    
+    if (hasDoubleQuote && !hasSingleQuote) {
+      return "'" + value + "'";
+    } else {
+      return '"' + value + '"';
+    }
+  }
+
 });
 
 })();
@@ -1517,20 +1581,18 @@ VS.model.SearchFacet = Backbone.Model.extend({
 
 var $ = jQuery; // Handle namespaced jQuery
 
-// Collection which holds all of the individual facets (category: value). 
+// Collection which holds all of the individual facets (category: value).
 // Used for finding and removing specific facets.
 VS.model.SearchQuery = Backbone.Collection.extend({
-  
+
   // Model holds the category and value of the facet.
   model : VS.model.SearchFacet,
-  
+
   // Turns all of the facets into a single serialized string.
   value : function() {
-    return this.map(function(facet) {
-      return facet.serialize();
-    }).join(' ');
+    return this.map(function(facet){ return facet.serialize(); }).join(' ');
   },
-  
+
   // Find a facet by its category. Multiple facets with the same category
   // is fine, but only the first is returned.
   find : function(category) {
@@ -1539,14 +1601,14 @@ VS.model.SearchQuery = Backbone.Collection.extend({
     });
     return facet && facet.get('value');
   },
-  
+
   // Counts the number of times a specific category is in the search query.
   count : function(category) {
     return this.select(function(facet) {
       return facet.get('category') == category;
     }).length;
   },
-  
+
   // Returns an array of extracted values from each facet in a category.
   values : function(category) {
     var facets = this.select(function(facet) {
@@ -1554,27 +1616,23 @@ VS.model.SearchQuery = Backbone.Collection.extend({
     });
     return _.map(facets, function(facet) { return facet.get('value'); });
   },
-  
+
   // Checks all facets for matches of either a category or both category and value.
   has : function(category, value) {
     return this.any(function(facet) {
-      if (value) {
-        return facet.get('category') == category && facet.get('value') == value;
-      } else {
-        return facet.get('category') == category;
-      }
+      var categoryMatched = facet.get('category') == category;
+      if (!value) return categoryMatched;
+      return categoryMatched && facet.get('value') == value;
     });
   },
-  
+
   // Used to temporarily hide a specific category and serialize the search query.
   withoutCategory : function(category) {
-    var query = this.map(function(facet) {
+    return this.map(function(facet) {
       if (facet.get('category') != category) return facet.serialize();
     }).join(' ');
-    
-    return query;
   }
-    
+
 });
 
 })();(function(){
