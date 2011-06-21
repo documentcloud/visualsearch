@@ -9,7 +9,9 @@ There is one input placed in between all facets.</p>             </td>          
   
   <span class="nx">events</span> <span class="o">:</span> <span class="p">{</span>
     <span class="s1">&#39;keypress input&#39;</span>  <span class="o">:</span> <span class="s1">&#39;keypress&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;keydown input&#39;</span>   <span class="o">:</span> <span class="s1">&#39;keydown&#39;</span>
+    <span class="s1">&#39;keydown input&#39;</span>   <span class="o">:</span> <span class="s1">&#39;keydown&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;click input&#39;</span>     <span class="o">:</span> <span class="s1">&#39;maybeTripleClick&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;dblclick input&#39;</span>  <span class="o">:</span> <span class="s1">&#39;startTripleClickTimer&#39;</span>
   <span class="p">},</span>
   
   <span class="nx">initialize</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
@@ -129,6 +131,19 @@ focus event causing the input to become focused.</p>             </td>          
     <span class="k">this</span><span class="p">.</span><span class="nx">setMode</span><span class="p">(</span><span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;editing&#39;</span><span class="p">);</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">setMode</span><span class="p">(</span><span class="s1">&#39;not&#39;</span><span class="p">,</span> <span class="s1">&#39;selected&#39;</span><span class="p">);</span>
   <span class="p">},</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>Starts a timer that will cause a triple-click, which highlights all facets.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">startTripleClickTimer</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">tripleClickTimer</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">tripleClickTimer</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">},</span> <span class="k">this</span><span class="p">),</span> <span class="mi">500</span><span class="p">);</span>
+  <span class="p">},</span>
+  
+  <span class="nx">maybeTripleClick</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!!</span><span class="k">this</span><span class="p">.</span><span class="nx">tripleClickTimer</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+      <span class="nx">VS</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">selectAllFacets</span><span class="p">();</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
   
   <span class="nx">isFocused</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">is</span><span class="p">(</span><span class="s1">&#39;:focus&#39;</span><span class="p">);</span>
@@ -141,7 +156,7 @@ focus event causing the input to become focused.</p>             </td>          
   <span class="nx">value</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">val</span><span class="p">();</span>
   <span class="p">},</span>
-  </pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>When switching between facets and inputs, depending on the direction the cursor 
+  </pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>When switching between facets and inputs, depending on the direction the cursor 
 is coming from, the cursor in this facet's input field should match the original
 direction.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">setCursorAtEnd</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">direction</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">direction</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
@@ -159,7 +174,7 @@ direction.</p>             </td>             <td class="code">               <di
       <span class="k">this</span><span class="p">.</span><span class="nx">setMode</span><span class="p">(</span><span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;selected&#39;</span><span class="p">);</span>
     <span class="p">}</span>
   <span class="p">},</span>
-  </pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>Callback fired on key press in the search box. We search when they hit return.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">keypress</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>Callback fired on key press in the search box. We search when they hit return.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">keypress</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">VS</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">hotkeys</span><span class="p">.</span><span class="nx">key</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
     
     <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">==</span> <span class="s1">&#39;enter&#39;</span><span class="p">)</span> <span class="p">{</span>

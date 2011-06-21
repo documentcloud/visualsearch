@@ -141,14 +141,10 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     border-radius: 16px;
   }
   .VS-search .search_facet.is_selected {
-    background-color: #CBD1F1;
-    background-image: -moz-linear-gradient(top, #CBD1F1, #AFB5EC); /* FF3.6 */
-    background-image: -ms-linear-gradient(top, #CBD1F1, #AFB5EC); /* IE10 */
-    background-image: -o-linear-gradient(top, #CBD1F1, #AFB5EC); /* Opera 11.10+ */
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#CBD1F1), to(#AFB5EC)); /* Saf4+, Chrome */
-    background-image: -webkit-linear-gradient(top, #CBD1F1, #AFB5EC); /* Chrome 10+, Saf5.1+ */
-    background-image: linear-gradient(top, #CBD1F1, #AFB5EC);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#CBD1F1', EndColorStr='#AFB5EC'); /* IE6–IE9 */
+    background-color: #A7B9FF;
+    background-image: -moz-linear-gradient(top, #B0BCFF, #7489FF); /* FF3.6 */
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#B0BCFF), to(#7489FF)); /* Saf4+, Chrome */
+    background-image: linear-gradient(top, #B0BCFF, #7489FF);
   }
   .VS-search .search_facet .category {
     float: left;
@@ -172,7 +168,7 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   .VS-search .search_facet input {
     margin: 0;
     padding: 0;
-    color: #505050;
+    color: #000;
     font-size: 13px;
     line-height: 16px;
     padding: 6px 0 7px 4px;
@@ -189,7 +185,7 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   }
   .VS-search .search_facet.is_editing input,
   .VS-search .search_facet.is_selected input {
-    color: #202020;
+    color: #000;
   }
   .VS-search .search_facet .search_facet_remove {
     position: absolute;
@@ -235,9 +231,10 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
 /* = Autocomplete = */
 /* ================ */
 
-.ui-autocomplete {
+.VS-interface.ui-autocomplete {
   position: absolute;
   border: 1px solid #C0C0C0;
+  border-top: 1px solid #D9D9D9;
   background-color: #F6F6F6;
   cursor: pointer;
   z-index: 10000;
@@ -249,10 +246,10 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   overflow-x: hidden;
   font-size: 13px;
   top: 1px;
-  opacity: 0.97; filter: alpha(opacity=97);
+  opacity: 0.97;
   box-shadow: 3px 4px 5px -2px rgba(0, 0, 0, 0.5); -webkit-box-shadow: 3px 4px 5px -2px rgba(0, 0, 0, 0.5); -moz-box-shadow: 3px 4px 5px -2px rgba(0, 0, 0, 0.5);
 }
-  .ui-autocomplete .ui-autocomplete-category {
+  .VS-interface.ui-autocomplete .ui-autocomplete-category {
     text-transform: capitalize;
     font-size: 11px;
     padding: 4px 4px 4px;
@@ -264,38 +261,30 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     color: white;
     cursor: default;
   }
-  .ui-autocomplete .ui-menu-item a {
+  .VS-interface.ui-autocomplete .ui-menu-item a {
     outline: none;
     display: block;
     padding: 3px 4px 5px;
     background-color: #F8F8F8;
     background-image: -moz-linear-gradient(top, #F8F8F8, #F3F3F3); /* FF3.6 */
-    background-image: -ms-linear-gradient(top, #F8F8F8, #F3F3F3); /* IE10 */
-    background-image: -o-linear-gradient(top, #F8F8F8, #F3F3F3); /* Opera 11.10+ */
     background-image: -webkit-gradient(linear, left top, left bottom, from(#F8F8F8), to(#F3F3F3)); /* Saf4+, Chrome */
-    background-image: -webkit-linear-gradient(top, #F8F8F8, #F3F3F3); /* Chrome 10+, Saf5.1+ */
     background-image: linear-gradient(top, #F8F8F8, #F3F3F3);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#F8F8F8', EndColorStr='#F3F3F3'); /* IE6–IE9 */
     border-top: 1px solid #FAFAFA;
     border-bottom: 1px solid #F2F2F2;
   }
-  .ui-autocomplete .ui-menu-item a:active {
+  .VS-interface.ui-autocomplete .ui-menu-item a:active {
     outline: none;
   }
-  .ui-autocomplete .ui-menu-item .ui-state-hover {
+  .VS-interface.ui-autocomplete .ui-menu-item .ui-state-hover {
     background-color: #6483F7;
     background-image: -moz-linear-gradient(top, #6483F7, #2254F6); /* FF3.6 */
-    background-image: -ms-linear-gradient(top, #6483F7, #2254F6); /* IE10 */
-    background-image: -o-linear-gradient(top, #6483F7, #2254F6); /* Opera 11.10+ */
     background-image: -webkit-gradient(linear, left top, left bottom, from(#6483F7), to(#2254F6)); /* Saf4+, Chrome */
-    background-image: -webkit-linear-gradient(top, #6483F7, #2254F6); /* Chrome 10+, Saf5.1+ */
     background-image: linear-gradient(top, #6483F7, #2254F6);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#6483F7', EndColorStr='#2254F6'); /* IE6–IE9 */
     border-top: 1px solid #5A7BEE;
     border-bottom: 1px solid #1048EC;
     color: white;
   }
-  .ui-autocomplete li {
+  .VS-interface.ui-autocomplete li {
     list-style: none;
     width: auto;
   }

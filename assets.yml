@@ -13,16 +13,15 @@ javascripts:
     - vendor/jquery.ui.*.js
     - vendor/underscore-*.js
     - vendor/backbone-*.js
-  visualsearch<% if $VS_MIN %>-min<% end %>:
+  visualsearch:
     - lib/js/visualsearch.js
     - lib/js/views/*.js
     - lib/js/utils/*.js
     - lib/js/models/*.js
     - lib/js/templates/*.jst
-<% unless $VS_MIN %>
-  visualsearch_templates:
+  <% unless $VS_MIN %>visualsearch_templates:
     - lib/js/templates/*.jst
-<% end %>
+  <% end %>
 
 stylesheets:
   visualsearch:

@@ -73,7 +73,8 @@ VS.ui.SearchBox = Backbone.View.extend({
   events : {
     'click .VS-cancel-search-box' : 'clearSearch',
     'mousedown .VS-search-box'    : 'focusSearch',
-    'dblclick .VS-search-box'     : 'highlightSearch'
+    'dblclick .VS-search-box'     : 'highlightSearch',
+    'click .VS-search-box'        : 'maybeTripleClick'
   },
 
   // Creating a new SearchBox registers handlers for re-rendering facets when necessary,
@@ -234,7 +235,7 @@ VS.ui.SearchBox = Backbone.View.extend({
       facetView.selectFacet();
     });
     
-    $(document).one('click', this.disableFacets);
+    $(document).one('click.selectAllFacets', this.disableFacets);
   },
   
   // Used by facets and input to see if all facets are currently selected.
@@ -246,6 +247,12 @@ VS.ui.SearchBox = Backbone.View.extend({
   // Disables all facets except for the passed in view. Used when switching between
   // facets, so as not to have to keep state of active facets.
   disableFacets : function(keepView) {
+    _.each(this.inputViews, function(view) {
+      if (view != keepView &&
+          (view.modes.editing == 'is' || view.modes.selected == 'is')) {
+        view.blur();
+      }
+    });
     _.each(this.facetViews, function(view) {
       if (view != keepView &&
           (view.modes.editing == 'is' || view.modes.selected == 'is')) {
@@ -253,8 +260,10 @@ VS.ui.SearchBox = Backbone.View.extend({
         view.deselectFacet();
       }
     });
+    
     this.flags.allSelected = false;
     this.removeFocus();
+    $(document).unbind('click.selectAllFacets');
   },
   
   // Resize all inputs to account for extra keystrokes which may be changing the facet
@@ -293,17 +302,18 @@ VS.ui.SearchBox = Backbone.View.extend({
     var viewCount    = this.facetViews.length;
     var viewPosition = options.viewPosition || this.viewPosition(currentView);
     
-    // Correct for bouncing between matching text and facet arrays.
     if (!options.skipToFacet) {
+      // Correct for bouncing between matching text and facet arrays.
       if (currentView.type == 'text'  && direction > 0) direction -= 1;
       if (currentView.type == 'facet' && direction < 0) direction += 1;
     } else if (options.skipToFacet && currentView.type == 'text' && 
                viewCount == viewPosition && direction >= 0) {
+      // Special case of looping around to a facet from the last search input box.
       viewPosition = 0;
       direction    = 0;
     }
     var view, next = Math.min(viewCount, viewPosition + direction);
-
+    
     if (currentView.type == 'text' && next >= 0 && next < viewCount) {
       view = this.facetViews[next];
       if (options.selectFacet) {
@@ -356,9 +366,16 @@ VS.ui.SearchBox = Backbone.View.extend({
   },
   
   // Double-clicking on the search wrapper should select the existing text in
-  // the last search input.
+  // the last search input. Also start the triple-click timer.
   highlightSearch : function(e) {
+    var lastinput = this.inputViews[this.inputViews.length-1];
+    lastinput.startTripleClickTimer();
     this.focusSearch(e, true);
+  },
+  
+  maybeTripleClick : function(e) {
+    var lastinput = this.inputViews[this.inputViews.length-1];
+    return lastinput.maybeTripleClick(e);
   },
   
   // Used to show the user is focused on some input inside the search box.
@@ -479,6 +496,7 @@ VS.ui.SearchFacet = Backbone.View.extend({
         if (originalValue != ui.item.value || this.box.val() != ui.item.value) {
           this.search(e);
         }
+        VS.app.searchBox.focusNextFacet(this, 1, {viewPosition: this.options.order});
         return false;
       }, this)
     });
@@ -502,10 +520,20 @@ VS.ui.SearchFacet = Backbone.View.extend({
     }
   },
   // When a user enters a facet and it is being edited, immediately show
-  // the autocomplete menu.
+  // the autocomplete menu and size it to match the contents.
   searchAutocomplete : function(e) {
     var autocomplete = this.box.data('autocomplete');
-    if (autocomplete) autocomplete.search();
+    if (autocomplete) {
+      var menu = autocomplete.menu.element;
+      autocomplete.search();
+      
+      // Resize the menu based on the correctly measured width of what's bigger:
+      // the menu's original size or the menu items' new size.
+      menu.outerWidth(Math.max(
+        menu.width('').outerWidth(),
+        autocomplete.element.outerWidth()
+      ));
+    }
   },
   
   // Closes the autocomplete menu. Called on disabling, selecting, deselecting,
@@ -570,7 +598,6 @@ VS.ui.SearchFacet = Backbone.View.extend({
     }
 
     this.flags.canClose = false;
-    this.searchAutocomplete();
     VS.app.searchBox.disableFacets(this);
     VS.app.searchBox.addFocus();
     _.defer(function() {
@@ -578,6 +605,7 @@ VS.ui.SearchFacet = Backbone.View.extend({
     });
     if (!this.box.is(':focus')) this.box.focus();
     this.resize();
+    this.searchAutocomplete();
   },
   
   // When the user blurs the input, they may either be going to another input
@@ -618,8 +646,9 @@ VS.ui.SearchFacet = Backbone.View.extend({
   // we attach a mouse/keyboard watcher to check if the next action by the user
   // should delete this facet or just deselect it.
   selectFacet : function() {
-    this.flags.canClose = false;
     var allSelected = VS.app.searchBox.allSelected();
+
+    this.flags.canClose = false;
     if (!allSelected) {
       VS.app.searchBox.disableFacets(this);
     }
@@ -788,7 +817,9 @@ VS.ui.SearchInput = Backbone.View.extend({
   
   events : {
     'keypress input'  : 'keypress',
-    'keydown input'   : 'keydown'
+    'keydown input'   : 'keydown',
+    'click input'     : 'maybeTripleClick',
+    'dblclick input'  : 'startTripleClickTimer'
   },
   
   initialize : function() {
@@ -924,6 +955,21 @@ VS.ui.SearchInput = Backbone.View.extend({
     VS.app.searchBox.addFocus();
     this.setMode('is', 'editing');
     this.setMode('not', 'selected');
+  },
+  
+  // Starts a timer that will cause a triple-click, which highlights all facets.
+  startTripleClickTimer : function() {
+    this.tripleClickTimer = setTimeout(_.bind(function() {
+      this.tripleClickTimer = null;
+    }, this), 500);
+  },
+  
+  maybeTripleClick : function(e) {
+    if (!!this.tripleClickTimer) {
+      e.preventDefault();
+      VS.app.searchBox.selectAllFacets();
+      return false;
+    }
   },
   
   isFocused : function() {
