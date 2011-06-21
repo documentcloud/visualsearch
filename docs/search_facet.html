@@ -84,7 +84,8 @@ field, which is bound to this method to move the autocomplete menu.</p>         
         <span class="nx">offset</span>    <span class="o">:</span> <span class="s2">&quot;0 0&quot;</span>
       <span class="p">});</span>
     <span class="p">}</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>When a user enters a facet and it is being edited, immediately show
+  <span class="p">},</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>When a user enters a facet and it is being edited, immediately show
 the autocomplete menu and size it to match the contents.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">searchAutocomplete</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">autocomplete</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;autocomplete&#39;</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">autocomplete</span><span class="p">)</span> <span class="p">{</span>
@@ -193,15 +194,12 @@ we attach a mouse/keyboard watcher to check if the next action by the user
 should delete this facet or just deselect it.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">selectFacet</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">allSelected</span> <span class="o">=</span> <span class="nx">VS</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">allSelected</span><span class="p">();</span>
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">flags</span><span class="p">.</span><span class="nx">canClose</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">allSelected</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">VS</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">disableFacets</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-    <span class="p">}</span>
     <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">is</span><span class="p">(</span><span class="s1">&#39;:focus&#39;</span><span class="p">))</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">setCursorPosition</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">blur</span><span class="p">();</span>
     <span class="p">}</span>
 
+    <span class="k">this</span><span class="p">.</span><span class="nx">flags</span><span class="p">.</span><span class="nx">canClose</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">closeAutocomplete</span><span class="p">();</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">setMode</span><span class="p">(</span><span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;selected&#39;</span><span class="p">);</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">setMode</span><span class="p">(</span><span class="s1">&#39;not&#39;</span><span class="p">,</span> <span class="s1">&#39;editing&#39;</span><span class="p">);</span>
@@ -213,6 +211,7 @@ should delete this facet or just deselect it.</p>             </td>             
         <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">unbind</span><span class="p">(</span><span class="s1">&#39;keydown.facet&#39;</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;keydown.facet&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">keydown</span><span class="p">);</span>
         <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">unbind</span><span class="p">(</span><span class="s1">&#39;click.facet&#39;</span><span class="p">).</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;click.facet&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">deselectFacet</span><span class="p">);</span>
       <span class="p">},</span> <span class="k">this</span><span class="p">));</span>
+      <span class="nx">VS</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">disableFacets</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
       <span class="nx">VS</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">addFocus</span><span class="p">();</span>
     <span class="p">}</span>
   <span class="p">},</span>

@@ -288,12 +288,8 @@ VS.ui.SearchBox = Backbone.View.extend({
       return false;
     } else if (this.flags.allSelected && VS.app.hotkeys.printable(e)) {
       this.clearSearch(e);
-    } else if (this.flags.allSelected) {
-      this.flags.allSelected = false;
-      this.disableFacets();
     }
   },
-  
   
   // # Focusing Facets #
   
