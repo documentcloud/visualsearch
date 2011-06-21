@@ -145,6 +145,8 @@
     .VS-search .search_facet.is_selected .search_facet_remove {
       top: 4px;
       left: 3px;
+      opacity: .4;
+      background-position: center -11px;
     }
     .VS-search .search_facet .search_facet_remove:hover {
       opacity: 1;
