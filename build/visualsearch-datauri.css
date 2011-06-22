@@ -130,20 +130,22 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
 .VS-search .search_facet {
   float: left;
   margin: 0;
-  padding: 0 0 0 13px;
+  padding: 0 0 0 14px;
   position: relative;
+  border: 1px solid transparent;
 }
   .VS-search .search_facet.is_selected {
-    margin: 5px -3px 5px -3px;
+    margin: 4px -3px 4px -3px;
     -webkit-border-radius: 16px;
     -moz-border-radius: 16px;
     border-radius: 16px;
   }
   .VS-search .search_facet.is_selected {
-    background-color: #A7B9FF;
-    background-image: -moz-linear-gradient(top, #B0BCFF, #7489FF); /* FF3.6 */
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#B0BCFF), to(#7489FF)); /* Saf4+, Chrome */
-    background-image: linear-gradient(top, #B0BCFF, #7489FF);
+    background-color: #d2e6fd;
+    background-image: -moz-linear-gradient(top, #d2e6fd, #b0d1f9); /* FF3.6 */
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#d2e6fd), to(#b0d1f9)); /* Saf4+, Chrome */
+    background-image: linear-gradient(top, #d2e6fd, #b0d1f9);
+    border: 1px solid #6eadf5;
   }
   .VS-search .search_facet .category {
     float: left;
@@ -151,15 +153,13 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     font-weight: bold;
     font-size: 10px;
     color: #808080;
-    text-shadow: 1px 1px 0 #FFF;
-    padding: 9px 0 6px;
+    padding: 8px 0 5px;
     line-height: 13px;
     cursor: pointer;
   }
   .VS-search .search_facet.is_selected .category {
     padding: 4px 0 0;
     margin-left: 3px;
-    text-shadow: 1px 1px 0 #D0D0D0;
   }
   .VS-search .search_facet .search_facet_input_container {
     float: left;
@@ -170,7 +170,7 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     color: #000;
     font-size: 13px;
     line-height: 16px;
-    padding: 6px 0 7px 4px;
+    padding: 5px 0 6px 4px;
     height: 16px;
     width: auto;          
     z-index: 100;
@@ -189,13 +189,13 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   .VS-search .search_facet .search_facet_remove {
     position: absolute;
     left: 0;
-    top: 9px;
-    opacity: .6;
+    top: 8px;
   }
     .VS-search .search_facet.is_selected .search_facet_remove {
       top: 4px;
       left: 3px;
-      opacity: .4;
+      opacity: 0.4;
+      filter: alpha(opacity=40);
       background-position: center -11px;
     }
     .VS-search .search_facet .search_facet_remove:hover {
@@ -217,11 +217,13 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
 .VS-search .search_input {
   height: 29px;
   float: left;
+  margin-left: -1px;
 }
   .VS-search .search_input input {
-    padding: 6px 2px 7px 2px;
+    padding: 6px 3px 6px 2px;
     width: 10px;
     z-index: 100;
+    min-width: 4px;
     position: relative;
   }
   .VS-search .search_input.is_editing input {
