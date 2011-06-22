@@ -175,6 +175,7 @@
     padding: 6px 3px 6px 2px;
     width: 10px;
     z-index: 100;
+    min-width: 4px;
     position: relative;
   }
   .VS-search .search_input.is_editing input {
