@@ -98,7 +98,7 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   }
   .VS-search .VS-search-inner {
     position: relative;
-    margin: 0 18px 0 18px;
+    margin: 0 20px 0 22px;
     overflow: hidden;
   }
   .VS-search input {
@@ -215,7 +215,7 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
 /* ================ */      
 
 .VS-search .search_input {
-  height: 28px;
+  height: 29px;
   float: left;
 }
   .VS-search .search_input input {

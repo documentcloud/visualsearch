@@ -10046,6 +10046,7 @@ $.widget( "ui.autocomplete", {
 	search: function( value, event ) {
 		value = value != null ? value : this.element.val();
 
+// console.log(['search', value, event && event.type]);
 		// always save the actual value, not the one passed as an argument
 		this.term = this.element.val();
 
@@ -10057,7 +10058,7 @@ $.widget( "ui.autocomplete", {
 		if ( this._trigger( "search", event ) === false ) {
 			return;
 		}
-
+		
 		return this._search( value );
 	},
 

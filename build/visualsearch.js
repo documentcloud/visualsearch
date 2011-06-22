@@ -75,7 +75,7 @@ VS.ui.SearchBox = Backbone.View.extend({
   
   events : {
     'click .VS-cancel-search-box' : 'clearSearch',
-    'mousedown .VS-search-box'    : 'focusSearch',
+    'mousedown .VS-search-box'    : 'maybeFocusSearch',
     'dblclick .VS-search-box'     : 'highlightSearch',
     'click .VS-search-box'        : 'maybeTripleClick'
   },
@@ -127,7 +127,9 @@ VS.ui.SearchBox = Backbone.View.extend({
     return _.compact(query).join(' ');
   },
 
-  // Takes a query string and uses the SearchParser to parse and render it.
+  // Takes a query string and uses the SearchParser to parse and render it. Note that
+  // `VS.app.SearchParser` refreshes the `VS.app.searchQuery` collection, which is bound
+  // here to call `this.renderFacets`.
   setQuery : function(query) {
     this.currentQuery = query;
     VS.app.SearchParser.parse(query);
@@ -144,7 +146,7 @@ VS.ui.SearchBox = Backbone.View.extend({
   // Used to launch a search. Hitting enter or clicking the search button.
   searchEvent : function(e) {
     var query = this.value();
-    this.focusSearch();
+    this.focusSearch(e);
     if (VS.options.callbacks.search(query) !== false) {
       this.value(query);
     }
@@ -168,7 +170,10 @@ VS.ui.SearchBox = Backbone.View.extend({
     var facetView = _.detect(this.facetViews, function(view) {
       if (view.model == model) return true;
     });
-    facetView.enableEdit();
+    
+    _.defer(function() {
+      facetView.enableEdit();
+    });
   },
 
   // Renders each facet as a searchFacet view.
@@ -215,6 +220,7 @@ VS.ui.SearchBox = Backbone.View.extend({
   
   // Clears out the search box. Command+A + delete can trigger this, as can a cancel button.
   clearSearch : function(e) {
+    this.disableFacets();
     this.value('');
     this.flags.allSelected = false;
     this.focusSearch(e);
@@ -243,13 +249,13 @@ VS.ui.SearchBox = Backbone.View.extend({
   // facets, so as not to have to keep state of active facets.
   disableFacets : function(keepView) {
     _.each(this.inputViews, function(view) {
-      if (view != keepView &&
+      if (view && view != keepView &&
           (view.modes.editing == 'is' || view.modes.selected == 'is')) {
         view.disableEdit();
       }
     });
     _.each(this.facetViews, function(view) {
-      if (view != keepView &&
+      if (view && view != keepView &&
           (view.modes.editing == 'is' || view.modes.selected == 'is')) {
         view.disableEdit();
         view.deselectFacet();
@@ -305,11 +311,15 @@ VS.ui.SearchBox = Backbone.View.extend({
     }
     var view, next = Math.min(viewCount, viewPosition + direction);
     
-    if (currentView.type == 'text' && next >= 0 && next < viewCount) {
-      view = this.facetViews[next];
-      if (options.selectFacet) {
+    if (currentView.type == 'text') {
+      if (next >= 0 && next < viewCount) {
+        view = this.facetViews[next];
+      } else if (next == viewCount) {
+        view = this.inputViews[this.inputViews.length-1];
+      }
+      if (view && options.selectFacet && view.type == 'facet') {
         view.selectFacet();
-      } else {
+      } else if (view) {
         view.enableEdit();
         view.setCursorAtEnd(direction || options.startAtEnd);
       }
@@ -321,39 +331,41 @@ VS.ui.SearchBox = Backbone.View.extend({
           view.enableEdit();
         } else {
           view = this.facetViews[next];
+          
           view.enableEdit();
           view.setCursorAtEnd(direction || options.startAtEnd);
         }
       } else {
         view = this.inputViews[next];
         view.enableEdit();
-        if (options.selectText) view.selectText();
       }
     }
     if (options.selectText) view.selectText();
     this.resizeFacets();
   },
 
+  maybeFocusSearch : function(e) {
+    if ($(e.target).is('.VS-search-box') || 
+        $(e.target).is('.VS-search-inner') || 
+        e.type == 'keydown') {
+      this.focusSearch(e);
+    }
+  },
+  
   // Bring focus to last input field.
   focusSearch : function(e, selectText) {
     var view = this.inputViews[this.inputViews.length-1];
-    if (!e || 
-        $(e.target).is('.VS-search-box') || 
-        $(e.target).is('.VS-search-inner') || 
-        e.type == 'keydown') {
-      this.disableFacets();
-      if (selectText) view.enableEdit(selectText);
-      else            view.setCursorAtEnd(-1);
-      if (e && e.type == 'keydown') {
-        view.keydown(e);
-        view.box.trigger('keydown');
-      }
-      _.defer(_.bind(function() {
-        if (!this.$('input:focus').length) {
-          this.inputViews[this.inputViews.length-1].enableEdit(selectText);
-        }
-      }, this));
+    view.enableEdit(selectText);
+    if (!selectText) view.setCursorAtEnd(-1);
+    if (e.type == 'keydown') {
+      view.keydown(e);
+      view.box.trigger('keydown');
     }
+    _.defer(_.bind(function() {
+      if (!this.$('input:focus').length) {
+        view.enableEdit(selectText);
+      }
+    }, this));
   },
   
   // Double-clicking on the search wrapper should select the existing text in
@@ -383,7 +395,7 @@ VS.ui.SearchBox = Backbone.View.extend({
     if (!focus) this.$('.VS-search-box').removeClass('VS-focus');
   },
   
-  // Show a menu which adds pre-defined facets to the search box.
+  // Show a menu which adds pre-defined facets to the search box. This is unused for now.
   showFacetCategoryMenu : function(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -487,7 +499,6 @@ VS.ui.SearchFacet = Backbone.View.extend({
         if (originalValue != ui.item.value || this.box.val() != ui.item.value) {
           this.search(e);
         }
-        VS.app.searchBox.focusNextFacet(this, 1, {viewPosition: this.options.order});
         return false;
       }, this)
     });
@@ -570,9 +581,13 @@ VS.ui.SearchFacet = Backbone.View.extend({
   
   // Before the searchBox performs a search, we need to close the 
   // autocomplete menu.
-  search : function(e) {
+  search : function(e, direction) {
+    if (!direction) direction = 1;
     this.closeAutocomplete();
     VS.app.searchBox.searchEvent(e);
+    _.defer(_.bind(function() {
+      VS.app.searchBox.focusNextFacet(this, direction, {viewPosition: this.options.order});
+    }, this));
   },
   
   // Begin editing the facet's input. This is called when the user enters
@@ -595,9 +610,9 @@ VS.ui.SearchFacet = Backbone.View.extend({
     _.defer(function() {
       VS.app.searchBox.addFocus();
     });
-    if (!this.box.is(':focus')) this.box.focus();
     this.resize();
     this.searchAutocomplete();
+    this.box.focus();
   },
   
   // When the user blurs the input, they may either be going to another input
@@ -705,16 +720,16 @@ VS.ui.SearchFacet = Backbone.View.extend({
   
   // Deletes the facet and sends the cursor over to the nearest input field.
   remove : function(e) {
-    var committed = this.model.has('value');
+    var committed = this.model.get('value');
     this.deselectFacet();
     this.disableEdit();
     VS.app.searchQuery.remove(this.model);
     if (committed) {
-      this.search();
+      this.search(e, -1);
     } else {
       VS.app.searchBox.renderFacets();
+      VS.app.searchBox.focusNextFacet(this, -1, {viewPosition: this.options.order});
     }
-    VS.app.searchBox.focusNextFacet(this, 0, {viewPosition: this.options.order});
   },
   
   // Selects the text in the facet's input field. When the user tabs between
@@ -754,8 +769,6 @@ VS.ui.SearchFacet = Backbone.View.extend({
       }
     } else if (VS.app.hotkeys.shift && key == 'tab') {
       e.preventDefault();
-      this.deselectFacet();
-      this.disableEdit();
       VS.app.searchBox.focusNextFacet(this, -1, {
         startAtEnd  : true, 
         skipToFacet : true, 
@@ -763,8 +776,6 @@ VS.ui.SearchFacet = Backbone.View.extend({
       });
     } else if (key == 'tab') {
       e.preventDefault();
-      this.deselectFacet();
-      this.disableEdit();
       VS.app.searchBox.focusNextFacet(this, 1, {
         skipToFacet : true, 
         selectText  : true
@@ -775,7 +786,7 @@ VS.ui.SearchFacet = Backbone.View.extend({
       return false;
     } else if (VS.app.hotkeys.printable(e) && this.modes.selected == 'is') {
       VS.app.searchBox.focusNextFacet(this, -1, {startAtEnd: true});
-      this.remove();
+      this.remove(e);
     } else if (key == 'backspace') {
       if (this.modes.selected == 'is') {
         e.preventDefault();
@@ -883,7 +894,7 @@ VS.ui.SearchInput = Backbone.View.extend({
     // Only match from the beginning of the word.
     var matcher    = new RegExp('^' + re, 'i');
     var matches    = $.grep(prefixes, function(item) {
-      return matcher.test(item.label || item);
+      return item && matcher.test(item.label || item);
     });
 
     resp(_.sortBy(matches, function(match) {
@@ -937,7 +948,8 @@ VS.ui.SearchInput = Backbone.View.extend({
   addTextFacetRemainder : function(facetValue) {
     var boxValue = this.box.val();
     var lastWord = boxValue.match(/\b(\w+)$/);
-    if (lastWord && facetValue.indexOf(lastWord[0]) == 0) {
+    var matcher = new RegExp(lastWord[0], "i");
+    if (lastWord && facetValue.search(matcher) == 0) {
       boxValue = boxValue.replace(/\b(\w+)$/, '');
     }
     boxValue = boxValue.replace('^\s+|\s+$', '');
@@ -951,11 +963,11 @@ VS.ui.SearchInput = Backbone.View.extend({
   // because this is not called by a focus event. This instead calls a
   // focus event causing the input to become focused.
   enableEdit : function(selectText) {
-    this.box.focus();
     this.addFocus();
     if (selectText) {
       this.selectText();
     }
+    this.box.focus();
   },
   
   // Event called on user focus on the input. Tells all other input and facets
@@ -1058,12 +1070,22 @@ VS.ui.SearchInput = Backbone.View.extend({
     }
   },
   
+  // Before the searchBox performs a search, we need to close the 
+  // autocomplete menu.
+  search : function(e) {
+    this.closeAutocomplete();
+    VS.app.searchBox.searchEvent(e);
+    _.defer(_.bind(function() {
+      VS.app.searchBox.focusNextFacet(this, 0);
+    }, this));
+  },
+  
   // Callback fired on key press in the search box. We search when they hit return.
   keypress : function(e) {
     var key = VS.app.hotkeys.key(e);
     
     if (key == 'enter') {
-      return VS.app.searchBox.searchEvent(e);
+      return this.search(e);
     } else if (VS.app.hotkeys.colon(e)) {
       this.box.trigger('resize.autogrow', e);
       var query    = this.box.val();
@@ -1104,7 +1126,7 @@ VS.ui.SearchInput = Backbone.View.extend({
     } else if (key == 'right') {
       if (this.box.getCursorPosition() == this.box.val().length) {
         e.preventDefault();
-        VS.app.searchBox.focusNextFacet(this, 1, {selectFacet: true});
+        VS.app.searchBox.focusNextFacet(this, 1, {selectFacet: true, startAtEnd: -1});
       }
     } else if (VS.app.hotkeys.shift && key == 'tab') {
       e.preventDefault();
@@ -1174,7 +1196,7 @@ VS.app.hotkeys = {
   // Keys that will be mapped to the `hotkeys` namespace.
   KEYS: {
     '16':  'shift',
-    '17':  'control',
+    '17':  'command',
     '91':  'command',
     '93':  'command',
     '224': 'command',
@@ -1389,7 +1411,7 @@ $.fn.extend({
         range.collapse(true);
         range.moveEnd('character', end);
         range.moveStart('character', start);
-        range.select();
+        if (Math.abs(end - start) > 0) range.select();
       }
     });
   },
@@ -1429,6 +1451,47 @@ $.fn.extend({
   }
 
 });
+
+// Debugging in Internet Explorer. This allows you to use 
+// `console.log(['message', var1, var2, ...])`. Just remove the `false` and
+// add your console.logs. This will automatically stringify objects using
+// `JSON.stringify', so you can read what's going out. Think of this as a
+// *Diet Firebug Lite Zero with Lemon*.
+if ($.browser.msie && false) {
+  window.console = {};
+  var _$ied;
+  window.console.log = function(msg) {
+    if (_.isArray(msg)) {
+      var message = msg[0];
+      var vars = _.map(msg.slice(1), function(arg) {
+        return JSON.stringify(arg);
+      }).join(' - ');
+    }
+    if(!_$ied){
+      _$ied = $('<div><ol></ol></div>').css({
+        'position': 'fixed',
+        'bottom': 10,
+        'left': 10,
+        'zIndex': 20000,
+        'width': $('body').width() - 80,
+        'border': '1px solid #000',
+        'padding': '10px',
+        'backgroundColor': '#fff',
+        'fontFamily': 'arial,helvetica,sans-serif',
+        'fontSize': '11px'
+      });
+      $('body').append(_$ied);
+    }
+    var $message = $('<li>'+message+' - '+vars+'</li>').css({
+      'borderBottom': '1px solid #999999'
+    });
+    _$ied.find('ol').append($message);
+    _.delay(function() {
+      $message.fadeOut(500);
+    }, 5000);
+  };
+
+}
 
 })();
 
