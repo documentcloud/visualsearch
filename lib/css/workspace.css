@@ -121,9 +121,9 @@
     padding: 0;
     color: #000;
     font-size: 13px;
-    line-height: 14px;
-    padding: 5px 0 8px 4px;
-    height: 14px;
+    line-height: 16px;
+    padding: 5px 0 6px 4px;
+    height: 16px;
     width: auto;          
     z-index: 100;
     position: relative;
