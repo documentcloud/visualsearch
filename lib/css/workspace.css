@@ -121,9 +121,9 @@
     padding: 0;
     color: #000;
     font-size: 13px;
-    line-height: 16px;
-    padding: 5px 0 6px 4px;
-    height: 16px;
+    line-height: 14px;
+    padding: 5px 0 8px 4px;
+    height: 14px;
     width: auto;          
     z-index: 100;
     position: relative;
@@ -169,9 +169,10 @@
 .VS-search .search_input {
   height: 29px;
   float: left;
+  margin-left: -1px;
 }
   .VS-search .search_input input {
-    padding: 6px 3px 7px 2px;
+    padding: 6px 3px 6px 2px;
     width: 10px;
     z-index: 100;
     position: relative;
