@@ -131,9 +131,11 @@
     <h1>VisualSearch.js</h1>
 
     <p>
-      <a href="http://github.com/documentcloud/visualsearch">VisualSearch.js</a> is an auto-completing textbox with multiple facets. This
-      textbox replaces ordinary search boxes with a search box that autocompletes individual
-      facet categories and then autocompletes the expected values of those categories.
+      <a href="http://github.com/documentcloud/visualsearch">VisualSearch.js</a> is a rich 
+      search box for real data. It features an auto-completing textbox with multiple facets. 
+      This textbox replaces ordinary search boxes with a search box that autocompletes 
+      individual facet categories and then autocompletes the expected values of those 
+      categories.
     </p>
 
     <p>
@@ -430,13 +432,10 @@
           { value: '5-samuel', label: 'Samuel' },
           { value: '6-scott',  label: 'Scott' }
         ];
-        break;
       case 'filter':
         return ['published', 'unpublished', 'draft'];
-        break;
       case 'access':
         return ['public', 'private', 'protected'];
-        break;
       case 'title':
         return [
           'Pentagon Papers',
@@ -444,7 +443,6 @@
           'Laboratory for Object Oriented Thinking',
           'A Repository Grows in Brooklyn'
         ]
-        break;
     }
   }
 ...
