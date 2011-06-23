@@ -7,7 +7,7 @@
   .VS-search .VS-icon-cancel {
     width: 11px; height: 11px;
     background-position: center 0;
-    background-image: url(../images/embed/icons/cancel_search.png?1308268129);
+    background-image: url(../images/embed/icons/cancel_search.png?1308683855);
     cursor: pointer;
   }
     .VS-search .VS-icon-cancel:hover {
@@ -15,7 +15,7 @@
     }
   .VS-search .VS-icon-search {
     width: 12px; height: 12px;
-    background-image: url(../images/embed/icons/search_glyph.png?1308268129);
+    background-image: url(../images/embed/icons/search_glyph.png?1308683855);
   }
 
 /*------------------------------ RESET + DEFAULT STYLES ---------------------------------*/
@@ -87,7 +87,7 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   -webkit-box-shadow: inset 0px 0px 3px #ccc;
   -moz-box-shadow: inset 0px 0px 3px #ccc;
   box-shadow: inset 0px 0px 3px #ccc;
-  min-height: 29px;
+  min-height: 28px;
   height: auto;
 }
   .VS-search .VS-search-box.VS-focus {
@@ -133,14 +133,14 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   padding: 0 0 0 14px;
   position: relative;
   border: 1px solid transparent;
+  height: 20px;
+  margin: 3px -3px 3px 0;
 }
   .VS-search .search_facet.is_selected {
-    margin: 4px -3px 4px -3px;
+    margin-left: -3px;
     -webkit-border-radius: 16px;
     -moz-border-radius: 16px;
     border-radius: 16px;
-  }
-  .VS-search .search_facet.is_selected {
     background-color: #d2e6fd;
     background-image: -moz-linear-gradient(top, #d2e6fd, #b0d1f9); /* FF3.6 */
     background-image: -webkit-gradient(linear, left top, left bottom, from(#d2e6fd), to(#b0d1f9)); /* Saf4+, Chrome */
@@ -156,10 +156,10 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     padding: 8px 0 5px;
     line-height: 13px;
     cursor: pointer;
+    padding: 4px 0 0;
   }
   .VS-search .search_facet.is_selected .category {
     margin-left: 3px;
-    padding: 4px 0 0;
   }
   .VS-search .search_facet .search_facet_input_container {
     float: left;
@@ -170,17 +170,15 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     color: #000;
     font-size: 13px;
     line-height: 16px;
-    padding: 5px 0 6px 4px;
+    padding: 5px 0 5px 4px;
     height: 16px;
     width: auto;          
     z-index: 100;
     position: relative;
-
-  }
-  .VS-search .search_facet.is_selected input {
     padding-top: 1px;
     padding-bottom: 2px;
     padding-right: 3px;
+
   }
   .VS-search .search_facet.is_editing input,
   .VS-search .search_facet.is_selected input {
@@ -189,12 +187,11 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   .VS-search .search_facet .search_facet_remove {
     position: absolute;
     left: 0;
-    top: 8px;
+    top: 4px;
   }
     .VS-search .search_facet.is_selected .search_facet_remove {
-      top: 4px;
-      left: 3px;
       opacity: 0.4;
+      left: 3px;
       filter: alpha(opacity=40);
       background-position: center -11px;
     }
@@ -215,7 +212,7 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
 /* ================ */      
 
 .VS-search .search_input {
-  height: 29px;
+  height: 28px;
   float: left;
   margin-left: -1px;
 }
@@ -248,7 +245,7 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   overflow-y: auto;
   overflow-x: hidden;
   font-size: 13px;
-  top: 1px;
+  top: 5px;
   opacity: 0.97;
   box-shadow: 3px 4px 5px -2px rgba(0, 0, 0, 0.5); -webkit-box-shadow: 3px 4px 5px -2px rgba(0, 0, 0, 0.5); -moz-box-shadow: 3px 4px 5px -2px rgba(0, 0, 0, 0.5);
 }
