@@ -198,6 +198,14 @@
                 });
               }, 2000);
             },
+            facetMatches : function() {
+              return [
+                'account', 'filter', 'access', 'title',
+                { label: 'city',    category: 'location' },
+                { label: 'country', category: 'location' },
+                { label: 'state',   category: 'location' },
+              ];
+            },
             valueMatches : function(facet) {
               switch (facet) {
               case 'account':
@@ -278,14 +286,6 @@
                     "Slovakia", "Finland", "Eritrea", "Turkmenistan"
                   ];
               }
-            },
-            facetMatches : function() {
-              return [
-                'account', 'filter', 'access', 'title',
-                { label: 'city',    category: 'location' },
-                { label: 'country', category: 'location' },
-                { label: 'state',   category: 'location' },
-              ];
             }
           }
         });
