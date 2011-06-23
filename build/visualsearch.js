@@ -517,6 +517,9 @@ VS.ui.SearchFacet = Backbone.View.extend({
       minLength : 0,
       delay     : 0,
       autoFocus : true,
+      position  : {
+        offset    : "0 1"
+      },
       select    : _.bind(function(e, ui) {
         e.preventDefault();
         var originalValue = this.model.get('value');
@@ -561,7 +564,6 @@ VS.ui.SearchFacet = Backbone.View.extend({
         menu.width('').outerWidth(),
         autocomplete.element.outerWidth()
       ));
-      this.moveAutocomplete();
     }
   },
   
