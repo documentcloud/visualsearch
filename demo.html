@@ -197,7 +197,7 @@
                 });
               }, 2000);
             },
-            facetMatches : function(category) {
+            valueMatches : function(category) {
               switch (category) {
               case 'account':
                   return [
@@ -278,7 +278,7 @@
                   ];
               }
             },
-            categoryMatches : function() {
+            facetMatches : function() {
               return [
                 'account', 'filter', 'access', 'title',
                 { label: 'city',    category: 'location' },

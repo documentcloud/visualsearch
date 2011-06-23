@@ -122,7 +122,7 @@
   <script>
     hljs.initHighlightingOnLoad();
   </script>
-  
+
 </head>
 <body>
 
@@ -131,10 +131,10 @@
     <h1>VisualSearch.js</h1>
 
     <p>
-      <a href="http://github.com/documentcloud/visualsearch">VisualSearch.js</a> 
-      enhances ordinary search boxes with the ability to autocomplete 
-      faceted search queries. Specify the facets for completion, along with the 
-      completable values for any facet. You can retrieve the search query as a 
+      <a href="http://github.com/documentcloud/visualsearch">VisualSearch.js</a>
+      enhances ordinary search boxes with the ability to autocomplete
+      faceted search queries. Specify the facets for completion, along with the
+      completable values for any facet. You can retrieve the search query as a
       structured object, so you don't have to parse the query string yourself.
     </p>
 
@@ -157,17 +157,17 @@
     </p>
 
     <h2>Table of Contents</h2>
-    
+
     <a href="#demo">Demo</a> | <a href="#downloads">Downloads</a> | <a href="#usage">Usage</a> | <a href="#changelog">Change Log</a>
-    
-    
+
+
     <h2 id="demo">Demo <span class="demo-hint"><i>Try searching for: <b>account</b>, <b>filter</b>, <b>access</b>, <b>title</b>, <b>city</b>, <b>state</b>, or <b>country</b>.</i></span></h2>
-    
-    
-    
+
+
+
     <div id="search_box_container"></div>
     <div id="search_query">&nbsp;</div>
-    
+
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
         VS.init({
@@ -194,8 +194,8 @@
                 });
               }, 2000);
             },
-            facetMatches : function(category) {
-              switch (category) {
+            valueMatches : function(facet) {
+              switch (facet) {
               case 'account':
                   return [
                     { value: '1-amanda', label: 'Amanda' },
@@ -275,7 +275,7 @@
                   ];
               }
             },
-            categoryMatches : function() {
+            facetMatches : function() {
               return [
                 'account', 'filter', 'access', 'title',
                 { label: 'city',    category: 'location' },
@@ -287,18 +287,18 @@
         });
       });
     </script>
-    
+
     <h2 id="downloads">Downloads <i style="padding-left: 12px; font-size:12px;">(Right-click, and use "Save As")</i></h2>
 
     <table class="downloads">
-      
+
       <tr>
         <th colspan="2">0. Everything (<tt>visualsearch.zip</tt>)</th>
       </tr>
       <tr>
         <td><a href="https://github.com/documentcloud/visualsearch/zipball/master">Download everything</a></td>
       </tr>
-      
+
       <tr>
         <th colspan="2">1. VisualSearch JavaScript (<tt>visualsearch.js</tt>)</th>
       </tr>
@@ -310,7 +310,7 @@
         <td><a href="build/visualsearch.js">Development Version (0.1.0)</a></td>
         <td><i>45kb, Uncompressed with Comments</i></td>
       </tr>
-      
+
       <tr>
         <th colspan="2">2. VisualSearch Stylesheets (<tt>visualsearch.css</tt>)</th>
       </tr>
@@ -340,7 +340,7 @@
         <td><img src="lib/images/embed/icons/cancel_search.png"> <a href="lib/images/embed/icons/cancel_search.png">Cancel Button</a></td>
         <td><i>4kb, embedded in visualsearch-datauri.css</i></td>
       </tr>
-      
+
       <tr>
         <th colspan="2">4. VisualSearch Dependencies (<tt>jQuery, jQuery UI, Underscore.js, Backbone.js</tt>)</th>
       </tr>
@@ -371,13 +371,13 @@
         <td><a href="vendor/backbone-0.3.3.js">Backbone 0.3.3</a></td>
         <td><i>41kb, Uncompressed with Comments</i></td>
       </tr>
-      
+
     </table>
 
     <h2 id="usage">Usage</h2>
-    
+
     <p>To use VisualSearch.js on your site, follow these instructions on installation, configuration, and customization.</p>
-    
+
     <ol>
       <li class="xml" id="css">Insert the JavaScript and CSS into your page:<br />
         <pre><code>&lt;script src="visualsearch.js" type="text/javascript"&gt;&lt;/script&gt;
@@ -390,26 +390,26 @@
       </li>
       <li>Initialize the Visual Search box:<br />
         <pre class="javascript"><code>&lt;div class="visual_search"&gt;&lt;/div&gt;
-          
+
 &lt;script type="text/javascript" charset="utf-8"&gt;
   $(document).ready(function() {
     VS.init({
       container : $('.visual_search'),
       query     : '',
       callbacks : {
-        search          : function(query) {},
-        facetMatches    : function(category) {},
-        categoryMatches : function() {}
+        search       : function(query) {},
+        facetMatches : function() {},
+        valueMatches : function(facet) {}
       }
     });
   });
 &lt;/script&gt;</code></pre>
       </li>
-      <li class="javascript">Customize the categories and autocompleted category facets:
+      <li class="javascript">Customize the autocompleted facets and values:
         <pre><code>callbacks : {
   ...
-  // These are the categories that will be autocompleted in an empty input.
-  categoryMatches : function() {
+  // These are the facets that will be autocompleted in an empty input.
+  facetMatches : function() {
     return [
       'account', 'filter', 'access', 'title',
       { label: 'city',    category: 'location' },
@@ -421,8 +421,8 @@
   ...
   // These are the values that match specific categories, autocompleted
   // in a category's input field.
-  facetMatches : function(category) {
-    switch (category) {
+  valueMatches : function(facet) {
+    switch (facet) {
     case 'account':
         return [
           { value: '1-amanda', label: 'Amanda' },
@@ -453,10 +453,10 @@
 }</code></pre>
       </li>
     </ol>
-    
-    
+
+
     <h2 id="changelog">Change Log</h2>
-    
+
     <p>
       <b class="header">0.1.0</b><br />
       Initial release of VisualSearch.js.
