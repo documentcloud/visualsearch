@@ -158,8 +158,8 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     cursor: pointer;
   }
   .VS-search .search_facet.is_selected .category {
-    padding: 4px 0 0;
     margin-left: 3px;
+    padding: 4px 0 0;
   }
   .VS-search .search_facet .search_facet_input_container {
     float: left;

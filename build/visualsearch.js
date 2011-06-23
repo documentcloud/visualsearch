@@ -88,7 +88,8 @@ VS.ui.SearchBox = Backbone.View.extend({
     };
     this.facetViews = [];
     this.inputViews = [];
-    _.bindAll(this, 'renderFacets', '_maybeDisableFacets', 'disableFacets');
+    _.bindAll(this, 'renderFacets', '_maybeDisableFacets', 'disableFacets', 
+              'deselectAllFacets');
     VS.app.searchQuery.bind('refresh', this.renderFacets);
     $(document).bind('keydown', this._maybeDisableFacets);
   },
@@ -230,7 +231,7 @@ VS.ui.SearchBox = Backbone.View.extend({
   selectAllFacets : function() {
     this.flags.allSelected = true;
     
-    $(document).one('click.selectAllFacets', this.disableFacets);
+    $(document).one('click.selectAllFacets', this.deselectAllFacets);
     
     _.each(this.facetViews, function(facetView, i) {
       facetView.selectFacet();
@@ -246,10 +247,30 @@ VS.ui.SearchBox = Backbone.View.extend({
     return this.flags.allSelected;
   },
   
+  // After `selectAllFacets` is engaged, this method is bound to the entire document.
+  // This immediate disables and deselects all facets, but it also checks if the user
+  // has clicked on either a facet or an input, and properly selects the view.
+  deselectAllFacets : function(e) {
+    this.disableFacets();
+    
+    if (this.$(e.target).is('.category,input')) {
+      var el   = $(e.target).closest('.search_facet,.search_input');
+      var view = _.detect(this.facetViews.concat(this.inputViews), function(v) {
+        return v.el == el[0];
+      });
+      if (view.type == 'facet') {
+        view.selectFacet();
+      } else if (view.type == 'input') {
+        _.defer(function() {
+          view.enableEdit(true);
+        });
+      }
+    }
+  },
+  
   // Disables all facets except for the passed in view. Used when switching between
   // facets, so as not to have to keep state of active facets.
   disableFacets : function(keepView) {
-    console.log(['disableFacets', keepView]);
     _.each(this.inputViews, function(view) {
       if (view && view != keepView &&
           (view.modes.editing == 'is' || view.modes.selected == 'is')) {
@@ -496,6 +517,9 @@ VS.ui.SearchFacet = Backbone.View.extend({
       minLength : 0,
       delay     : 0,
       autoFocus : true,
+      position  : {
+        offset    : "0 1"
+      },
       select    : _.bind(function(e, ui) {
         e.preventDefault();
         var originalValue = this.model.get('value');
@@ -540,7 +564,6 @@ VS.ui.SearchFacet = Backbone.View.extend({
         menu.width('').outerWidth(),
         autocomplete.element.outerWidth()
       ));
-      this.moveAutocomplete();
     }
   },
   
@@ -658,7 +681,6 @@ VS.ui.SearchFacet = Backbone.View.extend({
   // we attach a mouse/keyboard watcher to check if the next action by the user
   // should delete this facet or just deselect it.
   selectFacet : function(e) {
-    console.log(['allSelected', allSelected, e]);
     if (e) e.preventDefault();
     var allSelected = VS.app.searchBox.allSelected();
     if (this.modes.selected == 'is') return;
