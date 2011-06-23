@@ -53,6 +53,9 @@ than what it was, commit the facet and search for it.</p>             </td>     
       <span class="nx">minLength</span> <span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
       <span class="nx">delay</span>     <span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
       <span class="nx">autoFocus</span> <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="nx">position</span>  <span class="o">:</span> <span class="p">{</span>
+        <span class="nx">offset</span>    <span class="o">:</span> <span class="s2">&quot;0 1&quot;</span>
+      <span class="p">},</span>
       <span class="nx">select</span>    <span class="o">:</span> <span class="nx">_</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">ui</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
         <span class="kd">var</span> <span class="nx">originalValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">);</span>
@@ -75,7 +78,7 @@ field, which is bound to this method to move the autocomplete menu.</p>         
         <span class="nx">at</span>        <span class="o">:</span> <span class="s2">&quot;left bottom&quot;</span><span class="p">,</span>
         <span class="nx">of</span>        <span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;autocomplete&#39;</span><span class="p">).</span><span class="nx">element</span><span class="p">,</span>
         <span class="nx">collision</span> <span class="o">:</span> <span class="s2">&quot;flip&quot;</span><span class="p">,</span>
-        <span class="nx">offset</span>    <span class="o">:</span> <span class="s2">&quot;0 0&quot;</span>
+        <span class="nx">offset</span>    <span class="o">:</span> <span class="s2">&quot;0 1&quot;</span>
       <span class="p">});</span>
     <span class="p">}</span>
   <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>When a user enters a facet and it is being edited, immediately show
