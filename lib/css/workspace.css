@@ -166,7 +166,7 @@
   margin-left: -1px;
 }
   .VS-search .search_input input {
-    padding: 6px 3px 6px 2px;
+    padding: 3px 3px 8px 2px;
     width: 10px;
     z-index: 100;
     min-width: 4px;
