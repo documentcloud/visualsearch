@@ -114,14 +114,14 @@
   <link rel="stylesheet" href="lib/css/reset.css" type="text/css" media="screen" charset="utf-8">
   <link rel="stylesheet" href="lib/css/icons.css" type="text/css" media="screen" charset="utf-8">
   <link rel="stylesheet" href="lib/css/workspace.css" type="text/css" media="screen" charset="utf-8">
-  
+
   <script src="vendor/jquery-1.6.1.js" type="text/javascript" charset="utf-8"></script>
   <script src="vendor/jquery.ui.core.js" type="text/javascript" charset="utf-8"></script>
   <script src="vendor/jquery.ui.widget.js" type="text/javascript" charset="utf-8"></script>
   <script src="vendor/jquery.ui.position.js" type="text/javascript" charset="utf-8"></script>
   <script src="vendor/jquery.ui.autocomplete.js" type="text/javascript" charset="utf-8"></script>
   <script src="vendor/underscore-1.1.5.js" type="text/javascript" charset="utf-8"></script>
-  <script src="vendor/backbone-0.3.3.js" type="text/javascript" charset="utf-8"></script>
+  <script src="vendor/backbone-0.5.0.js" type="text/javascript" charset="utf-8"></script>
   <script src="lib/js/visualsearch.js" type="text/javascript" charset="utf-8"></script>
   <script src="lib/js/views/search_box.js" type="text/javascript" charset="utf-8"></script>
   <script src="lib/js/views/search_facet.js" type="text/javascript" charset="utf-8"></script>
@@ -133,7 +133,7 @@
   <script src="lib/js/utils/jquery_extensions.js" type="text/javascript" charset="utf-8"></script>
   <script src="lib/js/utils/search_parser.js" type="text/javascript" charset="utf-8"></script>
   <script src="lib/js/utils/inflector.js" type="text/javascript" charset="utf-8"></script>
-  <script src="lib/js/templates/templates.js" type="text/javascript" charset="utf-8"></script>  
+  <script src="lib/js/templates/templates.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
 
@@ -142,10 +142,10 @@
     <h1><a href="index.html">VisualSearch.js</a></h1>
 
     <p>
-      <a href="http://github.com/documentcloud/visualsearch">VisualSearch.js</a> 
-      enhances ordinary search boxes with the ability to autocomplete 
-      faceted search queries. Specify the facets for completion, along with the 
-      completable values for any facet. You can retrieve the search query as a 
+      <a href="http://github.com/documentcloud/visualsearch">VisualSearch.js</a>
+      enhances ordinary search boxes with the ability to autocomplete
+      faceted search queries. Specify the facets for completion, along with the
+      completable values for any facet. You can retrieve the search query as a
       structured object, so you don't have to parse the query string yourself.
     </p>
 
@@ -167,10 +167,10 @@
       <i>VisualSearch.js is an open-source component of <a href="http://documentcloud.org/">DocumentCloud</a>.</i>
     </p>
     <h2 id="demo">Demo <span class="demo-hint"><i>Try searching for: <b>account</b>, <b>filter</b>, <b>access</b>, <b>title</b>, <b>city</b>, <b>state</b>, or <b>country</b>.</i></span></h2>
-    
+
     <div id="search_box_container"></div>
     <div id="search_query">&nbsp;</div>
-    
+
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
         VS.init({
