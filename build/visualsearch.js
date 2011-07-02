@@ -581,22 +581,24 @@ VS.ui.SearchFacet = Backbone.View.extend({
     var value    = this.model.get('value');
     var searchTerm = req.term;
 
-    var matches = VS.options.callbacks.valueMatches(category) || [];
+    VS.options.callbacks.valueMatches(category, function(matches) {
+      matches = matches || [];
+      if (searchTerm && value != searchTerm) {
+        var re = VS.utils.inflector.escapeRegExp(searchTerm || '');
+        var matcher = new RegExp('\\b' + re, 'i');
+        matches = $.grep(matches, function(item) {
+          return matcher.test(item) ||
+                 matcher.test(item.value) ||
+                 matcher.test(item.label);
+        });
+      }
 
-    if (searchTerm && value != searchTerm) {
-      var re = VS.utils.inflector.escapeRegExp(searchTerm || '');
-      var matcher = new RegExp('\\b' + re, 'i');
-      matches = $.grep(matches, function(item) {
-        return matcher.test(item) ||
-               matcher.test(item.value) ||
-               matcher.test(item.label);
-      });
-    }
+      resp(_.sortBy(matches, function(match) {
+        if (match == value || match.value == value) return '';
+        else return match;
+      }));
+    });
 
-    resp(_.sortBy(matches, function(match) {
-      if (match == value || match.value == value) return '';
-      else return match;
-    }));
   },
 
   // Sets the facet's model's value.
@@ -918,18 +920,20 @@ VS.ui.SearchInput = Backbone.View.extend({
     var searchTerm = req.term;
     var lastWord   = searchTerm.match(/\w+$/); // Autocomplete only last word.
     var re         = VS.utils.inflector.escapeRegExp(lastWord && lastWord[0] || ' ');
-    var prefixes   = VS.options.callbacks.facetMatches() || [];
+    VS.options.callbacks.facetMatches(function(prefixes) {
+      prefixes = prefixes || [];
+      // Only match from the beginning of the word.
+      var matcher    = new RegExp('^' + re, 'i');
+      var matches    = $.grep(prefixes, function(item) {
+        return item && matcher.test(item.label || item);
+      });
 
-    // Only match from the beginning of the word.
-    var matcher    = new RegExp('^' + re, 'i');
-    var matches    = $.grep(prefixes, function(item) {
-      return item && matcher.test(item.label || item);
+      resp(_.sortBy(matches, function(match) {
+        if (match.label) return match.category + '-' + match.label;
+        else             return match;
+      }));
     });
 
-    resp(_.sortBy(matches, function(match) {
-      if (match.label) return match.category + '-' + match.label;
-      else             return match;
-    }));
   },
 
   // Closes the autocomplete menu. Called on disabling, selecting, deselecting,
