@@ -204,7 +204,7 @@
                 { label: 'state',   category: 'location' },
               ]);
             },
-            valueMatches : function(facet, callback) {
+            valueMatches : function(facet, searchTerm, callback) {
               switch (facet) {
               case 'account':
                   callback([
@@ -408,7 +408,7 @@
       callbacks : {
         search       : function(query) {},
         facetMatches : function(callback) {},
-        valueMatches : function(facet, callback) {}
+        valueMatches : function(facet, searchTerm, callback) {}
       }
     });
   });
@@ -429,8 +429,9 @@
   }
   ...
   // These are the values that match specific categories, autocompleted
-  // in a category's input field.
-  valueMatches : function(facet, callback) {
+  // in a category's input field.  searchTerm can be used to filter the
+  // list on the server-side, prior to providing a list to the widget.
+  valueMatches : function(facet, searchTerm, callback) {
     switch (facet) {
     case 'account':
         callback([
