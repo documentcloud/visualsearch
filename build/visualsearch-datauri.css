@@ -217,7 +217,10 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   margin-left: -1px;
 }
   .VS-search .search_input input {
-    padding: 3px 3px 8px 2px;
+    padding: 6px 3px 6px 2px;
+    line-height: 10px;
+    height: 22px;
+    margin-top: -4px;
     width: 10px;
     z-index: 100;
     min-width: 4px;

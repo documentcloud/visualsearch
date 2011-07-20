@@ -1222,7 +1222,7 @@ var $ = jQuery; // Handle namespaced jQuery
 // DocumentCloud workspace hotkeys. To tell if a key is currently being pressed,
 // just ask `VS.app.hotkeys.[key]` on `keypress`, or ask `VS.app.hotkeys.key(e)`
 // on `keydown`.
-// 
+//
 // For the most headache-free way to use this utility, check modifier keys,
 // like shift and command, with `VS.app.hotkeys.shift`, and check every other
 // key with `VS.app.hotkeys.key(e) == 'key_name'`.
@@ -1251,9 +1251,9 @@ VS.app.hotkeys = {
     _.bindAll(this, 'down', 'up', 'blur');
     $(document).bind('keydown', this.down);
     $(document).bind('keyup', this.up);
-    // $(window).bind('blur', this.blur);
+    $(window).bind('blur', this.blur);
   },
-  
+
   // On `keydown`, turn on all keys that match.
   down : function(e) {
     var key = this.KEYS[e.which];
@@ -1271,21 +1271,21 @@ VS.app.hotkeys = {
   blur : function(e) {
     for (var key in this.KEYS) this[this.KEYS[key]] = false;
   },
-  
+
   // Check a key from an event and return the common english name.
   key : function(e) {
     return this.KEYS[e.which];
   },
-  
+
   // Colon is special, since the value is different between browsers.
   colon : function(e) {
     var charCode = e.which;
     return charCode && String.fromCharCode(charCode) == ":";
   },
-  
+
   // Check a key from an event and match it against any known characters.
   // The `keyCode` is different depending on the event type: `keydown` vs. `keypress`.
-  // 
+  //
   // These were determined by looping through every `keyCode` and `charCode` that
   // resulted from `keydown` and `keypress` events and counting what was printable.
   printable : function(e) {
