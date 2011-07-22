@@ -193,7 +193,7 @@
             'access'
           ],
           callbacks  : {
-            search : function(query) {
+            search : function(query, queryObj) {
               var $query = $('#search_query');
               $query.stop().animate({opacity : 1}, {duration: 300, queue: false});
               $query.html('<span class="raquo">&raquo;</span> You searched for: <b>' + query + '</b>');
@@ -417,7 +417,7 @@
       container : $('.visual_search'),
       query     : '',
       callbacks : {
-        search       : function(query) {},
+        search       : function(query, queryObj) {},
         facetMatches : function(callback) {},
         valueMatches : function(facet, searchTerm, callback) {}
       }
