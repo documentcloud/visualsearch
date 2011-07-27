@@ -26,7 +26,7 @@
   // Sets the version for VisualSearch to be used programatically elsewhere.
   VS.VERSION = '0.1.0';
 
-  VS.Instance = function(options) {
+  VS.VisualSearch = function(options) {
     var defaults = {
       container   : '',
       query       : '',
@@ -64,7 +64,7 @@
   // itself to `options.container`, or pass back the `searchBox` so it can be rendered
   // at will.
   VS.init = function(options) {
-    return new VS.Instance(options);
+    return new VS.VisualSearch(options);
   };
 
 })();
