@@ -26,10 +26,7 @@
   // Sets the version for VisualSearch to be used programatically elsewhere.
   VS.VERSION = '0.1.0';
 
-  // Entry-point used to tie all parts of VisualSearch together. It will either attach
-  // itself to `options.container`, or pass back the `searchBox` so it can be rendered
-  // at will.
-  VS.init = function(options) {
+  VS.VisualSearch = function(options) {
     var defaults = {
       container   : '',
       query       : '',
@@ -41,18 +38,18 @@
         valueMatches    : $.noop
       }
     };
-    VS.options           = _.extend({}, defaults, options);
-    VS.options.callbacks = _.extend({}, defaults.callbacks, options.callbacks);
+    this.options           = _.extend({}, defaults, options);
+    this.options.callbacks = _.extend({}, defaults.callbacks, options.callbacks);
 
     VS.app.hotkeys.initialize();
-    VS.app.searchQuery   = new VS.model.SearchQuery();
-    VS.app.searchBox     = new VS.ui.SearchBox(options);
+    this.searchQuery   = new VS.model.SearchQuery();
+    this.searchBox     = new VS.ui.SearchBox({app: this});
 
     if (options.container) {
-      var searchBox = VS.app.searchBox.render().el;
-      $(options.container).html(searchBox);
+      var searchBox = this.searchBox.render().el;
+      $(this.options.container).html(searchBox);
     }
-    VS.app.searchBox.value(options.query || '');
+    this.searchBox.value(this.options.query || '');
 
     // Disable page caching for browsers that incorrectly cache the visual search inputs.
     // This is forced the browser to re-render the page when it is retrieved in its history.
@@ -60,7 +57,14 @@
 
     // Gives the user back a reference to the `searchBox` so they
     // can use public methods.
-    return VS.app.searchBox;
+    return this;
+  }
+
+  // Entry-point used to tie all parts of VisualSearch together. It will either attach
+  // itself to `options.container`, or pass back the `searchBox` so it can be rendered
+  // at will.
+  VS.init = function(options) {
+    return new VS.VisualSearch(options);
   };
 
 })();
@@ -83,6 +87,7 @@ VS.ui.SearchBox = Backbone.View.extend({
   // Creating a new SearchBox registers handlers for re-rendering facets when necessary,
   // as well as handling typing when a facet is selected.
   initialize : function() {
+    this.app = this.options.app;
     this.flags = {
       allSelected : false
     };
@@ -90,7 +95,7 @@ VS.ui.SearchBox = Backbone.View.extend({
     this.inputViews = [];
     _.bindAll(this, 'renderFacets', '_maybeDisableFacets', 'disableFacets',
               'deselectAllFacets');
-    VS.app.searchQuery.bind('reset', this.renderFacets);
+    this.app.searchQuery.bind('reset', this.renderFacets);
     $(document).bind('keydown', this._maybeDisableFacets);
   },
 
@@ -116,7 +121,7 @@ VS.ui.SearchBox = Backbone.View.extend({
     var query           = [];
     var inputViewsCount = this.inputViews.length;
 
-    VS.app.searchQuery.each(_.bind(function(facet, i) {
+    this.app.searchQuery.each(_.bind(function(facet, i) {
       query.push(this.inputViews[i].value());
       query.push(facet.serialize());
     }, this));
@@ -133,7 +138,7 @@ VS.ui.SearchBox = Backbone.View.extend({
   // here to call `this.renderFacets`.
   setQuery : function(query) {
     this.currentQuery = query;
-    VS.app.SearchParser.parse(query);
+    VS.app.SearchParser.parse(this.app, query);
   },
 
   // Returns the position of a facet/input view. Useful when moving between facets.
@@ -148,7 +153,7 @@ VS.ui.SearchBox = Backbone.View.extend({
   searchEvent : function(e) {
     var query = this.value();
     this.focusSearch(e);
-    if (VS.options.callbacks.search(query) !== false) {
+    if (this.app.options.callbacks.search(query) !== false) {
       this.value(query);
     }
   },
@@ -164,9 +169,10 @@ VS.ui.SearchBox = Backbone.View.extend({
 
     var model = new VS.model.SearchFacet({
       category : category,
-      value    : initialQuery || ''
+      value    : initialQuery || '',
+      app      : this.app
     });
-    VS.app.searchQuery.add(model, {at: position});
+    this.app.searchQuery.add(model, {at: position});
     this.renderFacets();
     var facetView = _.detect(this.facetViews, function(view) {
       if (view.model == model) return true;
@@ -184,7 +190,7 @@ VS.ui.SearchBox = Backbone.View.extend({
 
     this.$('.VS-search-inner').empty();
 
-    VS.app.searchQuery.each(_.bind(function(facet, i) {
+    this.app.searchQuery.each(_.bind(function(facet, i) {
       this.renderFacet(facet, i);
     }, this));
 
@@ -195,6 +201,7 @@ VS.ui.SearchBox = Backbone.View.extend({
   // Render a single facet, using its category and query value.
   renderFacet : function(facet, position) {
     var view = new VS.ui.SearchFacet({
+      app   : this.app,
       model : facet,
       order : position
     });
@@ -212,7 +219,7 @@ VS.ui.SearchBox = Backbone.View.extend({
 
   // Render a single input, used to create and autocomplete facets
   renderSearchInput : function() {
-    var input = new VS.ui.SearchInput({position: this.inputViews.length});
+    var input = new VS.ui.SearchInput({position: this.inputViews.length, app: this.app});
     this.$('.VS-search-inner').append(input.render().el);
     this.inputViews.push(input);
   },
@@ -408,7 +415,7 @@ VS.ui.SearchBox = Backbone.View.extend({
 
   // Used to show the user is focused on some input inside the search box.
   addFocus : function() {
-    VS.options.callbacks.focus();
+    this.app.options.callbacks.focus();
     this.$('.VS-search-box').addClass('VS-focus');
   },
 
@@ -581,7 +588,7 @@ VS.ui.SearchFacet = Backbone.View.extend({
     var value    = this.model.get('value');
     var searchTerm = req.term;
 
-    VS.options.callbacks.valueMatches(category, searchTerm, function(matches) {
+    this.options.app.options.callbacks.valueMatches(category, searchTerm, function(matches) {
       matches = matches || [];
       if (searchTerm && value != searchTerm) {
         var re = VS.utils.inflector.escapeRegExp(searchTerm || '');
@@ -612,9 +619,9 @@ VS.ui.SearchFacet = Backbone.View.extend({
   search : function(e, direction) {
     if (!direction) direction = 1;
     this.closeAutocomplete();
-    VS.app.searchBox.searchEvent(e);
+    this.options.app.searchBox.searchEvent(e);
     _.defer(_.bind(function() {
-      VS.app.searchBox.focusNextFacet(this, direction, {viewPosition: this.options.order});
+      this.options.app.searchBox.focusNextFacet(this, direction, {viewPosition: this.options.order});
     }, this));
   },
 
@@ -633,11 +640,11 @@ VS.ui.SearchFacet = Backbone.View.extend({
     }
 
     this.flags.canClose = false;
-    VS.app.searchBox.disableFacets(this);
-    VS.app.searchBox.addFocus();
-    _.defer(function() {
-      VS.app.searchBox.addFocus();
-    });
+    this.options.app.searchBox.disableFacets(this);
+    this.options.app.searchBox.addFocus();
+    _.defer(_.bind(function() {
+      this.options.app.searchBox.addFocus()
+    }, this));
     this.resize();
     this.searchAutocomplete();
     this.box.focus();
@@ -673,7 +680,7 @@ VS.ui.SearchFacet = Backbone.View.extend({
     this.box.blur();
     this.setMode('not', 'editing');
     this.closeAutocomplete();
-    VS.app.searchBox.removeFocus();
+    this.options.app.searchBox.removeFocus();
   },
 
   // Selects the facet, which blurs the facet's input and highlights the facet.
@@ -682,7 +689,7 @@ VS.ui.SearchFacet = Backbone.View.extend({
   // should delete this facet or just deselect it.
   selectFacet : function(e) {
     if (e) e.preventDefault();
-    var allSelected = VS.app.searchBox.allSelected();
+    var allSelected = this.options.app.searchBox.allSelected();
     if (this.modes.selected == 'is') return;
 
     if (this.box.is(':focus')) {
@@ -701,8 +708,8 @@ VS.ui.SearchFacet = Backbone.View.extend({
         $(document).unbind('keydown.facet').bind('keydown.facet', this.keydown);
         $(document).unbind('click.facet').one('click.facet', this.deselectFacet);
       }, this));
-      VS.app.searchBox.disableFacets(this);
-      VS.app.searchBox.addFocus();
+      this.options.app.searchBox.disableFacets(this);
+      this.options.app.searchBox.addFocus();
     }
     return false;
   },
@@ -716,7 +723,7 @@ VS.ui.SearchFacet = Backbone.View.extend({
     if (this.modes.selected == 'is') {
       this.setMode('not', 'selected');
       this.closeAutocomplete();
-      VS.app.searchBox.removeFocus();
+      this.options.app.searchBox.removeFocus();
     }
     $(document).unbind('keydown.facet', this.keydown);
     $(document).unbind('click.facet', this.deselectFacet);
@@ -755,12 +762,12 @@ VS.ui.SearchFacet = Backbone.View.extend({
     var committed = this.model.get('value');
     this.deselectFacet();
     this.disableEdit();
-    VS.app.searchQuery.remove(this.model);
+    this.options.app.searchQuery.remove(this.model);
     if (committed) {
       this.search(e, -1);
     } else {
-      VS.app.searchBox.renderFacets();
-      VS.app.searchBox.focusNextFacet(this, -1, {viewPosition: this.options.order});
+      this.options.app.searchBox.renderFacets();
+      this.options.app.searchBox.focusNextFacet(this, -1, {viewPosition: this.options.order});
     }
   },
 
@@ -782,7 +789,7 @@ VS.ui.SearchFacet = Backbone.View.extend({
     } else if (key == 'left') {
       if (this.modes.selected == 'is') {
         this.deselectFacet();
-        VS.app.searchBox.focusNextFacet(this, -1, {startAtEnd: -1});
+        this.options.app.searchBox.focusNextFacet(this, -1, {startAtEnd: -1});
       } else if (this.box.getCursorPosition() == 0 && !this.box.getSelection().length) {
         this.selectFacet();
       }
@@ -795,27 +802,27 @@ VS.ui.SearchFacet = Backbone.View.extend({
       } else if (this.box.getCursorPosition() == this.box.val().length) {
         e.preventDefault();
         this.disableEdit();
-        VS.app.searchBox.focusNextFacet(this, 1);
+        this.options.app.searchBox.focusNextFacet(this, 1);
       }
     } else if (VS.app.hotkeys.shift && key == 'tab') {
       e.preventDefault();
-      VS.app.searchBox.focusNextFacet(this, -1, {
+      this.options.app.searchBox.focusNextFacet(this, -1, {
         startAtEnd  : -1,
         skipToFacet : true,
         selectText  : true
       });
     } else if (key == 'tab') {
       e.preventDefault();
-      VS.app.searchBox.focusNextFacet(this, 1, {
+      this.options.app.searchBox.focusNextFacet(this, 1, {
         skipToFacet : true,
         selectText  : true
       });
     } else if (VS.app.hotkeys.command && (e.which == 97 || e.which == 65)) {
       e.preventDefault();
-      VS.app.searchBox.selectAllFacets();
+      this.options.app.searchBox.selectAllFacets();
       return false;
     } else if (VS.app.hotkeys.printable(e) && this.modes.selected == 'is') {
-      VS.app.searchBox.focusNextFacet(this, -1, {startAtEnd: -1});
+      this.options.app.searchBox.focusNextFacet(this, -1, {startAtEnd: -1});
       this.remove(e);
     } else if (key == 'backspace') {
       if (this.modes.selected == 'is') {
@@ -854,6 +861,7 @@ VS.ui.SearchInput = Backbone.View.extend({
   },
 
   initialize : function() {
+    this.app = this.options.app;
     this.flags = {
       canClose : false
     };
@@ -893,7 +901,7 @@ VS.ui.SearchInput = Backbone.View.extend({
         e.stopPropagation();
         var remainder = this.addTextFacetRemainder(ui.item.value);
         var position  = this.options.position + (remainder ? 1 : 0);
-        VS.app.searchBox.addFacet(ui.item.value, '', position);
+        this.app.searchBox.addFacet(ui.item.value, '', position);
         return false;
       }, this)
     });
@@ -920,7 +928,7 @@ VS.ui.SearchInput = Backbone.View.extend({
     var searchTerm = req.term;
     var lastWord   = searchTerm.match(/\w+$/); // Autocomplete only last word.
     var re         = VS.utils.inflector.escapeRegExp(lastWord && lastWord[0] || ' ');
-    VS.options.callbacks.facetMatches(function(prefixes) {
+    this.app.options.callbacks.facetMatches(function(prefixes) {
       prefixes = prefixes || [];
       // Only match from the beginning of the word.
       var matcher    = new RegExp('^' + re, 'i');
@@ -988,7 +996,7 @@ VS.ui.SearchInput = Backbone.View.extend({
     }
     boxValue = boxValue.replace('^\s+|\s+$', '');
     if (boxValue) {
-      VS.app.searchBox.addFacet('text', boxValue, this.options.position);
+      this.app.searchBox.addFacet('text', boxValue, this.options.position);
     }
     return boxValue;
   },
@@ -1008,10 +1016,10 @@ VS.ui.SearchInput = Backbone.View.extend({
   // to give up focus, and starts revving the autocomplete.
   addFocus : function() {
     this.flags.canClose = false;
-    if (!VS.app.searchBox.allSelected()) {
-      VS.app.searchBox.disableFacets(this);
+    if (!this.app.searchBox.allSelected()) {
+      this.app.searchBox.disableFacets(this);
     }
-    VS.app.searchBox.addFocus();
+    this.app.searchBox.addFocus();
     this.setMode('is', 'editing');
     this.setMode('not', 'selected');
     this.searchAutocomplete();
@@ -1028,7 +1036,7 @@ VS.ui.SearchInput = Backbone.View.extend({
   // away or the mouse clicking off. Cleans up
   removeFocus : function() {
     this.flags.canClose = false;
-    VS.app.searchBox.removeFocus();
+    this.app.searchBox.removeFocus();
     this.setMode('not', 'editing');
     this.setMode('not', 'selected');
     this.closeAutocomplete();
@@ -1065,7 +1073,7 @@ VS.ui.SearchInput = Backbone.View.extend({
   maybeTripleClick : function(e) {
     if (!!this.tripleClickTimer) {
       e.preventDefault();
-      VS.app.searchBox.selectAllFacets();
+      this.app.searchBox.selectAllFacets();
       return false;
     }
   },
@@ -1097,7 +1105,7 @@ VS.ui.SearchInput = Backbone.View.extend({
   // and facets.
   selectText : function() {
     this.box.selectRange(0, this.box.val().length);
-    if (!VS.app.searchBox.allSelected()) {
+    if (!this.app.searchBox.allSelected()) {
       this.box.focus();
     } else {
       this.setMode('is', 'selected');
@@ -1109,9 +1117,9 @@ VS.ui.SearchInput = Backbone.View.extend({
   search : function(e, direction) {
     if (!direction) direction = 0;
     this.closeAutocomplete();
-    VS.app.searchBox.searchEvent(e);
+    this.app.searchBox.searchEvent(e);
     _.defer(_.bind(function() {
-      VS.app.searchBox.focusNextFacet(this, direction);
+      this.app.searchBox.focusNextFacet(this, direction);
     }, this));
   },
 
@@ -1124,7 +1132,7 @@ VS.ui.SearchInput = Backbone.View.extend({
     } else if (VS.app.hotkeys.colon(e)) {
       this.box.trigger('resize.autogrow', e);
       var query    = this.box.val();
-      var prefixes = VS.options.callbacks.facetMatches() || [];
+      var prefixes = this.options.callbacks.facetMatches() || [];
       var labels   = _.map(prefixes, function(prefix) {
         if (prefix.label) return prefix.label;
         else              return prefix;
@@ -1133,7 +1141,7 @@ VS.ui.SearchInput = Backbone.View.extend({
         e.preventDefault();
         var remainder = this.addTextFacetRemainder(query);
         var position  = this.options.position + (remainder?1:0);
-        VS.app.searchBox.addFacet(query, '', position);
+        this.app.searchBox.addFacet(query, '', position);
         return false;
       }
     } else if (key == 'backspace') {
@@ -1141,7 +1149,7 @@ VS.ui.SearchInput = Backbone.View.extend({
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
-        VS.app.searchBox.resizeFacets();
+        this.app.searchBox.resizeFacets();
         return false;
       }
     }
@@ -1156,25 +1164,25 @@ VS.ui.SearchInput = Backbone.View.extend({
     if (key == 'left') {
       if (this.box.getCursorPosition() == 0) {
         e.preventDefault();
-        VS.app.searchBox.focusNextFacet(this, -1, {startAtEnd: -1});
+        this.app.searchBox.focusNextFacet(this, -1, {startAtEnd: -1});
       }
     } else if (key == 'right') {
       if (this.box.getCursorPosition() == this.box.val().length) {
         e.preventDefault();
-        VS.app.searchBox.focusNextFacet(this, 1, {selectFacet: true});
+        this.app.searchBox.focusNextFacet(this, 1, {selectFacet: true});
       }
     } else if (VS.app.hotkeys.shift && key == 'tab') {
       e.preventDefault();
-      VS.app.searchBox.focusNextFacet(this, -1, {selectText: true});
+      this.app.searchBox.focusNextFacet(this, -1, {selectText: true});
     } else if (key == 'tab') {
       e.preventDefault();
       var value = this.box.val();
       if (value.length) {
         var remainder = this.addTextFacetRemainder(value);
         var position  = this.options.position + (remainder?1:0);
-        VS.app.searchBox.addFacet(value, '', position);
+        this.app.searchBox.addFacet(value, '', position);
       } else {
-        VS.app.searchBox.focusNextFacet(this, 0, {
+        this.app.searchBox.focusNextFacet(this, 0, {
           skipToFacet: true,
           selectText: true
         });
@@ -1182,12 +1190,12 @@ VS.ui.SearchInput = Backbone.View.extend({
     } else if (VS.app.hotkeys.command &&
                String.fromCharCode(e.which).toLowerCase() == 'a') {
       e.preventDefault();
-      VS.app.searchBox.selectAllFacets();
+      this.app.searchBox.selectAllFacets();
       return false;
-    } else if (key == 'backspace' && !VS.app.searchBox.allSelected()) {
+    } else if (key == 'backspace' && !this.app.searchBox.allSelected()) {
       if (this.box.getCursorPosition() == 0 && !this.box.getSelection().length) {
         e.preventDefault();
-        VS.app.searchBox.focusNextFacet(this, -1, {backspace: true});
+        this.app.searchBox.focusNextFacet(this, -1, {backspace: true});
         return false;
       }
     }
@@ -1544,14 +1552,14 @@ VS.app.SearchParser = {
   CATEGORY   : /('.+?'|".+?"|[^'"\s]{2}\S*):\s*/,
 
   // Called to parse a query into a collection of `SearchFacet` models.
-  parse : function(query) {
-    var searchFacets = this._extractAllFacets(query);
-    VS.app.searchQuery.reset(searchFacets);
+  parse : function(instance, query) {
+    var searchFacets = this._extractAllFacets(instance, query);
+    instance.searchQuery.reset(searchFacets);
     return searchFacets;
   },
 
   // Walks the query and extracts facets, categories, and free text.
-  _extractAllFacets : function(query) {
+  _extractAllFacets : function(instance, query) {
     var facets = [];
     var originalQuery = query;
 
@@ -1576,7 +1584,8 @@ VS.app.SearchParser = {
       if (category && value) {
           var searchFacet = new VS.model.SearchFacet({
             category : category,
-            value    : VS.utils.inflector.trim(value)
+            value    : VS.utils.inflector.trim(value),
+            app      : instance
           });
           facets.push(searchFacet);
       }
@@ -1631,7 +1640,7 @@ VS.model.SearchFacet = Backbone.Model.extend({
 
     if (!value) return '';
 
-    if (!_.contains(VS.options.unquotable || [], category) && category != 'text') {
+    if (!_.contains(this.get("app").options.unquotable || [], category) && category != 'text') {
       value = this.quoteValue(value);
     }
 
