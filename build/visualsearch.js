@@ -227,11 +227,24 @@ VS.ui.SearchBox = Backbone.View.extend({
   // # Modifying Facets #
 
   // Clears out the search box. Command+A + delete can trigger this, as can a cancel button.
+  //
+  // If a `clearSearch` callback was provided, the callback is invoked and
+  // provided with a function performs the actual removal of the data.  This
+  // allows third-party developers to either clear data asynchronously, or
+  // prior to performing their custom "clear" logic.
   clearSearch : function(e) {
-    this.disableFacets();
-    this.value('');
-    this.flags.allSelected = false;
-    this.focusSearch(e);
+    var actualClearSearch = _.bind(function() {
+      this.disableFacets();
+      this.value('');
+      this.flags.allSelected = false;
+      this.focusSearch(e);
+    }, this);
+
+    if (this.app.options.callbacks.clearSearch) {
+      this.app.options.callbacks.clearSearch(actualClearSearch);
+    } else {
+      actualClearSearch();
+    }
   },
 
   // Command+A selects all facets.
