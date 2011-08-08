@@ -492,6 +492,20 @@ VS.ui.SearchFacet = Backbone.View.extend({
     this.flags = {
       canClose : false
     };
+
+	//Get all facet options
+	var retVal = VS.options.callbacks.facetMatches(function(facets){
+		return facets;
+	});
+
+	//Should this facet have a jQuery UI Datepicker?
+	for(i=0; i < retVal.length; i++){
+	  if(retVal[i].label == this.model.get("category")){
+		this.options.DatePicker = retVal[i].DatepickerOptions;
+		break;
+	  }
+	}
+
     _.bindAll(this, 'set', 'keydown', 'deselectFacet', 'deferDisableEdit');
   },
 
@@ -508,6 +522,14 @@ VS.ui.SearchFacet = Backbone.View.extend({
     this.box.val(this.model.get('value'));
     this.box.bind('blur', this.deferDisableEdit);
     this.setupAutocomplete();
+	if(this.options.DatePicker){
+	  if(this.options.DatePicker.showOn && this.options.DatePicker.showOn == 'both')
+		this.options.DatePicker.showOn = 'button';
+	  else
+		this.options.DatePicker.showOn = 'none';
+
+	  $(this.box).datepicker(this.options.DatePicker);
+	}
 
     return this;
   },
@@ -650,6 +672,9 @@ VS.ui.SearchFacet = Backbone.View.extend({
       if (this.box.val() == '') {
         this.box.val(this.model.get('value'));
       }
+	  if(this.options.DatePicker){
+		$(this.box).datepicker("show");
+	  }
     }
 
     this.flags.canClose = false;
