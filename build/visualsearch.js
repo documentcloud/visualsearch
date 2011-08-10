@@ -506,6 +506,8 @@ VS.ui.SearchFacet = Backbone.View.extend({
     this.box = this.$('input');
     this.box.val(this.model.get('value'));
     this.box.bind('blur', this.deferDisableEdit);
+    // Handle paste events with `propertychange`
+    this.box.bind('input propertychange', this.keydown);
     this.setupAutocomplete();
 
     return this;
@@ -655,7 +657,7 @@ VS.ui.SearchFacet = Backbone.View.extend({
     this.options.app.searchBox.disableFacets(this);
     this.options.app.searchBox.addFocus();
     _.defer(_.bind(function() {
-      this.options.app.searchBox.addFocus()
+      this.options.app.searchBox.addFocus();
     }, this));
     this.resize();
     this.searchAutocomplete();
@@ -705,8 +707,8 @@ VS.ui.SearchFacet = Backbone.View.extend({
     if (this.modes.selected == 'is') return;
 
     if (this.box.is(':focus')) {
-        this.box.setCursorPosition(0);
-        this.box.blur();
+      this.box.setCursorPosition(0);
+      this.box.blur();
     }
 
     this.flags.canClose = false;
@@ -848,6 +850,12 @@ VS.ui.SearchFacet = Backbone.View.extend({
     }
 
     this.resize(e);
+    
+    // Handle paste events
+    if (e.which == null) {
+        this.searchAutocomplete(e);
+        _.defer(_.bind(this.resize, this, e));
+    }
   }
 
 });
