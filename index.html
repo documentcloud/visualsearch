@@ -183,7 +183,7 @@
 
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
-        VS.init({
+        var visualSearch = VS.init({
           container  : $('#search_box_container'),
           query      : 'country: "South Africa" account: 5-samuel title: "Pentagon Papers"',
           unquotable : [
@@ -193,10 +193,13 @@
             'access'
           ],
           callbacks  : {
-            search : function(query) {
+            search : function(query, searchCollection) {
               var $query = $('#search_query');
+              var count  = searchCollection.size();
               $query.stop().animate({opacity : 1}, {duration: 300, queue: false});
-              $query.html('<span class="raquo">&raquo;</span> You searched for: <b>' + query + '</b>');
+              $query.html('<span class="raquo">&raquo;</span> You searched for: ' +
+                          '<b>' + (query || '<i>nothing</i>') + '</b>. ' +
+                          '(' + count + ' facet' + (count==1 ? '' : 's') + ')');
               clearTimeout(window.queryHideDelay);
               window.queryHideDelay = setTimeout(function() {
                 $query.animate({
@@ -323,11 +326,11 @@
         <th colspan="2">1. VisualSearch JavaScript (<tt>visualsearch.js</tt>)</th>
       </tr>
       <tr>
-        <td><a href="build-min/visualsearch.js">Production Version (0.1.0)</a></td>
+        <td><a href="build-min/visualsearch.js">Production Version (0.2.0)</a></td>
         <td><i>8kb, Minified and Gzipped</i></td>
       </tr>
       <tr>
-        <td><a href="build/visualsearch.js">Development Version (0.1.0)</a></td>
+        <td><a href="build/visualsearch.js">Development Version (0.2.0)</a></td>
         <td><i>45kb, Uncompressed with Comments</i></td>
       </tr>
 
@@ -413,11 +416,11 @@
 
 &lt;script type="text/javascript" charset="utf-8"&gt;
   $(document).ready(function() {
-    VS.init({
+    var visualSearch = VS.init({
       container : $('.visual_search'),
       query     : '',
       callbacks : {
-        search       : function(query) {},
+        search       : function(query, searchCollection) {},
         facetMatches : function(callback) {},
         valueMatches : function(facet, searchTerm, callback) {}
       }
@@ -478,6 +481,16 @@
 
     <h2 id="changelog">Change Log</h2>
 
+    <p>
+      <b class="header">0.2.0</b><br />
+      Multiple instances of VisualSearch on a single page. <code>VS.init</code> now returns
+      a reference to the instance. The <code>search</code> callback now contains both the
+      serialized search query and a reference to the search query collection (as a 
+      <a href="http://documentcloud.github.com/backbone/#Collection">Backbone.Collection</a>), 
+      which can be used to manipulate each facet directly. See 
+      <a href="docs/search_query.html">the source code for search_query.js</a> for available 
+      methods on the collection.
+    </p>
     <p>
       <b class="header">0.1.0</b><br />
       Initial release of VisualSearch.js.
