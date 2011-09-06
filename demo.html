@@ -389,7 +389,7 @@
                     'Boston'
                   ])
                   break;
-                case 'state':
+                case 'account-state':
                   callback([
                     "Alabama", "Alaska", "Arizona", "Arkansas", "California",
                     "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida",
@@ -434,12 +434,12 @@
               }
             },
             facetMatches : function(callback) {
-              callback([
+              return callback([
                 'account', 'filter', 'access', 'title',
                 { label: 'city',    category: 'location' },
                 { label: 'address', category: 'location' },
                 { label: 'country', category: 'location' },
-                { label: 'state',   category: 'location' },
+                { label: 'state', value: 'account-state',   category: 'location' },
               ]);
             }
           }
