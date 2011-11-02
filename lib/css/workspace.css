@@ -10,6 +10,9 @@
 .VS-search input {
   display: block;
   border: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
   outline: none;
   margin: 0; padding: 4px;
   background: transparent;
@@ -71,7 +74,7 @@
     position: absolute;
     right: 9px; top: 8px;
   }
-  
+
 /* ================ */
 /* = Search Facet = */
 /* ================ */
@@ -121,7 +124,7 @@
     line-height: 16px;
     padding: 5px 0 5px 4px;
     height: 16px;
-    width: auto;          
+    width: auto;
     z-index: 100;
     position: relative;
     padding-top: 1px;
@@ -155,10 +158,10 @@
   .VS-search .search_facet.search_facet_maybe_delete input {
     color: darkred;
   }
-      
+
 /* ================ */
 /* = Search Input = */
-/* ================ */      
+/* ================ */
 
 .VS-search .search_input {
   height: 28px;
@@ -178,7 +181,7 @@
   .VS-search .search_input.is_editing input {
     color: #202020;
   }
-  
+
 /* ================ */
 /* = Autocomplete = */
 /* ================ */
@@ -241,4 +244,3 @@
     list-style: none;
     width: auto;
   }
-  
