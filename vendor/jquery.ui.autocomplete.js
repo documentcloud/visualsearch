@@ -281,7 +281,6 @@ $.widget( "ui.autocomplete", {
 	search: function( value, event ) {
 		value = value != null ? value : this.element.val();
 
-// console.log(['search', value, event && event.type]);
 		// always save the actual value, not the one passed as an argument
 		this.term = this.element.val();
 
@@ -369,7 +368,7 @@ $.widget( "ui.autocomplete", {
 		}, this.options.position ));
 
 		if ( this.options.autoFocus ) {
-			this.menu.next( new $.Event("mouseover") );
+      this.menu.next( new $.Event("mouseover") );
 		}
 	},
 

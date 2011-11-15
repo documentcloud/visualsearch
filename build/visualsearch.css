@@ -7,7 +7,7 @@
   .VS-search .VS-icon-cancel {
     width: 11px; height: 11px;
     background-position: center 0;
-    background-image: url(../images/embed/icons/cancel_search.png?1308683855);
+    background-image: url(../images/embed/icons/cancel_search.png?1311104738);
     cursor: pointer;
   }
     .VS-search .VS-icon-cancel:hover {
@@ -15,7 +15,7 @@
     }
   .VS-search .VS-icon-search {
     width: 12px; height: 12px;
-    background-image: url(../images/embed/icons/search_glyph.png?1308683855);
+    background-image: url(../images/embed/icons/search_glyph.png?1311104738);
   }
 
 /*------------------------------ RESET + DEFAULT STYLES ---------------------------------*/
@@ -61,6 +61,9 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
 .VS-search input {
   display: block;
   border: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
   outline: none;
   margin: 0; padding: 4px;
   background: transparent;
@@ -122,7 +125,7 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     position: absolute;
     right: 9px; top: 8px;
   }
-  
+
 /* ================ */
 /* = Search Facet = */
 /* ================ */
@@ -172,7 +175,7 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     line-height: 16px;
     padding: 5px 0 5px 4px;
     height: 16px;
-    width: auto;          
+    width: auto;
     z-index: 100;
     position: relative;
     padding-top: 1px;
@@ -206,10 +209,10 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   .VS-search .search_facet.search_facet_maybe_delete input {
     color: darkred;
   }
-      
+
 /* ================ */
 /* = Search Input = */
-/* ================ */      
+/* ================ */
 
 .VS-search .search_input {
   height: 28px;
@@ -229,7 +232,7 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   .VS-search .search_input.is_editing input {
     color: #202020;
   }
-  
+
 /* ================ */
 /* = Autocomplete = */
 /* ================ */
@@ -292,4 +295,3 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     list-style: none;
     width: auto;
   }
-  
