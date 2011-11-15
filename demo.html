@@ -196,7 +196,6 @@
           ],
           callbacks  : {
             search : function(query, searchCollection) {
-              console.log(["query", searchCollection.facets(), query]);
               var $query = $('#search_query');
               $query.stop().animate({opacity : 1}, {duration: 300, queue: false});
               $query.html('<span class="raquo">&raquo;</span> You searched for: <b>' + searchCollection.serialize() + '</b>');
@@ -294,7 +293,7 @@
                     "Togo", "Libya", "Jordan", "Paraguay", "Laos",
                     "El Salvador", "Sierra Leone", "Nicaragua", "Kyrgyzstan", "Denmark",
                     "Slovakia", "Finland", "Eritrea", "Turkmenistan"
-                  ]);
+                  ], {preserveOrder: true});
                   break;
               }
             },
@@ -440,7 +439,9 @@
                 { label: 'address', category: 'location' },
                 { label: 'country', category: 'location' },
                 { label: 'state',   category: 'location' },
-              ]);
+              ], {
+                  preserveOrder: true
+              });
             }
           }
         });

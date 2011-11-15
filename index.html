@@ -185,7 +185,7 @@
       $(document).ready(function() {
         var visualSearch = VS.init({
           container  : $('#search_box_container'),
-          query      : 'country: "South Africa" account: 5-samuel title: "Pentagon Papers"',
+          query      : 'country: "United States" state: "New York" account: 5-samuel title: "Pentagon Papers"',
           unquotable : [
             'text',
             'account',
@@ -279,7 +279,7 @@
                   break;
                 case 'country':
                   callback([
-                    "China", "India", "United States", "Indonesia", "Brazil",
+                    "United States", "China", "India", "Indonesia", "Brazil",
                     "Pakistan", "Bangladesh", "Nigeria", "Russia", "Japan",
                     "Mexico", "Philippines", "Vietnam", "Ethiopia", "Egypt",
                     "Germany", "Turkey", "Iran", "Thailand", "D. R. of Congo",
@@ -302,7 +302,7 @@
                     "Togo", "Libya", "Jordan", "Paraguay", "Laos",
                     "El Salvador", "Sierra Leone", "Nicaragua", "Kyrgyzstan", "Denmark",
                     "Slovakia", "Finland", "Eritrea", "Turkmenistan"
-                  ]);
+                  ], {preserveOrder: true});
                   break;
               }
             }
@@ -326,11 +326,11 @@
         <th colspan="2">1. VisualSearch JavaScript (<tt>visualsearch.js</tt>)</th>
       </tr>
       <tr>
-        <td><a href="build-min/visualsearch.js">Production Version (0.2.0)</a></td>
+        <td><a href="build-min/visualsearch.js">Production Version (0.2.1)</a></td>
         <td><i>8kb, Minified and Gzipped</i></td>
       </tr>
       <tr>
-        <td><a href="build/visualsearch.js">Development Version (0.2.0)</a></td>
+        <td><a href="build/visualsearch.js">Development Version (0.2.1)</a></td>
         <td><i>45kb, Uncompressed with Comments</i></td>
       </tr>
 
@@ -482,7 +482,14 @@
     <h2 id="changelog">Change Log</h2>
 
     <p>
-      <b class="header">0.2.0</b><br />
+      <b class="header">0.2.1</b> <i>November 14th, 2011</i><br />
+      The autocompleted facets and values that are provided by your callbacks <tt>facetMatches</tt>
+      and <tt>valueMatches</tt> can now preserve the order of items you give them. Simply pass an
+      options hash with <tt>preserveOrder: true</tt> as the second argument to the callback. See
+      <a href="demo.html">the demo page</a> for an example.
+    </p>
+    <p>
+      <b class="header">0.2.0</b> <i>August 10th, 2011</i><br />
       Multiple instances of VisualSearch on a single page. <tt>VS.init</tt> now returns
       a reference to the instance. The <tt>search</tt> callback now contains both the
       serialized search query and a reference to the search query collection (as a 
@@ -492,7 +499,7 @@
       methods on the collection.
     </p>
     <p>
-      <b class="header">0.1.0</b><br />
+      <b class="header">0.1.0</b> <i>June 23rd, 2011</i><br />
       Initial release of VisualSearch.js.
     </p>
 
