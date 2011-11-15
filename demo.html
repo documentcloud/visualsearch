@@ -196,6 +196,7 @@
           ],
           callbacks  : {
             search : function(query, searchCollection) {
+              console.log(["query", searchCollection.facets(), query]);
               var $query = $('#search_query');
               $query.stop().animate({opacity : 1}, {duration: 300, queue: false});
               $query.html('<span class="raquo">&raquo;</span> You searched for: <b>' + searchCollection.serialize() + '</b>');
