@@ -224,6 +224,12 @@
                 case 'filter':
                   callback(['published', 'unpublished', 'draft']);
                   break;
+                case 'number':
+                  callback([
+                    { value: 100,  label: 'Hundred' },
+                    { value: 1000,  label: 'Thousand' }
+                  ]);
+                  break;
                 case 'access':
                   callback(['public', 'private', 'protected']);
                   break;
@@ -299,7 +305,7 @@
             },
             facetMatches : function(callback) {
               callback([
-                'account', 'filter', 'access', 'title',
+                'account', 'filter', 'access', 'title', 'number',
                 { label: 'city',    category: 'location' },
                 { label: 'address', category: 'location' },
                 { label: 'country', category: 'location' },
@@ -358,6 +364,12 @@
                   break;
                 case 'filter':
                   callback(['published', 'unpublished', 'draft']);
+                  break;
+                case 'number':
+                  callback([
+                    { value: 100,  label: 'Hundred' },
+                    { value: 1000,  label: 'Thousand' }
+                  ]);
                   break;
                 case 'access':
                   callback(['public', 'private', 'protected']);
@@ -434,7 +446,7 @@
             },
             facetMatches : function(callback) {
               callback([
-                'account', 'filter', 'access', 'title',
+                'account', 'filter', 'access', 'title', 'number',
                 { label: 'city',    category: 'location' },
                 { label: 'address', category: 'location' },
                 { label: 'country', category: 'location' },
