@@ -237,6 +237,7 @@ VS.ui.SearchBox = Backbone.View.extend({
       this.disableFacets();
       this.value('');
       this.flags.allSelected = false;
+      this.searchEvent(e);
       this.focusSearch(e);
     }, this);
 
