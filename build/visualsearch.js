@@ -237,6 +237,7 @@ VS.ui.SearchBox = Backbone.View.extend({
       this.disableFacets();
       this.value('');
       this.flags.allSelected = false;
+      this.searchEvent(e);
       this.focusSearch(e);
     }, this);
 
@@ -1178,7 +1179,12 @@ VS.ui.SearchInput = Backbone.View.extend({
     } else if (VS.app.hotkeys.colon(e)) {
       this.box.trigger('resize.autogrow', e);
       var query    = this.box.val();
-      var prefixes = this.options.callbacks.facetMatches() || [];
+      var prefixes = [];
+      if (this.app.options.callbacks.facetMatches) {
+          this.app.options.callbacks.facetMatches(function(p) {
+              prefixes = p;
+          });
+      }
       var labels   = _.map(prefixes, function(prefix) {
         if (prefix.label) return prefix.label;
         else              return prefix;
