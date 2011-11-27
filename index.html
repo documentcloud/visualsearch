@@ -476,6 +476,18 @@
 ...
 }</code></pre>
       </li>
+      <li class="javascript">Inspect the Visual Search box
+        <pre><code>// Returns the unstructured search query
+visualSearch.searchBox.value() 
+// "country: "South Africa" account: 5-samuel title: "Pentagon Papers""
+
+// Returns an array of Facet model instances
+visualSearch.searchQuery.facets()
+// [FacetModel&lt;country:"South Africa">, 
+//  FacetModel&lt;account:5-samuel>, 
+//  FacetModel&lt;title:"Pentagon Papers">]
+</code></pre>
+      </li>
     </ol>
 
 
