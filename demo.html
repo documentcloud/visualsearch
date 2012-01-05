@@ -345,33 +345,34 @@
               }, 2000);
             },
             valueMatches : function(category, searchTerm, callback) {
+              var values;
               switch (category) {
-              case 'account':
-                  callback([
+                case 'account':
+                  values = [
                     { value: '1-amanda', label: 'Amanda' },
                     { value: '2-aron',   label: 'Aron' },
                     { value: '3-eric',   label: 'Eric' },
                     { value: '4-jeremy', label: 'Jeremy' },
                     { value: '5-samuel', label: 'Samuel' },
                     { value: '6-scott',  label: 'Scott' }
-                  ]);
+                  ];
                   break;
                 case 'filter':
-                  callback(['published', 'unpublished', 'draft']);
+                  values = ['published', 'unpublished', 'draft'];
                   break;
                 case 'access':
-                  callback(['public', 'private', 'protected']);
+                  values = ['public', 'private', 'protected'];
                   break;
                 case 'title':
-                  callback([
+                  values = [
                     'Pentagon Papers',
                     'CoffeeScript Manual',
                     'Laboratory for Object Oriented Thinking',
                     'A Repository Grows in Brooklyn'
-                  ]);
+                  ];
                   break;
                 case 'city':
-                  callback([
+                  values = [
                     'Cleveland',
                     'New York City',
                     'Brooklyn',
@@ -386,10 +387,10 @@
                     'Portland',
                     'Chicago',
                     'Boston'
-                  ])
+                  ];
                   break;
                 case 'state':
-                  callback([
+                  values = [
                     "Alabama", "Alaska", "Arizona", "Arkansas", "California",
                     "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida",
                     "Georgia", "Guam", "Hawaii", "Idaho", "Illinois",
@@ -401,10 +402,10 @@
                     "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota", "Tennessee",
                     "Texas", "Utah", "Vermont", "Virginia", "Virgin Islands",
                     "Washington", "West Virginia", "Wisconsin", "Wyoming"
-                  ]);
+                  ];
                   break
                 case 'country':
-                  callback([
+                  values = [
                     "China", "India", "United States", "Indonesia", "Brazil",
                     "Pakistan", "Bangladesh", "Nigeria", "Russia", "Japan",
                     "Mexico", "Philippines", "Vietnam", "Ethiopia", "Egypt",
@@ -428,9 +429,10 @@
                     "Togo", "Libya", "Jordan", "Paraguay", "Laos",
                     "El Salvador", "Sierra Leone", "Nicaragua", "Kyrgyzstan", "Denmark",
                     "Slovakia", "Finland", "Eritrea", "Turkmenistan"
-                  ]);
+                  ];
                   break;
               }
+              callback(values);
             },
             facetMatches : function(callback) {
               callback([
