@@ -31,6 +31,7 @@
       container   : '',
       query       : '',
       unquotable  : [],
+      facetAutocompleteMinLength: 1,
       callbacks   : {
         search          : $.noop,
         focus           : $.noop,
@@ -44,7 +45,7 @@
 
     VS.app.hotkeys.initialize();
     this.searchQuery   = new VS.model.SearchQuery();
-    this.searchBox     = new VS.ui.SearchBox({app: this});
+    this.searchBox     = new VS.ui.SearchBox({app: this, autocompleteMinLength: this.options.facetAutocompleteMinLength});
 
     if (options.container) {
       var searchBox = this.searchBox.render().el;
@@ -219,7 +220,8 @@ VS.ui.SearchBox = Backbone.View.extend({
 
   // Render a single input, used to create and autocomplete facets
   renderSearchInput : function() {
-    var input = new VS.ui.SearchInput({position: this.inputViews.length, app: this.app});
+    var input = new VS.ui.SearchInput({position: this.inputViews.length, app: this.app,
+      autocompleteMinLength: this.options.autocompleteMinLength});
     this.$('.VS-search-inner').append(input.render().el);
     this.inputViews.push(input);
   },
@@ -931,7 +933,7 @@ VS.ui.SearchInput = Backbone.View.extend({
   // See `addTextFacetRemainder` for explanation on how the remainder works.
   setupAutocomplete : function() {
     this.box.autocomplete({
-      minLength : 1,
+      minLength : this.options.autocompleteMinLength,
       delay     : 50,
       autoFocus : true,
       position  : {offset : "0 -1"},
@@ -939,9 +941,9 @@ VS.ui.SearchInput = Backbone.View.extend({
       select    : _.bind(function(e, ui) {
         e.preventDefault();
         e.stopPropagation();
-        var remainder = this.addTextFacetRemainder(ui.item.value);
-        var position  = this.options.position + (remainder ? 1 : 0);
-        this.app.searchBox.addFacet(ui.item.value, '', position);
+        //var remainder = this.addTextFacetRemainder(ui.item.value);
+        var position  = this.options.position; // + (remainder ? 1 : 0);
+        this.app.searchBox.addFacet(ui.item instanceof String ? ui.item : ui.item.value, '', position);
         return false;
       }, this)
     });
@@ -968,7 +970,7 @@ VS.ui.SearchInput = Backbone.View.extend({
   autocompleteValues : function(req, resp) {
     var searchTerm = req.term;
     var lastWord   = searchTerm.match(/\w+$/); // Autocomplete only last word.
-    var re         = VS.utils.inflector.escapeRegExp(lastWord && lastWord[0] || ' ');
+    var re         = VS.utils.inflector.escapeRegExp(lastWord && lastWord[0] || '');
     this.app.options.callbacks.facetMatches(function(prefixes, options) {
       options = options || {};
       prefixes = prefixes || [];
@@ -1037,15 +1039,19 @@ VS.ui.SearchInput = Backbone.View.extend({
   addTextFacetRemainder : function(facetValue) {
     var boxValue = this.box.val();
     var lastWord = boxValue.match(/\b(\w+)$/);
-    var matcher = new RegExp(lastWord[0], "i");
-    if (lastWord && facetValue.search(matcher) == 0) {
-      boxValue = boxValue.replace(/\b(\w+)$/, '');
+    if (lastWord){
+      var matcher = new RegExp(lastWord[0], "i");
+      if (facetValue.search(matcher) == 0) {
+        boxValue = boxValue.replace(/\b(\w+)$/, '');
+      }
+      boxValue = boxValue.replace('^\s+|\s+$', '');
+      if (boxValue) {
+        this.app.searchBox.addFacet('text', boxValue, this.options.position);
+      }
+      return boxValue;
+    } else {
+      return ''
     }
-    boxValue = boxValue.replace('^\s+|\s+$', '');
-    if (boxValue) {
-      this.app.searchBox.addFacet('text', boxValue, this.options.position);
-    }
-    return boxValue;
   },
 
   // Directly called to focus the input. This is different from `addFocus`
@@ -1458,7 +1464,8 @@ $.fn.extend({
                      .replace(/>/g, '&gt;');
 
         $tester.html(value);
-        $input.width($tester.width() + 3);
+
+        $input.width($tester.width() + 3 + parseInt($input.css('min-width')));
         $input.trigger('updated.autogrow');
       });
 
