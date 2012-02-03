@@ -542,6 +542,9 @@ VS.ui.SearchFacet = Backbone.View.extend({
       delay     : 0,
       autoFocus : true,
       position  : {offset : "0 5"},
+      create    : _.bind(function(e, ui) {
+        $(this.el).find('.ui-autocomplete-input').css('z-index','auto');
+      }, this),
       select    : _.bind(function(e, ui) {
         e.preventDefault();
         var originalValue = this.model.get('value');
@@ -936,6 +939,9 @@ VS.ui.SearchInput = Backbone.View.extend({
       autoFocus : true,
       position  : {offset : "0 -1"},
       source    : _.bind(this.autocompleteValues, this),
+      create    : _.bind(function(e, ui) {
+        $(this.el).find('.ui-autocomplete-input').css('z-index','auto');
+      }, this),
       select    : _.bind(function(e, ui) {
         e.preventDefault();
         e.stopPropagation();
