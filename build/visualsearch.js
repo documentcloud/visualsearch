@@ -870,12 +870,12 @@ VS.ui.SearchFacet = Backbone.View.extend({
       }
     }
 
-    this.resize(e);
-    
     // Handle paste events
     if (e.which == null) {
-        this.searchAutocomplete(e);
+        // this.searchAutocomplete(e);
         _.defer(_.bind(this.resize, this, e));
+    } else {
+      this.resize(e);
     }
   }
 
@@ -965,16 +965,16 @@ VS.ui.SearchInput = Backbone.View.extend({
 
   // Search terms used in the autocomplete menu. The values are matched on the
   // first letter of any word in matches, and finally sorted according to the
-  // value's own category. You can pass `preserveOrder` as an option in the 
+  // value's own category. You can pass `preserveOrder` as an option in the
   // `facetMatches` callback to skip any further ordering done client-side.
   autocompleteValues : function(req, resp) {
     var searchTerm = req.term;
-    var lastWord   = searchTerm.match(/\w+$/); // Autocomplete only last word.
+    var lastWord   = searchTerm.match(/\w+\*?$/); // Autocomplete only last word.
     var re         = VS.utils.inflector.escapeRegExp(lastWord && lastWord[0] || '');
     this.app.options.callbacks.facetMatches(function(prefixes, options) {
       options = options || {};
       prefixes = prefixes || [];
-      
+
       // Only match from the beginning of the word.
       var matcher    = new RegExp('^' + re, 'i');
       var matches    = $.grep(prefixes, function(item) {
