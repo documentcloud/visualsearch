@@ -185,7 +185,7 @@
       $(document).ready(function() {
         window.visualSearch = VS.init({
           container  : $('#search_box_container'),
-          query      : 'country: "South Africa" account: 5-samuel title: "Pentagon Papers"',
+          query      : 'country: "South Africa" account: 5-samuel "U.S. State": California',
           // query      : '',
           unquotable : [
             'text',
@@ -253,7 +253,7 @@
                     'Boston'
                   ])
                   break;
-                case 'state':
+                case 'U.S. State':
                   callback([
                     "Alabama", "Alaska", "Arizona", "Arkansas", "California",
                     "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida",
@@ -303,7 +303,7 @@
                 { label: 'city',    category: 'location' },
                 { label: 'address', category: 'location' },
                 { label: 'country', category: 'location' },
-                { label: 'state',   category: 'location' },
+                { label: 'U.S. State', category: 'location' },
               ]);
             }
           }
