@@ -31,6 +31,7 @@
       container   : '',
       query       : '',
       unquotable  : [],
+      remainder   : 'text',
       callbacks   : {
         search          : $.noop,
         focus           : $.noop,
@@ -209,9 +210,7 @@ VS.ui.SearchBox = Backbone.View.extend({
 
     this.$('.VS-search-inner').empty();
 
-    this.app.searchQuery.each(_.bind(function(facet, i) {
-      this.renderFacet(facet, i);
-    }, this));
+    this.app.searchQuery.each(_.bind(this.renderFacet, this));
 
     // Add on an n+1 empty search input on the very end.
     this.renderSearchInput();
@@ -1073,7 +1072,7 @@ VS.ui.SearchInput = Backbone.View.extend({
     }
     boxValue = boxValue.replace('^\s+|\s+$', '');
     if (boxValue) {
-      this.app.searchBox.addFacet('text', boxValue, this.options.position);
+      this.app.searchBox.addFacet(this.app.options.remainder, boxValue, this.options.position);
     }
     return boxValue;
   },
@@ -1626,7 +1625,8 @@ if ($.browser.msie && false) {
 var $ = jQuery; // Handle namespaced jQuery
 
 // Used to extract keywords and facets from the free text search.
-var FREETEXT_RE = '(\'[^\']+\'|"[^"]+"|[^\'"\\s]\\S*)';
+var QUOTES_RE   = "('[^']+'|\"[^\"]+\")";
+var FREETEXT_RE = "('[^']+'|\"[^\"]+\"|[^'\"\\s]\\S*)";
 var CATEGORY_RE = FREETEXT_RE +                     ':\\s*';
 VS.app.SearchParser = {
 
@@ -1653,7 +1653,7 @@ VS.app.SearchParser = {
       originalQuery = query;
       var field = this._extractNextField(query);
       if (!field) {
-        category = 'text';
+        category = instance.options.remainder;
         value    = this._extractSearchText(query);
         query    = VS.utils.inflector.trim(query.replace(value, ''));
       } else if (field.indexOf(':') != -1) {
@@ -1661,7 +1661,7 @@ VS.app.SearchParser = {
         value    = field.replace(this.CATEGORY, '').replace(/(^['"]|['"]$)/g, '');
         query    = VS.utils.inflector.trim(query.replace(field, ''));
       } else if (field.indexOf(':') == -1) {
-        category = 'text';
+        category = instance.options.remainder;
         value    = field;
         query    = VS.utils.inflector.trim(query.replace(value, ''));
       }
@@ -1683,7 +1683,7 @@ VS.app.SearchParser = {
   // Extracts the first field found, capturing any free text that comes
   // before the category.
   _extractNextField : function(query) {
-    var textRe = new RegExp('^\\s*(\\S+)\\s+(?=' + CATEGORY_RE + FREETEXT_RE + ')');
+    var textRe = new RegExp('^\\s*(\\S+)\\s+(?=' + QUOTES_RE + FREETEXT_RE + ')');
     var textMatch = query.match(textRe);
     if (textMatch && textMatch.length >= 1) {
       return textMatch[1];
@@ -1723,14 +1723,15 @@ VS.model.SearchFacet = Backbone.Model.extend({
   serialize : function() {
     var category = this.quoteCategory(this.get('category'));
     var value    = VS.utils.inflector.trim(this.get('value'));
+    var remainder = this.get("app").options.remainder;
 
     if (!value) return '';
 
-    if (!_.contains(this.get("app").options.unquotable || [], category) && category != 'text') {
+    if (!_.contains(this.get("app").options.unquotable || [], category) && category != remainder) {
       value = this.quoteValue(value);
     }
 
-    if (category != 'text') {
+    if (category != remainder) {
       category = category + ': ';
     } else {
       category = "";
