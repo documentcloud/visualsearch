@@ -1530,7 +1530,9 @@ $.fn.extend({
     return this.each(function() {
       if (this.setSelectionRange) { // FF/Webkit
         this.focus();
-        this.setSelectionRange(start, end);
+        if ($(this).is(":visible")) {
+          this.setSelectionRange(start, end);
+        }
       } else if (this.createTextRange) { // IE
         var range = this.createTextRange();
         range.collapse(true);
