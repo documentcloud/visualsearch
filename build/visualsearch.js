@@ -957,7 +957,14 @@ VS.ui.SearchInput = Backbone.View.extend({
   // See `addTextFacetRemainder` for explanation on how the remainder works.
   setupAutocomplete : function() {
     this.box.autocomplete({
-      minLength : 1,
+      minLength : this.app.options.callbacks.facetMatches(function(prefixes, options) {
+        options = options || {};
+        if (_.isUndefined(options.triggerLength)) {
+          return 1;
+        } else {
+          return options.triggerLength;
+        }
+      }),
       delay     : 50,
       autoFocus : true,
       position  : {offset : "0 -1"},
@@ -1001,13 +1008,17 @@ VS.ui.SearchInput = Backbone.View.extend({
     this.app.options.callbacks.facetMatches(function(prefixes, options) {
       options = options || {};
       prefixes = prefixes || [];
-      
-      // Only match from the beginning of the word.
-      var matcher    = new RegExp('^' + re, 'i');
-      var matches    = $.grep(prefixes, function(item) {
-        return item && matcher.test(item.label || item);
-      });
 
+      if(searchTerm == "") {
+        // Return all facets
+        var matches = prefixes;
+      } else {
+        // Only match from the beginning of the word.
+        var matcher    = new RegExp('^' + re, 'i');
+        var matches    = $.grep(prefixes, function(item) {
+          return item && matcher.test(item.label || item);
+        });
+      }
       if (options.preserveOrder) {
         resp(matches);
       } else {
@@ -1066,7 +1077,8 @@ VS.ui.SearchInput = Backbone.View.extend({
   addTextFacetRemainder : function(facetValue) {
     var boxValue = this.box.val();
     var lastWord = boxValue.match(/\b(\w+)$/);
-    var matcher = new RegExp(lastWord[0], "i");
+    var re       = VS.utils.inflector.escapeRegExp(lastWord && lastWord[0] || ' ');
+    var matcher = new RegExp(re, "i");
     if (lastWord && facetValue.search(matcher) == 0) {
       boxValue = boxValue.replace(/\b(\w+)$/, '');
     }
