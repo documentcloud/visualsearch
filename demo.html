@@ -186,7 +186,7 @@
         window.visualSearch = VS.init({
           container  : $('#search_box_container'),
           query      : 'country: "South Africa" account: 5-samuel "U.S. State": California',
-          // query      : '',
+          showFacets : true,
           unquotable : [
             'text',
             'account',
@@ -321,7 +321,8 @@
         var visualSearch = VS.init({
           container  : $('#search_box_container2'),
           query      : '',
-          // query      : '',
+          minLength  : 0,
+          showFacets : true,
           unquotable : [
             'text',
             'account',
