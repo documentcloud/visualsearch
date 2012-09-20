@@ -185,7 +185,7 @@
       $(document).ready(function() {
         var visualSearch = VS.init({
           container  : $('#search_box_container'),
-          query      : 'country: "United States" state: "New York" account: 5-samuel title: "Pentagon Papers"',
+          query      : 'country: "United States" "U.S. State": "New York" account: 5-samuel',
           unquotable : [
             'text',
             'account',
@@ -213,9 +213,9 @@
             facetMatches : function(callback) {
               callback([
                 'account', 'filter', 'access', 'title',
-                { label: 'city',    category: 'location' },
-                { label: 'country', category: 'location' },
-                { label: 'state',   category: 'location' },
+                { label: 'city',       category: 'location' },
+                { label: 'country',    category: 'location' },
+                { label: 'U.S. State', category: 'location' },
               ]);
             },
             valueMatches : function(facet, searchTerm, callback) {
@@ -262,7 +262,7 @@
                     'Boston'
                   ]);
                   break;
-                case 'state':
+                case 'U.S. State':
                   callback([
                     "Alabama", "Alaska", "Arizona", "Arkansas", "California",
                     "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida",
@@ -326,11 +326,11 @@
         <th colspan="2">1. VisualSearch JavaScript (<tt>visualsearch.js</tt>)</th>
       </tr>
       <tr>
-        <td><a href="build-min/visualsearch.js">Production Version (0.2.1)</a></td>
+        <td><a href="build-min/visualsearch.js">Production Version (0.2.2)</a></td>
         <td><i>8kb, Minified and Gzipped</i></td>
       </tr>
       <tr>
-        <td><a href="build/visualsearch.js">Development Version (0.2.1)</a></td>
+        <td><a href="build/visualsearch.js">Development Version (0.2.2)</a></td>
         <td><i>45kb, Uncompressed with Comments</i></td>
       </tr>
 
@@ -486,6 +486,10 @@ visualSearch.searchQuery.facets()
 // [FacetModel&lt;country:"South Africa">, 
 //  FacetModel&lt;account:5-samuel>, 
 //  FacetModel&lt;title:"Pentagon Papers">]
+
+// Set the search query with raw text
+visualSearch.searchBox.value("Country: US State: \"New York\" Key: Value")
+
 </code></pre>
       </li>
     </ol>
@@ -493,6 +497,12 @@ visualSearch.searchQuery.facets()
 
     <h2 id="changelog">Change Log</h2>
 
+    <p>
+      <b class="header">0.2.2</b> <i>March 10th, 2012</i><br />
+      If you do not want to automatically filter the value matches, you can pass an
+      options hash with <tt>preserveMatches: true</tt> as the second argument to the callback.
+      <a href="https://github.com/documentcloud/visualsearch/pull/44">See pull request #44</a> for details.
+    </p>
     <p>
       <b class="header">0.2.1</b> <i>November 14th, 2011</i><br />
       The autocompleted facets and values that are provided by your callbacks <tt>facetMatches</tt>
