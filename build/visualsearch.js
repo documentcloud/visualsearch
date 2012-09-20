@@ -1844,9 +1844,12 @@ VS.model.SearchQuery = Backbone.Collection.extend({
   },
 
   // Used to temporarily hide a specific category and serialize the search query.
-  withoutCategory : function(category) {
+  withoutCategory : function() {
+    var categories = _.map(_.toArray(arguments), function(cat) { return cat.toLowerCase(); });
     return this.map(function(facet) {
-      if (facet.get('category').toLowerCase() != category.toLowerCase()) return facet.serialize();
+      if (!_.include(categories, facet.get('category').toLowerCase())) { 
+        return facet.serialize();
+      };
     }).join(' ');
   }
 
