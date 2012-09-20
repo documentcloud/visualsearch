@@ -30,6 +30,7 @@
     var defaults = {
       container   : '',
       query       : '',
+      autosearch  : true,
       unquotable  : [],
       remainder   : 'text',
       showFacets  : true,
@@ -577,7 +578,9 @@ VS.ui.SearchFacet = Backbone.View.extend({
         var originalValue = this.model.get('value');
         this.set(ui.item.value);
         if (originalValue != ui.item.value || this.box.val() != ui.item.value) {
-          this.search(e);
+            if (this.options.app.options.autosearch) {
+                this.search(e);
+            }
         }
         return false;
       }, this),
@@ -1554,7 +1557,9 @@ $.fn.extend({
     return this.filter(':visible').each(function() {
       if (this.setSelectionRange) { // FF/Webkit
         this.focus();
-        this.setSelectionRange(start, end);
+        if ($(this).is(":visible")) {
+          this.setSelectionRange(start, end);
+        }
       } else if (this.createTextRange) { // IE
         var range = this.createTextRange();
         range.collapse(true);
