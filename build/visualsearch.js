@@ -1279,6 +1279,12 @@ VS.ui.SearchInput = Backbone.View.extend({
         this.app.searchBox.focusNextFacet(this, -1, {backspace: true});
         return false;
       }
+    } else if (key == 'end') {
+      var view = this.app.searchBox.inputViews[this.app.searchBox.inputViews.length-1];
+      view.setCursorAtEnd(-1);
+    } else if (key == 'home') {
+      var view = this.app.searchBox.inputViews[0];
+      view.setCursorAtEnd(-1);
     }
 
     this.box.trigger('resize.autogrow', e);
@@ -1332,6 +1338,8 @@ VS.app.hotkeys = {
     '40':  'downArrow',
     '46':  'delete',
     '8':   'backspace',
+    '35':  'end',
+    '36':  'home',
     '9':   'tab',
     '188': 'comma'
   },
@@ -1799,7 +1807,7 @@ VS.model.SearchQuery = Backbone.Collection.extend({
   // is fine, but only the first is returned.
   find : function(category) {
     var facet = this.detect(function(facet) {
-      return facet.get('category') == category;
+      return facet.get('category').toLowerCase() == category.toLowerCase();
     });
     return facet && facet.get('value');
   },
@@ -1807,14 +1815,14 @@ VS.model.SearchQuery = Backbone.Collection.extend({
   // Counts the number of times a specific category is in the search query.
   count : function(category) {
     return this.select(function(facet) {
-      return facet.get('category') == category;
+      return facet.get('category').toLowerCase() == category.toLowerCase();
     }).length;
   },
 
   // Returns an array of extracted values from each facet in a category.
   values : function(category) {
     var facets = this.select(function(facet) {
-      return facet.get('category') == category;
+      return facet.get('category').toLowerCase() == category.toLowerCase();
     });
     return _.map(facets, function(facet) { return facet.get('value'); });
   },
@@ -1822,7 +1830,7 @@ VS.model.SearchQuery = Backbone.Collection.extend({
   // Checks all facets for matches of either a category or both category and value.
   has : function(category, value) {
     return this.any(function(facet) {
-      var categoryMatched = facet.get('category') == category;
+      var categoryMatched = facet.get('category').toLowerCase() == category.toLowerCase();
       if (!value) return categoryMatched;
       return categoryMatched && facet.get('value') == value;
     });
@@ -1831,13 +1839,14 @@ VS.model.SearchQuery = Backbone.Collection.extend({
   // Used to temporarily hide a specific category and serialize the search query.
   withoutCategory : function(category) {
     return this.map(function(facet) {
-      if (facet.get('category') != category) return facet.serialize();
+      if (facet.get('category').toLowerCase() != category.toLowerCase()) return facet.serialize();
     }).join(' ');
   }
 
 });
 
-})();(function(){
+})();
+(function(){
 window.JST = window.JST || {};
 
 window.JST['search_box'] = _.template('<div class="VS-search">\n  <div class="VS-search-box-wrapper VS-search-box">\n    <div class="VS-icon VS-icon-search"></div>\n    <div class="VS-search-inner"></div>\n    <div class="VS-icon VS-icon-cancel VS-cancel-search-box" title="clear search"></div>\n  </div>\n</div>');
