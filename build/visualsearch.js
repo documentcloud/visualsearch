@@ -30,6 +30,7 @@
     var defaults = {
       container   : '',
       query       : '',
+      autosearch  : true,
       unquotable  : [],
       facetAutocompleteMinLength: 1,
       remainder   : 'text',
@@ -571,7 +572,9 @@ VS.ui.SearchFacet = Backbone.View.extend({
         var originalValue = this.model.get('value');
         this.set(ui.item.value);
         if (originalValue != ui.item.value || this.box.val() != ui.item.value) {
-          this.search(e);
+            if (this.options.app.options.autosearch) {
+                this.search(e);
+            }
         }
         return false;
       }, this),
