@@ -186,6 +186,7 @@
         var visualSearch = VS.init({
           container  : $('#search_box_container'),
           query      : 'country: "United States" "U.S. State": "New York" account: 5-samuel',
+          showFacets : true,
           unquotable : [
             'text',
             'account',
@@ -326,12 +327,12 @@
         <th colspan="2">1. VisualSearch JavaScript (<tt>visualsearch.js</tt>)</th>
       </tr>
       <tr>
-        <td><a href="build-min/visualsearch.js">Production Version (0.2.2)</a></td>
-        <td><i>8kb, Minified and Gzipped</i></td>
+        <td><a href="build-min/visualsearch.js">Production Version (0.3.0)</a></td>
+        <td><i>7kb, Minified and Gzipped</i></td>
       </tr>
       <tr>
-        <td><a href="build/visualsearch.js">Development Version (0.2.2)</a></td>
-        <td><i>45kb, Uncompressed with Comments</i></td>
+        <td><a href="build/visualsearch.js">Development Version (0.3.0)</a></td>
+        <td><i>63kb, Uncompressed with Comments</i></td>
       </tr>
 
       <tr>
@@ -497,6 +498,13 @@ visualSearch.searchBox.value("Country: US State: \"New York\" Key: Value")
 
     <h2 id="changelog">Change Log</h2>
 
+    <p>
+      <b class="header">0.3.0</b> <i>September 20th, 2012</i><br />
+      Add <tt>showFacets: true</tt> to your options to have all available facets
+      automatically show up when the search text box is focused. You can also pass multiple
+      facet names to withoutCategory, like so: 
+      <tt>searchQuery.withoutCategory('country', 'account')</tt>.
+    </p>
     <p>
       <b class="header">0.2.2</b> <i>March 10th, 2012</i><br />
       If you do not want to automatically filter the value matches, you can pass an
