@@ -75,6 +75,7 @@
   };
 
 })();
+
 (function() {
 
 var $ = jQuery; // Handle namespaced jQuery
@@ -142,6 +143,19 @@ VS.ui.SearchBox = Backbone.View.extend({
     }
 
     return _.compact(query).join(' ');
+  },
+  
+  // Returns any facet views that are currently selected. Useful for changing the value
+  // callbacks based on what else is in the search box and which facet is being edited.
+  selected: function() {
+    return _.select(this.facetViews, function(view) { 
+      return view.modes.editing == 'is' || view.modes.selected == 'is';
+    });
+  },
+  
+  // Similar to `this.selected`, returns any facet models that are currently selected.
+  selectedModels: function() {
+    return _.pluck(this.selected(), 'model');
   },
 
   // Takes a query string and uses the SearchParser to parse and render it. Note that
@@ -578,9 +592,9 @@ VS.ui.SearchFacet = Backbone.View.extend({
         var originalValue = this.model.get('value');
         this.set(ui.item.value);
         if (originalValue != ui.item.value || this.box.val() != ui.item.value) {
-            if (this.options.app.options.autosearch) {
-                this.search(e);
-            }
+          if (this.options.app.options.autosearch) {
+            this.search(e);
+          }
         }
         return false;
       }, this),
@@ -1557,9 +1571,7 @@ $.fn.extend({
     return this.filter(':visible').each(function() {
       if (this.setSelectionRange) { // FF/Webkit
         this.focus();
-        if ($(this).is(":visible")) {
-          this.setSelectionRange(start, end);
-        }
+        this.setSelectionRange(start, end);
       } else if (this.createTextRange) { // IE
         var range = this.createTextRange();
         range.collapse(true);
@@ -1810,7 +1822,7 @@ VS.model.SearchQuery = Backbone.Collection.extend({
 
   // Model holds the category and value of the facet.
   model : VS.model.SearchFacet,
-
+  
   // Turns all of the facets into a single serialized string.
   serialize : function() {
     return this.map(function(facet){ return facet.serialize(); }).join(' ');
