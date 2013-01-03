@@ -1011,7 +1011,13 @@ VS.ui.SearchInput = Backbone.View.extend({
           ul.append('<li class="ui-autocomplete-category">'+item.category+'</li>');
           category = item.category;
         }
-        this._renderItemData(ul, item);
+        
+        if(this._renderItemData) {
+          this._renderItemData(ul, item);
+        } else {
+          this._renderItem(ul, item);
+        }
+        
       }, this));
     };
 
