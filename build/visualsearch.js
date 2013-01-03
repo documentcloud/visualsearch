@@ -601,8 +601,10 @@ VS.ui.SearchFacet = Backbone.View.extend({
       open      : _.bind(function(e, ui) {
         var box = this.box;
         this.box.autocomplete('widget').find('.ui-menu-item').each(function() {
-          var $value = $(this);
-          if ($value.data('item.autocomplete')['value'] == box.val()) {
+          var $value = $(this),
+              autoCompleteData = $value.data('item.autocomplete') || $value.data('ui-autocomplete-item');
+
+          if (autoCompleteData['value'] == box.val() && box.data('autocomplete').menu.activate) {
             box.data('autocomplete').menu.activate(new $.Event("mouseover"), $value);
           }
         });
@@ -992,7 +994,8 @@ VS.ui.SearchInput = Backbone.View.extend({
       }, this),
       select    : _.bind(function(e, ui) {
         e.preventDefault();
-        e.stopPropagation();
+        // stopPropogation does weird things in jquery-ui 1.9
+//        e.stopPropagation();
         //var remainder = this.addTextFacetRemainder(ui.item.value);
         var position  = this.options.position; // + (remainder ? 1 : 0);
         this.app.searchBox.addFacet(ui.item instanceof String ? ui.item : ui.item.value, '', position);
@@ -1008,7 +1011,13 @@ VS.ui.SearchInput = Backbone.View.extend({
           ul.append('<li class="ui-autocomplete-category">'+item.category+'</li>');
           category = item.category;
         }
-        this._renderItem(ul, item);
+        
+        if(this._renderItemData) {
+          this._renderItemData(ul, item);
+        } else {
+          this._renderItem(ul, item);
+        }
+        
       }, this));
     };
 
