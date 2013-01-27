@@ -237,6 +237,10 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
 /* = Autocomplete = */
 /* ================ */
 
+.ui-helper-hidden-accessible {
+    display: none;
+}
+
 .VS-interface.ui-autocomplete {
   position: absolute;
   border: 1px solid #C0C0C0;
