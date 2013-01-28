@@ -45,6 +45,9 @@ both single and double quotes, just use the double quotes.</p>             </td>
     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
       <span class="k">return</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="nx">value</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">;</span>
     <span class="p">}</span>
+  <span class="p">},</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>If provided, use a custom label instead of the raw value.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">label</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">);</span>
   <span class="p">}</span>
 
 <span class="p">});</span>

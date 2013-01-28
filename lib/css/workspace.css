@@ -48,6 +48,18 @@
     -moz-box-shadow: inset 0px 0px 3px #acf;
     box-shadow: inset 0px 0px 3px #acf;
   }
+  .VS-search .VS-placeholder {
+      position: absolute;
+      top: 7px;
+      left: 4px;
+      margin: 0 20px 0 22px;
+      color: #808080;
+      font-size: 14px;
+  }
+  .VS-search .VS-search-box.VS-focus .VS-placeholder,
+  .VS-search .VS-search-box .VS-placeholder.VS-hidden {
+      display: none;
+  }
   .VS-search .VS-search-inner {
     position: relative;
     margin: 0 20px 0 22px;
@@ -186,6 +198,10 @@
 /* = Autocomplete = */
 /* ================ */
 
+.ui-helper-hidden-accessible {
+    display: none;
+}
+
 .VS-interface.ui-autocomplete {
   position: absolute;
   border: 1px solid #C0C0C0;
@@ -238,7 +254,7 @@
   .VS-interface.ui-autocomplete .ui-menu-item a:active {
     outline: none;
   }
-  .VS-interface.ui-autocomplete .ui-menu-item .ui-state-hover {
+  .VS-interface.ui-autocomplete .ui-menu-item .ui-state-hover, .VS-interface.ui-autocomplete .ui-menu-item .ui-state-focus {
     background-color: #6483F7;
     background-image: -moz-linear-gradient(top, #648bF5, #2465f3); /* FF3.6 */
     background-image: -webkit-gradient(linear, left top, left bottom, from(#648bF5), to(#2465f3)); /* Saf4+, Chrome */

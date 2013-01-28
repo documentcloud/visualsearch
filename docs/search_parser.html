@@ -10,7 +10,6 @@
   <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Walks the query and extracts facets, categories, and free text.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">_extractAllFacets</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">instance</span><span class="p">,</span> <span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">facets</span> <span class="o">=</span> <span class="p">[];</span>
     <span class="kd">var</span> <span class="nx">originalQuery</span> <span class="o">=</span> <span class="nx">query</span><span class="p">;</span>
-
     <span class="k">while</span> <span class="p">(</span><span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
       <span class="kd">var</span> <span class="nx">category</span><span class="p">,</span> <span class="nx">value</span><span class="p">;</span>
       <span class="nx">originalQuery</span> <span class="o">=</span> <span class="nx">query</span><span class="p">;</span>

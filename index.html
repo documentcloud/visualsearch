@@ -366,7 +366,7 @@
       </tr>
 
       <tr>
-        <th colspan="2">4. VisualSearch Dependencies (<tt>jQuery 1.4+, jQuery UI, Underscore.js, Backbone.js</tt>)</th>
+        <th colspan="2">4. VisualSearch Dependencies (<tt>jQuery 1.4+, jQuery UI 1.8+, Underscore.js, Backbone.js</tt>)</th>
       </tr>
       <tr>
         <td colspan="2"><i>You should only include the dependencies you don't already have.</i></td>
@@ -380,20 +380,20 @@
         <td><i>340kb, Uncompressed with Comments</i></td>
       </tr>
       <tr>
-        <td><a href="vendor/jquery-1.6.1.js">jQuery 1.6.1</a></td>
-        <td><i>238kb, Uncompressed with Comments</i></td>
+        <td><a href="vendor/jquery-1.6.1.js">jQuery 1.9.0</a></td>
+        <td><i>267kb, Uncompressed with Comments</i></td>
       </tr>
       <tr>
-        <td>jQuery UI 1.8.13: <br /><a href="vendor/jquery.ui.core.js">Core</a> <a href="vendor/jquery.ui.position.js">Position</a> <a href="vendor/jquery.ui.widget.js">Widget</a> <a href="vendor/jquery.ui.autocomplete.js">Autocomplete</a></td>
-        <td><i>48kb, Uncompressed with Comments</i></td>
+        <td>jQuery UI 1.10.0: <br /><a href="vendor/jquery.ui.core.js">Core</a> <a href="vendor/jquery.ui.position.js">Position</a> <a href="vendor/jquery.ui.widget.js">Widget</a> <a href="vendor/jquery.ui.menu.js">Menu</a> <a href="vendor/jquery.ui.autocomplete.js">Autocomplete</a></td>
+        <td><i>72kb, Uncompressed with Comments</i></td>
       </tr>
       <tr>
-        <td><a href="vendor/underscore-1.1.5.js">Underscore 1.1.5</a></td>
-        <td><i>29kb, Uncompressed with Comments</i></td>
-      </tr>
-      <tr>
-        <td><a href="vendor/backbone-0.5.0.js">Backbone 0.5.0</a></td>
+        <td><a href="vendor/underscore-1.4.3.js">Underscore 1.4.3</a></td>
         <td><i>41kb, Uncompressed with Comments</i></td>
+      </tr>
+      <tr>
+        <td><a href="vendor/backbone-0.9.10.js">Backbone 0.9.10</a></td>
+        <td><i>56kb, Uncompressed with Comments</i></td>
       </tr>
 
     </table>
@@ -498,6 +498,16 @@ visualSearch.searchBox.value("Country: US State: \"New York\" Key: Value")
 
     <h2 id="changelog">Change Log</h2>
 
+    <p>
+      <b class="header">0.4.0</b> <i>January 27th, 2013</i><br />
+      Add <tt>placeholder: "Search for documents..."</tt> to your options to create an
+      auto-hiding placeholder in an empty search box. Also upgraded all vendorized
+      dependencies to latest versions (jQuery 1.9.0, jQuery UI 1.10.0, Backbone 0.9.10,
+      Underscore 1.4.3). Also fixed a number of issues:
+      <a href="https://github.com/documentcloud/visualsearch/compare/0.3.0...0.4.0">
+          https://github.com/documentcloud/visualsearch/compare/0.3.0...0.4.0
+      </a>
+    </p>
     <p>
       <b class="header">0.3.0</b> <i>September 20th, 2012</i><br />
       Add <tt>showFacets: true</tt> to your options to have all available facets

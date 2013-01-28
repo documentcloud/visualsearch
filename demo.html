@@ -124,14 +124,15 @@
   <link rel="stylesheet" href="lib/css/icons.css" type="text/css" media="screen" charset="utf-8">
   <link rel="stylesheet" href="lib/css/workspace.css" type="text/css" media="screen" charset="utf-8">
 
-  <script src="vendor/jquery-1.6.1.js" type="text/javascript" charset="utf-8"></script>
+  <script src="vendor/jquery-1.9.0.js" type="text/javascript" charset="utf-8"></script>
   <!-- <script src="vendor/backported/jquery-1.4.4.js" type="text/javascript" charset="utf-8"></script> -->
   <script src="vendor/jquery.ui.core.js" type="text/javascript" charset="utf-8"></script>
   <script src="vendor/jquery.ui.widget.js" type="text/javascript" charset="utf-8"></script>
   <script src="vendor/jquery.ui.position.js" type="text/javascript" charset="utf-8"></script>
+  <script src="vendor/jquery.ui.menu.js" type="text/javascript" charset="utf-8"></script>
   <script src="vendor/jquery.ui.autocomplete.js" type="text/javascript" charset="utf-8"></script>
-  <script src="vendor/underscore-1.1.5.js" type="text/javascript" charset="utf-8"></script>
-  <script src="vendor/backbone-0.5.0.js" type="text/javascript" charset="utf-8"></script>
+  <script src="vendor/underscore-1.4.3.js" type="text/javascript" charset="utf-8"></script>
+  <script src="vendor/backbone-0.9.10.js" type="text/javascript" charset="utf-8"></script>
   <script src="lib/js/visualsearch.js" type="text/javascript" charset="utf-8"></script>
   <script src="lib/js/views/search_box.js" type="text/javascript" charset="utf-8"></script>
   <script src="lib/js/views/search_facet.js" type="text/javascript" charset="utf-8"></script>
@@ -185,7 +186,7 @@
       $(document).ready(function() {
         window.visualSearch = VS.init({
           container  : $('#search_box_container'),
-          query      : 'country: "South Africa" account: 5-samuel "U.S. State": California',
+          query      : 'country: "United States" account: 5-samuel "U.S. State": California',
           showFacets : true,
           unquotable : [
             'text',
@@ -293,17 +294,22 @@
                     "Togo", "Libya", "Jordan", "Paraguay", "Laos",
                     "El Salvador", "Sierra Leone", "Nicaragua", "Kyrgyzstan", "Denmark",
                     "Slovakia", "Finland", "Eritrea", "Turkmenistan"
-                  ], {preserveOrder: true});
+                  ], {
+                    preserveOrder: true // Otherwise the selected value is brought to the top
+                  });
                   break;
               }
             },
             facetMatches : function(callback) {
               callback([
-                'account', 'filter', 'access', 'title',
-                { label: 'city',    category: 'location' },
-                { label: 'address', category: 'location' },
-                { label: 'country', category: 'location' },
-                { label: 'U.S. State', category: 'location' },
+                'account', 
+                'filter', 
+                'access', 
+                'title',
+                { label: 'city',        category: 'location' },
+                { label: 'address',     category: 'location' },
+                { label: 'country',     category: 'location' },
+                { label: 'U.S. State',  category: 'location' },
               ]);
             }
           }
@@ -329,9 +335,9 @@
             'filter',
             'access'
           ],
+          placeholder : "Search for your documents...",
           callbacks  : {
             search : function(query, searchCollection) {
-              console.log(["query", searchCollection.facets(), query]);
               var $query = $('#search_query2');
               $query.stop().animate({opacity : 1}, {duration: 300, queue: false});
               $query.html('<span class="raquo">&raquo;</span> You searched for: <b>' + searchCollection.serialize() + '</b>');
