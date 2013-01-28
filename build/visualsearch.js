@@ -562,7 +562,6 @@ VS.ui.SearchFacet = Backbone.View.extend({
     this.setMode('not', 'editing');
     this.setMode('not', 'selected');
     this.box = this.$('input');
-    console.log(["model", this.model]);
     this.box.val(this.model.label());
     this.box.bind('blur', this.deferDisableEdit);
     // Handle paste events with `propertychange`
