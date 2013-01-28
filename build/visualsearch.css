@@ -99,6 +99,14 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     -moz-box-shadow: inset 0px 0px 3px #acf;
     box-shadow: inset 0px 0px 3px #acf;
   }
+  .VS-search .VS-placeholder {
+      position: relative;
+      margin: 0 20px 0 22px;
+      color: #808080;
+  }
+  .VS-search .VS-search-box.VS-focus .VS-placeholder {
+      display: none;
+  }
   .VS-search .VS-search-inner {
     position: relative;
     margin: 0 20px 0 22px;

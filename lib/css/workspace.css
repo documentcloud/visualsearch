@@ -48,6 +48,18 @@
     -moz-box-shadow: inset 0px 0px 3px #acf;
     box-shadow: inset 0px 0px 3px #acf;
   }
+  .VS-search .VS-placeholder {
+      position: absolute;
+      top: 7px;
+      left: 4px;
+      margin: 0 20px 0 22px;
+      color: #808080;
+      font-size: 14px;
+  }
+  .VS-search .VS-search-box.VS-focus .VS-placeholder,
+  .VS-search .VS-search-box .VS-placeholder.VS-hidden {
+      display: none;
+  }
   .VS-search .VS-search-inner {
     position: relative;
     margin: 0 20px 0 22px;

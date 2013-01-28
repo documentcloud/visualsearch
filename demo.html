@@ -186,7 +186,7 @@
       $(document).ready(function() {
         window.visualSearch = VS.init({
           container  : $('#search_box_container'),
-          query      : 'country: "South Africa" account: 5-samuel "U.S. State": California',
+          query      : 'country: "United States" account: 5-samuel "U.S. State": California',
           showFacets : true,
           unquotable : [
             'text',
@@ -293,17 +293,22 @@
                     "Togo", "Libya", "Jordan", "Paraguay", "Laos",
                     "El Salvador", "Sierra Leone", "Nicaragua", "Kyrgyzstan", "Denmark",
                     "Slovakia", "Finland", "Eritrea", "Turkmenistan"
-                  ], {preserveOrder: true});
+                  ], {
+                    preserveOrder: true // Otherwise the selected value is brought to the top
+                  });
                   break;
               }
             },
             facetMatches : function(callback) {
               callback([
-                'account', 'filter', 'access', 'title',
-                { label: 'city',    category: 'location' },
-                { label: 'address', category: 'location' },
-                { label: 'country', category: 'location' },
-                { label: 'U.S. State', category: 'location' },
+                'account', 
+                'filter', 
+                'access', 
+                'title',
+                { label: 'city',        category: 'location' },
+                { label: 'address',     category: 'location' },
+                { label: 'country',     category: 'location' },
+                { label: 'U.S. State',  category: 'location' },
               ]);
             }
           }
@@ -329,9 +334,9 @@
             'filter',
             'access'
           ],
+          placeholder : "Search for your documents...",
           callbacks  : {
             search : function(query, searchCollection) {
-              console.log(["query", searchCollection.facets(), query]);
               var $query = $('#search_query2');
               $query.stop().animate({opacity : 1}, {duration: 300, queue: false});
               $query.html('<span class="raquo">&raquo;</span> You searched for: <b>' + searchCollection.serialize() + '</b>');

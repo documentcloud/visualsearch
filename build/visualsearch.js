@@ -233,6 +233,12 @@ VS.ui.SearchBox = Backbone.View.extend({
 
     // Add on an n+1 empty search input on the very end.
     this.renderSearchInput();
+    
+    if (this.app.searchQuery.length) {
+        this.$('.VS-placeholder').hide();
+    } else {
+        this.$('.VS-placeholder').show().text(this.app.options.placeholder);
+    }
   },
 
   // Render a single facet, using its category and query value.
@@ -549,7 +555,8 @@ VS.ui.SearchFacet = Backbone.View.extend({
     this.setMode('not', 'editing');
     this.setMode('not', 'selected');
     this.box = this.$('input');
-    this.box.val(this.model.get('value'));
+    console.log(["model", this.model]);
+    this.box.val(this.model.label());
     this.box.bind('blur', this.deferDisableEdit);
     // Handle paste events with `propertychange`
     this.box.bind('input propertychange', this.keydown);
@@ -1822,6 +1829,11 @@ VS.model.SearchFacet = Backbone.Model.extend({
     } else {
       return '"' + value + '"';
     }
+  },
+  
+  // If provided, use a custom label instead of the raw value.
+  label : function() {
+      return this.get('label') || this.get('value');
   }
 
 });
@@ -1900,7 +1912,7 @@ VS.model.SearchQuery = Backbone.Collection.extend({
 (function(){
 window.JST = window.JST || {};
 
-window.JST['search_box'] = _.template('<div class="VS-search">\n  <div class="VS-search-box-wrapper VS-search-box">\n    <div class="VS-icon VS-icon-search"></div>\n    <div class="VS-search-inner"></div>\n    <div class="VS-icon VS-icon-cancel VS-cancel-search-box" title="clear search"></div>\n  </div>\n</div>');
+window.JST['search_box'] = _.template('<div class="VS-search">\n  <div class="VS-search-box-wrapper VS-search-box">\n    <div class="VS-icon VS-icon-search"></div>\n    <div class="VS-placeholder"></div>\n    <div class="VS-search-inner"></div>\n    <div class="VS-icon VS-icon-cancel VS-cancel-search-box" title="clear search"></div>\n  </div>\n</div>');
 window.JST['search_facet'] = _.template('<% if (model.has(\'category\')) { %>\n  <div class="category"><%= model.get(\'category\') %>:</div>\n<% } %>\n\n<div class="search_facet_input_container">\n  <input type="text" class="search_facet_input ui-menu VS-interface" value="" />\n</div>\n\n<div class="search_facet_remove VS-icon VS-icon-cancel"></div>');
 window.JST['search_input'] = _.template('<input type="text" class="ui-menu" />');
 })();
