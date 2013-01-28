@@ -233,12 +233,7 @@ VS.ui.SearchBox = Backbone.View.extend({
 
     // Add on an n+1 empty search input on the very end.
     this.renderSearchInput();
-    
-    if (this.app.searchQuery.length) {
-        this.$('.VS-placeholder').hide();
-    } else {
-        this.$('.VS-placeholder').show().text(this.app.options.placeholder);
-    }
+    this.renderPlaceholder();
   },
 
   // Render a single facet, using its category and query value.
@@ -269,6 +264,17 @@ VS.ui.SearchBox = Backbone.View.extend({
     });
     this.$('.VS-search-inner').append(input.render().el);
     this.inputViews.push(input);
+  },
+  
+  // Handles showing/hiding the placeholder text
+  renderPlaceholder : function() {
+    var $placeholder = this.$('.VS-placeholder');
+    if (this.app.searchQuery.length) {
+      $placeholder.addClass("VS-hidden");
+    } else {
+      $placeholder.removeClass("VS-hidden")
+                  .text(this.app.options.placeholder);
+    }
   },
 
   // # Modifying Facets #
@@ -397,8 +403,7 @@ VS.ui.SearchBox = Backbone.View.extend({
     } else if (options.skipToFacet && currentView.type == 'text' &&
                viewCount == viewPosition && direction >= 0) {
       // Special case of looping around to a facet from the last search input box.
-      viewPosition = 0;
-      direction    = 0;
+      return false;
     }
     var view, next = Math.min(viewCount, viewPosition + direction);
 
@@ -431,6 +436,8 @@ VS.ui.SearchBox = Backbone.View.extend({
     }
     if (options.selectText) view.selectText();
     this.resizeFacets();
+    
+    return true;
   },
 
   maybeFocusSearch : function(e) {
@@ -1309,19 +1316,22 @@ VS.ui.SearchInput = Backbone.View.extend({
       e.preventDefault();
       this.app.searchBox.focusNextFacet(this, -1, {selectText: true});
     } else if (key == 'tab') {
-      e.preventDefault();
       var value = this.box.val();
       if (value.length) {
+        e.preventDefault();
         var remainder = this.addTextFacetRemainder(value);
         var position  = this.options.position + (remainder?1:0);
         if (value != remainder) {
             this.app.searchBox.addFacet(value, '', position);
         }
       } else {
-        this.app.searchBox.focusNextFacet(this, 0, {
+        var foundFacet = this.app.searchBox.focusNextFacet(this, 0, {
           skipToFacet: true,
           selectText: true
         });
+        if (foundFacet) {
+          e.preventDefault();
+        }
       }
     } else if (VS.app.hotkeys.command &&
                String.fromCharCode(e.which).toLowerCase() == 'a') {
