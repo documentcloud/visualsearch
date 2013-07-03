@@ -1563,7 +1563,7 @@ $.fn.extend({
 
         $tester.html(value);
 
-        $input.width($tester.width() + 3 + parseInt($input.css('min-width')));
+        $input.width($tester.get(0).scrollWidth);
         $input.trigger('updated.autogrow');
       });
 
