@@ -14,3 +14,5 @@ structured object, so you don't have to parse the query string yourself.
 
 For documentation, pre-packed downloads, demos, and tests, see:
 http://documentcloud.github.com/visualsearch
+
+Check out Search.js (http://github.com/hirokiosame/search.js), a fork of VisualSearch.js that provides support for dynamic operators, HTML5 input types(numbers and dates), and JSON output for flexible data interchange.
