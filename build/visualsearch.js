@@ -24,7 +24,7 @@
   if (!VS.utils)  VS.utils  = {};
 
   // Sets the version for VisualSearch to be used programatically elsewhere.
-  VS.VERSION = '0.4.0';
+  VS.VERSION = '0.5.0';
 
   VS.VisualSearch = function(options) {
     var defaults = {
