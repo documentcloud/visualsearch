@@ -93,6 +93,9 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   min-height: 28px;
   height: auto;
 }
+  .VS-search.VS-readonly .VS-search-box {
+    cursor: default;
+  }
   .VS-search .VS-search-box.VS-focus {
     border-color: #acf;
     -webkit-box-shadow: inset 0px 0px 3px #acf;
@@ -137,6 +140,9 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     position: absolute;
     right: 9px; top: 8px;
   }
+    .VS-search.VS-readonly .VS-icon-cancel {
+      display: none;
+    }
 
 /* ================ */
 /* = Search Facet = */
@@ -151,6 +157,9 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   height: 20px;
   margin: 3px -3px 3px 0;
 }
+  .VS-search.VS-readonly .search_facet {
+    padding-left: 0;
+  }
   .VS-search .search_facet.is_selected {
     margin-left: -3px;
     -webkit-border-radius: 16px;
@@ -173,6 +182,9 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
     cursor: pointer;
     padding: 4px 0 0;
   }
+    .VS-search.VS-readonly .search_facet .category {
+      cursor: default;
+    }
   .VS-search .search_facet.is_selected .category {
     margin-left: 3px;
   }
@@ -198,6 +210,9 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
   .VS-search .search_facet.is_editing input,
   .VS-search .search_facet.is_selected input {
     color: #000;
+  }
+  .VS-search.VS-readonly .search_facet .search_facet_remove {
+    display: none;
   }
   .VS-search .search_facet .search_facet_remove {
     position: absolute;

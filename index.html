@@ -113,6 +113,9 @@
       margin: -12px 0 24px;
       font-size: 14px;
     }
+    a.thirdparty-link {
+      font-weight: bold;
+    }
   </style>
 
   <link rel="stylesheet" href="build-min/visualsearch-datauri.css" type="text/css" media="screen" charset="utf-8">
@@ -171,7 +174,7 @@
 
     <h2>Table of Contents</h2>
 
-    <a href="#demo">Demo</a> | <a href="#downloads">Downloads</a> | <a href="#usage">Usage</a> | <a href="#changelog">Change Log</a>
+    <a href="#demo">Demo</a> | <a href="#downloads">Downloads</a> | <a href="#usage">Usage</a> | <a href="#links">Links</a> | <a href="#changelog">Change Log</a>
 
 
     <h2 id="demo">Demo <span class="demo-hint"><i>Try searching for: <b>account</b>, <b>filter</b>, <b>access</b>, <b>title</b>, <b>city</b>, <b>state</b>, or <b>country</b>.</i></span></h2>
@@ -183,7 +186,7 @@
 
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
-        var visualSearch = VS.init({
+        window.visualSearch = VS.init({
           container  : $('#search_box_container'),
           query      : 'country: "United States" "U.S. State": "New York" account: 5-samuel',
           showFacets : true,
@@ -327,11 +330,11 @@
         <th colspan="2">1. VisualSearch JavaScript (<tt>visualsearch.js</tt>)</th>
       </tr>
       <tr>
-        <td><a href="build-min/visualsearch.js">Production Version (0.4.0)</a></td>
+        <td><a href="build-min/visualsearch.js">Production Version (0.5.0)</a></td>
         <td><i>7kb, Minified and Gzipped</i></td>
       </tr>
       <tr>
-        <td><a href="build/visualsearch.js">Development Version (0.4.0)</a></td>
+        <td><a href="build/visualsearch.js">Development Version (0.5.0)</a></td>
         <td><i>63kb, Uncompressed with Comments</i></td>
       </tr>
 
@@ -380,20 +383,20 @@
         <td><i>340kb, Uncompressed with Comments</i></td>
       </tr>
       <tr>
-        <td><a href="vendor/jquery-1.6.1.js">jQuery 1.9.0</a></td>
+        <td><a href="vendor/jquery-1.11.0.js">jQuery 1.11.0</a></td>
         <td><i>267kb, Uncompressed with Comments</i></td>
       </tr>
       <tr>
-        <td>jQuery UI 1.10.0: <br /><a href="vendor/jquery.ui.core.js">Core</a> <a href="vendor/jquery.ui.position.js">Position</a> <a href="vendor/jquery.ui.widget.js">Widget</a> <a href="vendor/jquery.ui.menu.js">Menu</a> <a href="vendor/jquery.ui.autocomplete.js">Autocomplete</a></td>
+        <td>jQuery UI 1.10.4: <br /><a href="vendor/jquery.ui.core.js">Core</a> <a href="vendor/jquery.ui.position.js">Position</a> <a href="vendor/jquery.ui.widget.js">Widget</a> <a href="vendor/jquery.ui.menu.js">Menu</a> <a href="vendor/jquery.ui.autocomplete.js">Autocomplete</a></td>
         <td><i>72kb, Uncompressed with Comments</i></td>
       </tr>
       <tr>
-        <td><a href="vendor/underscore-1.4.3.js">Underscore 1.4.3</a></td>
+        <td><a href="vendor/underscore-1.5.2.js">Underscore 1.5.2</a></td>
         <td><i>41kb, Uncompressed with Comments</i></td>
       </tr>
       <tr>
-        <td><a href="vendor/backbone-0.9.10.js">Backbone 0.9.10</a></td>
-        <td><i>56kb, Uncompressed with Comments</i></td>
+        <td><a href="vendor/backbone-1.1.0.js">Backbone 1.1.0</a></td>
+        <td><i>59kb, Uncompressed with Comments</i></td>
       </tr>
 
     </table>
@@ -495,9 +498,26 @@ visualSearch.searchBox.value("Country: US State: \"New York\" Key: Value")
       </li>
     </ol>
 
+    <h2 id="links">Links</h2>
+
+    <p>
+      <a href="http://github.com/hirokiosame/search.js" class="thirdparty-link">Search.js</a> <i>July 22nd, 2013</i><br />
+          A fork of VisualSearch.js that provides support for dynamic operators and HTML5 
+          input types (numbers and dates).
+    </p>
+
 
     <h2 id="changelog">Change Log</h2>
 
+    <p>
+      <b class="header">0.5.0</b> <i>February 9th, 2014</i><br />
+      Add <tt>readOnly: true</tt> to your options to create a read-only search box. 
+      Also upgraded all vendorized dependencies to latest versions (jQuery 1.11.0, 
+      jQuery UI 1.10.4, Backbone 1.1.0, Underscore 1.5.2). Also fixed a number of issues:
+      <a href="https://github.com/documentcloud/visualsearch/compare/0.4.0...0.5.0">
+          https://github.com/documentcloud/visualsearch/compare/0.4.0...0.5.0
+      </a>
+    </p>
     <p>
       <b class="header">0.4.0</b> <i>January 27th, 2013</i><br />
       Add <tt>placeholder: "Search for documents..."</tt> to your options to create an

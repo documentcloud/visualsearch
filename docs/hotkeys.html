@@ -1,72 +1,328 @@
-<!DOCTYPE html>  <html> <head>   <title>hotkeys.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="search_facets.html">                 search_facets.js               </a>                                           <a class="source" href="search_query.html">                 search_query.js               </a>                                           <a class="source" href="templates.html">                 templates.js               </a>                                           <a class="source" href="backbone_extensions.html">                 backbone_extensions.js               </a>                                           <a class="source" href="hotkeys.html">                 hotkeys.js               </a>                                           <a class="source" href="inflector.html">                 inflector.js               </a>                                           <a class="source" href="jquery_extensions.html">                 jquery_extensions.js               </a>                                           <a class="source" href="search_parser.html">                 search_parser.js               </a>                                           <a class="source" href="search_box.html">                 search_box.js               </a>                                           <a class="source" href="search_facet.html">                 search_facet.js               </a>                                           <a class="source" href="search_input.html">                 search_input.js               </a>                                           <a class="source" href="visualsearch.html">                 visualsearch.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               hotkeys.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<!DOCTYPE html>
 
-<span class="kd">var</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">jQuery</span><span class="p">;</span> <span class="c1">// Handle namespaced jQuery</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>DocumentCloud workspace hotkeys. To tell if a key is currently being pressed,
+<html>
+<head>
+  <title>hotkeys.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="search_facets.html">
+                search_facets.js
+              </a>
+            
+              
+              <a class="source" href="search_query.html">
+                search_query.js
+              </a>
+            
+              
+              <a class="source" href="templates.html">
+                templates.js
+              </a>
+            
+              
+              <a class="source" href="backbone_extensions.html">
+                backbone_extensions.js
+              </a>
+            
+              
+              <a class="source" href="hotkeys.html">
+                hotkeys.js
+              </a>
+            
+              
+              <a class="source" href="inflector.html">
+                inflector.js
+              </a>
+            
+              
+              <a class="source" href="jquery_extensions.html">
+                jquery_extensions.js
+              </a>
+            
+              
+              <a class="source" href="search_parser.html">
+                search_parser.js
+              </a>
+            
+              
+              <a class="source" href="search_box.html">
+                search_box.js
+              </a>
+            
+              
+              <a class="source" href="search_facet.html">
+                search_facet.js
+              </a>
+            
+              
+              <a class="source" href="search_input.html">
+                search_input.js
+              </a>
+            
+              
+              <a class="source" href="visualsearch.html">
+                visualsearch.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>hotkeys.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+
+<span class="hljs-keyword">var</span> $ = jQuery; <span class="hljs-comment">// Handle namespaced jQuery</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>DocumentCloud workspace hotkeys. To tell if a key is currently being pressed,
 just ask <code>VS.app.hotkeys.[key]</code> on <code>keypress</code>, or ask <code>VS.app.hotkeys.key(e)</code>
 on <code>keydown</code>.</p>
-
 <p>For the most headache-free way to use this utility, check modifier keys,
 like shift and command, with <code>VS.app.hotkeys.shift</code>, and check every other
-key with <code>VS.app.hotkeys.key(e) == 'key_name'</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">VS</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">hotkeys</span> <span class="o">=</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Keys that will be mapped to the <code>hotkeys</code> namespace.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">KEYS</span><span class="o">:</span> <span class="p">{</span>
-    <span class="s1">&#39;16&#39;</span><span class="o">:</span>  <span class="s1">&#39;shift&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;17&#39;</span><span class="o">:</span>  <span class="s1">&#39;command&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;91&#39;</span><span class="o">:</span>  <span class="s1">&#39;command&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;93&#39;</span><span class="o">:</span>  <span class="s1">&#39;command&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;224&#39;</span><span class="o">:</span> <span class="s1">&#39;command&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;13&#39;</span><span class="o">:</span>  <span class="s1">&#39;enter&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;37&#39;</span><span class="o">:</span>  <span class="s1">&#39;left&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;38&#39;</span><span class="o">:</span>  <span class="s1">&#39;upArrow&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;39&#39;</span><span class="o">:</span>  <span class="s1">&#39;right&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;40&#39;</span><span class="o">:</span>  <span class="s1">&#39;downArrow&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;46&#39;</span><span class="o">:</span>  <span class="s1">&#39;delete&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;8&#39;</span><span class="o">:</span>   <span class="s1">&#39;backspace&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;35&#39;</span><span class="o">:</span>  <span class="s1">&#39;end&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;36&#39;</span><span class="o">:</span>  <span class="s1">&#39;home&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;9&#39;</span><span class="o">:</span>   <span class="s1">&#39;tab&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;188&#39;</span><span class="o">:</span> <span class="s1">&#39;comma&#39;</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Binds global keydown and keyup events to listen for keys that match <code>this.KEYS</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">initialize</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">_</span><span class="p">.</span><span class="nx">bindAll</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s1">&#39;down&#39;</span><span class="p">,</span> <span class="s1">&#39;up&#39;</span><span class="p">,</span> <span class="s1">&#39;blur&#39;</span><span class="p">);</span>
-    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">down</span><span class="p">);</span>
-    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;keyup&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">up</span><span class="p">);</span>
-    <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;blur&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">blur</span><span class="p">);</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>On <code>keydown</code>, turn on all keys that match.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">down</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">KEYS</span><span class="p">[</span><span class="nx">e</span><span class="p">.</span><span class="nx">which</span><span class="p">];</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="k">this</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>On <code>keyup</code>, turn off all keys that match.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">up</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">KEYS</span><span class="p">[</span><span class="nx">e</span><span class="p">.</span><span class="nx">which</span><span class="p">];</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="k">this</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>If an input is blurred, all keys need to be turned off, since they are no longer
-able to modify the document.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">blur</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="k">this</span><span class="p">.</span><span class="nx">KEYS</span><span class="p">)</span> <span class="k">this</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">KEYS</span><span class="p">[</span><span class="nx">key</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>Check a key from an event and return the common english name.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">key</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">KEYS</span><span class="p">[</span><span class="nx">e</span><span class="p">.</span><span class="nx">which</span><span class="p">];</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Colon is special, since the value is different between browsers.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">colon</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">charCode</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">which</span><span class="p">;</span>
-    <span class="k">return</span> <span class="nx">charCode</span> <span class="o">&amp;&amp;</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="nx">charCode</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;:&quot;</span><span class="p">;</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Check a key from an event and match it against any known characters.
+key with <code>VS.app.hotkeys.key(e) == &#39;key_name&#39;</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>VS.app.hotkeys = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Keys that will be mapped to the <code>hotkeys</code> namespace.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  KEYS: {
+    <span class="hljs-string">'16'</span>:  <span class="hljs-string">'shift'</span>,
+    <span class="hljs-string">'17'</span>:  <span class="hljs-string">'command'</span>,
+    <span class="hljs-string">'91'</span>:  <span class="hljs-string">'command'</span>,
+    <span class="hljs-string">'93'</span>:  <span class="hljs-string">'command'</span>,
+    <span class="hljs-string">'224'</span>: <span class="hljs-string">'command'</span>,
+    <span class="hljs-string">'13'</span>:  <span class="hljs-string">'enter'</span>,
+    <span class="hljs-string">'37'</span>:  <span class="hljs-string">'left'</span>,
+    <span class="hljs-string">'38'</span>:  <span class="hljs-string">'upArrow'</span>,
+    <span class="hljs-string">'39'</span>:  <span class="hljs-string">'right'</span>,
+    <span class="hljs-string">'40'</span>:  <span class="hljs-string">'downArrow'</span>,
+    <span class="hljs-string">'46'</span>:  <span class="hljs-string">'delete'</span>,
+    <span class="hljs-string">'8'</span>:   <span class="hljs-string">'backspace'</span>,
+    <span class="hljs-string">'35'</span>:  <span class="hljs-string">'end'</span>,
+    <span class="hljs-string">'36'</span>:  <span class="hljs-string">'home'</span>,
+    <span class="hljs-string">'9'</span>:   <span class="hljs-string">'tab'</span>,
+    <span class="hljs-string">'188'</span>: <span class="hljs-string">'comma'</span>
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Binds global keydown and keyup events to listen for keys that match <code>this.KEYS</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  initialize : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    _.bindAll(<span class="hljs-keyword">this</span>, <span class="hljs-string">'down'</span>, <span class="hljs-string">'up'</span>, <span class="hljs-string">'blur'</span>);
+    $(document).bind(<span class="hljs-string">'keydown'</span>, <span class="hljs-keyword">this</span>.down);
+    $(document).bind(<span class="hljs-string">'keyup'</span>, <span class="hljs-keyword">this</span>.up);
+    $(window).bind(<span class="hljs-string">'blur'</span>, <span class="hljs-keyword">this</span>.blur);
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>On <code>keydown</code>, turn on all keys that match.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  down : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
+    <span class="hljs-keyword">var</span> key = <span class="hljs-keyword">this</span>.KEYS[e.which];
+    <span class="hljs-keyword">if</span> (key) <span class="hljs-keyword">this</span>[key] = <span class="hljs-literal">true</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>On <code>keyup</code>, turn off all keys that match.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  up : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
+    <span class="hljs-keyword">var</span> key = <span class="hljs-keyword">this</span>.KEYS[e.which];
+    <span class="hljs-keyword">if</span> (key) <span class="hljs-keyword">this</span>[key] = <span class="hljs-literal">false</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>If an input is blurred, all keys need to be turned off, since they are no longer
+able to modify the document.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  blur : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span>.KEYS) <span class="hljs-keyword">this</span>[<span class="hljs-keyword">this</span>.KEYS[key]] = <span class="hljs-literal">false</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Check a key from an event and return the common english name.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  key : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.KEYS[e.which];
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Colon is special, since the value is different between browsers.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  colon : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
+    <span class="hljs-keyword">var</span> charCode = e.which;
+    <span class="hljs-keyword">return</span> charCode &amp;&amp; <span class="hljs-built_in">String</span>.fromCharCode(charCode) == <span class="hljs-string">":"</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Check a key from an event and match it against any known characters.
 The <code>keyCode</code> is different depending on the event type: <code>keydown</code> vs. <code>keypress</code>.</p>
-
 <p>These were determined by looping through every <code>keyCode</code> and <code>charCode</code> that
-resulted from <code>keydown</code> and <code>keypress</code> events and counting what was printable.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">printable</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">code</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">which</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">type</span> <span class="o">==</span> <span class="s1">&#39;keydown&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">code</span> <span class="o">==</span> <span class="mi">32</span> <span class="o">||</span>                      <span class="c1">// space</span>
-          <span class="p">(</span><span class="nx">code</span> <span class="o">&gt;=</span> <span class="mi">48</span> <span class="o">&amp;&amp;</span> <span class="nx">code</span> <span class="o">&lt;=</span> <span class="mi">90</span><span class="p">)</span> <span class="o">||</span>      <span class="c1">// 0-1a-z</span>
-          <span class="p">(</span><span class="nx">code</span> <span class="o">&gt;=</span> <span class="mi">96</span> <span class="o">&amp;&amp;</span> <span class="nx">code</span> <span class="o">&lt;=</span> <span class="mi">111</span><span class="p">)</span> <span class="o">||</span>     <span class="c1">// 0-9+-/*.</span>
-          <span class="p">(</span><span class="nx">code</span> <span class="o">&gt;=</span> <span class="mi">186</span> <span class="o">&amp;&amp;</span> <span class="nx">code</span> <span class="o">&lt;=</span> <span class="mi">192</span><span class="p">)</span> <span class="o">||</span>    <span class="c1">// ;=,-./^</span>
-          <span class="p">(</span><span class="nx">code</span> <span class="o">&gt;=</span> <span class="mi">219</span> <span class="o">&amp;&amp;</span> <span class="nx">code</span> <span class="o">&lt;=</span> <span class="mi">222</span><span class="p">))</span> <span class="p">{</span>    <span class="c1">// (\)&#39;</span>
-        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>[space]!"#$%&amp;'()*+,-.0-9:;&lt;=>?@A-Z[]^_`a-z{|} and unicode characters</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="k">if</span> <span class="p">((</span><span class="nx">code</span> <span class="o">&gt;=</span> <span class="mi">32</span> <span class="o">&amp;&amp;</span> <span class="nx">code</span> <span class="o">&lt;=</span> <span class="mi">126</span><span class="p">)</span>  <span class="o">||</span>
-          <span class="p">(</span><span class="nx">code</span> <span class="o">&gt;=</span> <span class="mi">160</span> <span class="o">&amp;&amp;</span> <span class="nx">code</span> <span class="o">&lt;=</span> <span class="mi">500</span><span class="p">)</span> <span class="o">||</span>
-          <span class="p">(</span><span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="nx">code</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;:&quot;</span><span class="p">))</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="p">}</span>
+resulted from <code>keydown</code> and <code>keypress</code> events and counting what was printable.</p>
 
-<span class="p">};</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  printable : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
+    <span class="hljs-keyword">var</span> code = e.which;
+    <span class="hljs-keyword">if</span> (e.type == <span class="hljs-string">'keydown'</span>) {
+      <span class="hljs-keyword">if</span> (code == <span class="hljs-number">32</span> ||                      <span class="hljs-comment">// space</span>
+          (code &gt;= <span class="hljs-number">48</span> &amp;&amp; code &lt;= <span class="hljs-number">90</span>) ||      <span class="hljs-comment">// 0-1a-z</span>
+          (code &gt;= <span class="hljs-number">96</span> &amp;&amp; code &lt;= <span class="hljs-number">111</span>) ||     <span class="hljs-comment">// 0-9+-/*.</span>
+          (code &gt;= <span class="hljs-number">186</span> &amp;&amp; code &lt;= <span class="hljs-number">192</span>) ||    <span class="hljs-comment">// ;=,-./^</span>
+          (code &gt;= <span class="hljs-number">219</span> &amp;&amp; code &lt;= <span class="hljs-number">222</span>)) {    <span class="hljs-comment">// (\)'</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+      }
+    } <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>[space]!”#$%&amp;’()*+,-.0-9:;&lt;=&gt;?@A-Z[]^_`a-z{|} and unicode characters</p>
 
-<span class="p">})();</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> ((code &gt;= <span class="hljs-number">32</span> &amp;&amp; code &lt;= <span class="hljs-number">126</span>)  ||
+          (code &gt;= <span class="hljs-number">160</span> &amp;&amp; code &lt;= <span class="hljs-number">500</span>) ||
+          (<span class="hljs-built_in">String</span>.fromCharCode(code) == <span class="hljs-string">":"</span>)) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+      }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  }
 
-</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
+};
+
+})();</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,9 +1,117 @@
-<!DOCTYPE html>  <html> <head>   <title>templates.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="search_facets.html">                 search_facets.js               </a>                                           <a class="source" href="search_query.html">                 search_query.js               </a>                                           <a class="source" href="templates.html">                 templates.js               </a>                                           <a class="source" href="backbone_extensions.html">                 backbone_extensions.js               </a>                                           <a class="source" href="hotkeys.html">                 hotkeys.js               </a>                                           <a class="source" href="inflector.html">                 inflector.js               </a>                                           <a class="source" href="jquery_extensions.html">                 jquery_extensions.js               </a>                                           <a class="source" href="search_parser.html">                 search_parser.js               </a>                                           <a class="source" href="search_box.html">                 search_box.js               </a>                                           <a class="source" href="search_facet.html">                 search_facet.js               </a>                                           <a class="source" href="search_input.html">                 search_input.js               </a>                                           <a class="source" href="visualsearch.html">                 visualsearch.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               templates.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-<span class="nb">window</span><span class="p">.</span><span class="nx">JST</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">JST</span> <span class="o">||</span> <span class="p">{};</span>
+<!DOCTYPE html>
 
-<span class="nb">window</span><span class="p">.</span><span class="nx">JST</span><span class="p">[</span><span class="s1">&#39;search_box&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">template</span><span class="p">(</span><span class="s1">&#39;&lt;div class=&quot;VS-search&quot;&gt;\n  &lt;div class=&quot;VS-search-box-wrapper VS-search-box&quot;&gt;\n    &lt;div class=&quot;VS-icon VS-icon-search&quot;&gt;&lt;/div&gt;\n    &lt;div class=&quot;VS-placeholder&quot;&gt;&lt;/div&gt;\n    &lt;div class=&quot;VS-search-inner&quot;&gt;&lt;/div&gt;\n    &lt;div class=&quot;VS-icon VS-icon-cancel VS-cancel-search-box&quot; title=&quot;clear search&quot;&gt;&lt;/div&gt;\n  &lt;/div&gt;\n&lt;/div&gt;&#39;</span><span class="p">);</span>
-<span class="nb">window</span><span class="p">.</span><span class="nx">JST</span><span class="p">[</span><span class="s1">&#39;search_facet&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">template</span><span class="p">(</span><span class="s1">&#39;&lt;% if (model.has(\&#39;category\&#39;)) { %&gt;\n  &lt;div class=&quot;category&quot;&gt;&lt;%= model.get(\&#39;category\&#39;) %&gt;:&lt;/div&gt;\n&lt;% } %&gt;\n\n&lt;div class=&quot;search_facet_input_container&quot;&gt;\n  &lt;input type=&quot;text&quot; class=&quot;search_facet_input ui-menu VS-interface&quot; value=&quot;&quot; /&gt;\n&lt;/div&gt;\n\n&lt;div class=&quot;search_facet_remove VS-icon VS-icon-cancel&quot;&gt;&lt;/div&gt;&#39;</span><span class="p">);</span>
-<span class="nb">window</span><span class="p">.</span><span class="nx">JST</span><span class="p">[</span><span class="s1">&#39;search_input&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">template</span><span class="p">(</span><span class="s1">&#39;&lt;input type=&quot;text&quot; class=&quot;ui-menu&quot; /&gt;&#39;</span><span class="p">);</span>
-<span class="p">})();</span>
+<html>
+<head>
+  <title>templates.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="search_facets.html">
+                search_facets.js
+              </a>
+            
+              
+              <a class="source" href="search_query.html">
+                search_query.js
+              </a>
+            
+              
+              <a class="source" href="templates.html">
+                templates.js
+              </a>
+            
+              
+              <a class="source" href="backbone_extensions.html">
+                backbone_extensions.js
+              </a>
+            
+              
+              <a class="source" href="hotkeys.html">
+                hotkeys.js
+              </a>
+            
+              
+              <a class="source" href="inflector.html">
+                inflector.js
+              </a>
+            
+              
+              <a class="source" href="jquery_extensions.html">
+                jquery_extensions.js
+              </a>
+            
+              
+              <a class="source" href="search_parser.html">
+                search_parser.js
+              </a>
+            
+              
+              <a class="source" href="search_box.html">
+                search_box.js
+              </a>
+            
+              
+              <a class="source" href="search_facet.html">
+                search_facet.js
+              </a>
+            
+              
+              <a class="source" href="search_input.html">
+                search_input.js
+              </a>
+            
+              
+              <a class="source" href="visualsearch.html">
+                visualsearch.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>templates.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+window.JST = window.JST || {};
 
-</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
+window.JST[<span class="hljs-string">'search_box'</span>] = _.template(<span class="hljs-string">'&lt;div class="VS-search &lt;% if (readOnly) { %&gt;VS-readonly&lt;% } %&gt;"&gt;\n  &lt;div class="VS-search-box-wrapper VS-search-box"&gt;\n    &lt;div class="VS-icon VS-icon-search"&gt;&lt;/div&gt;\n    &lt;div class="VS-placeholder"&gt;&lt;/div&gt;\n    &lt;div class="VS-search-inner"&gt;&lt;/div&gt;\n    &lt;div class="VS-icon VS-icon-cancel VS-cancel-search-box" title="clear search"&gt;&lt;/div&gt;\n  &lt;/div&gt;\n&lt;/div&gt;'</span>);
+window.JST[<span class="hljs-string">'search_facet'</span>] = _.template(<span class="hljs-string">'&lt;% if (model.has(\'category\')) { %&gt;\n  &lt;div class="category"&gt;&lt;%= model.get(\'category\') %&gt;:&lt;/div&gt;\n&lt;% } %&gt;\n\n&lt;div class="search_facet_input_container"&gt;\n  &lt;input type="text" class="search_facet_input ui-menu VS-interface" value="" &lt;% if (readOnly) { %&gt;disabled="disabled"&lt;% } %&gt; /&gt;\n&lt;/div&gt;\n\n&lt;div class="search_facet_remove VS-icon VS-icon-cancel"&gt;&lt;/div&gt;'</span>);
+window.JST[<span class="hljs-string">'search_input'</span>] = _.template(<span class="hljs-string">'&lt;input type="text" class="ui-menu" &lt;% if (readOnly) { %&gt;disabled="disabled"&lt;% } %&gt; /&gt;'</span>);
+})();</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

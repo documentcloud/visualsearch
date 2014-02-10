@@ -1,168 +1,426 @@
-<!DOCTYPE html>  <html> <head>   <title>jquery_extensions.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="search_facets.html">                 search_facets.js               </a>                                           <a class="source" href="search_query.html">                 search_query.js               </a>                                           <a class="source" href="templates.html">                 templates.js               </a>                                           <a class="source" href="backbone_extensions.html">                 backbone_extensions.js               </a>                                           <a class="source" href="hotkeys.html">                 hotkeys.js               </a>                                           <a class="source" href="inflector.html">                 inflector.js               </a>                                           <a class="source" href="jquery_extensions.html">                 jquery_extensions.js               </a>                                           <a class="source" href="search_parser.html">                 search_parser.js               </a>                                           <a class="source" href="search_box.html">                 search_box.js               </a>                                           <a class="source" href="search_facet.html">                 search_facet.js               </a>                                           <a class="source" href="search_input.html">                 search_input.js               </a>                                           <a class="source" href="visualsearch.html">                 visualsearch.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               jquery_extensions.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<!DOCTYPE html>
 
-<span class="kd">var</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">jQuery</span><span class="p">;</span> <span class="c1">// Handle namespaced jQuery</span>
+<html>
+<head>
+  <title>jquery_extensions.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="search_facets.html">
+                search_facets.js
+              </a>
+            
+              
+              <a class="source" href="search_query.html">
+                search_query.js
+              </a>
+            
+              
+              <a class="source" href="templates.html">
+                templates.js
+              </a>
+            
+              
+              <a class="source" href="backbone_extensions.html">
+                backbone_extensions.js
+              </a>
+            
+              
+              <a class="source" href="hotkeys.html">
+                hotkeys.js
+              </a>
+            
+              
+              <a class="source" href="inflector.html">
+                inflector.js
+              </a>
+            
+              
+              <a class="source" href="jquery_extensions.html">
+                jquery_extensions.js
+              </a>
+            
+              
+              <a class="source" href="search_parser.html">
+                search_parser.js
+              </a>
+            
+              
+              <a class="source" href="search_box.html">
+                search_box.js
+              </a>
+            
+              
+              <a class="source" href="search_facet.html">
+                search_facet.js
+              </a>
+            
+              
+              <a class="source" href="search_input.html">
+                search_input.js
+              </a>
+            
+              
+              <a class="source" href="visualsearch.html">
+                visualsearch.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>jquery_extensions.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
 
-<span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Makes the selector enter a mode. Modes have both a 'mode' and a 'group',
+<span class="hljs-keyword">var</span> $ = jQuery; <span class="hljs-comment">// Handle namespaced jQuery</span>
+
+$.fn.extend({</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Makes the selector enter a mode. Modes have both a ‘mode’ and a ‘group’,
 and are mutually exclusive with any other modes in the same group.
-Setting will update the view's modes hash, as well as set an HTML class
-of <em>[mode]_[group]</em> on the view's element. Convenient way to swap styles
-and behavior.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">setMode</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">group</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">group</span>    <span class="o">=</span> <span class="nx">group</span> <span class="o">||</span> <span class="s1">&#39;mode&#39;</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">re</span>   <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s2">&quot;\\w+_&quot;</span> <span class="o">+</span> <span class="nx">group</span> <span class="o">+</span> <span class="s2">&quot;(\\s|$)&quot;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">mode</span> <span class="o">=</span> <span class="p">(</span><span class="nx">state</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="o">?</span> <span class="s2">&quot;&quot;</span> <span class="o">:</span> <span class="nx">state</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nx">group</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">re</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="nx">mode</span><span class="p">)</span>
-                       <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s\s/g</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">);</span>
-    <span class="p">});</span>
-    <span class="k">return</span> <span class="nx">mode</span><span class="p">;</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>When attached to an input element, this will cause the width of the input
+Setting will update the view’s modes hash, as well as set an HTML class
+of <em>[mode]_[group]</em> on the view’s element. Convenient way to swap styles
+and behavior.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setMode : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(state, group)</span> {</span>
+    group    = group || <span class="hljs-string">'mode'</span>;
+    <span class="hljs-keyword">var</span> re   = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"\\w+_"</span> + group + <span class="hljs-string">"(\\s|$)"</span>, <span class="hljs-string">'g'</span>);
+    <span class="hljs-keyword">var</span> mode = (state === <span class="hljs-literal">null</span>) ? <span class="hljs-string">""</span> : state + <span class="hljs-string">"_"</span> + group;
+    <span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+      <span class="hljs-keyword">this</span>.className = (<span class="hljs-keyword">this</span>.className.replace(re, <span class="hljs-string">''</span>)+<span class="hljs-string">' '</span>+mode)
+                       .replace(<span class="hljs-regexp">/\s\s/g</span>, <span class="hljs-string">' '</span>);
+    });
+    <span class="hljs-keyword">return</span> mode;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>When attached to an input element, this will cause the width of the input
 to match its contents. This calculates the width of the contents of the input
-by measuring a hidden shadow div that should match the styling of the input.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">autoGrowInput</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">$input</span>  <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-      <span class="kd">var</span> <span class="nx">$tester</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;div /&gt;&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span>
-        <span class="nx">opacity</span>     <span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="nx">top</span>         <span class="o">:</span> <span class="o">-</span><span class="mi">9999</span><span class="p">,</span>
-        <span class="nx">left</span>        <span class="o">:</span> <span class="o">-</span><span class="mi">9999</span><span class="p">,</span>
-        <span class="nx">position</span>    <span class="o">:</span> <span class="s1">&#39;absolute&#39;</span><span class="p">,</span>
-        <span class="nx">whiteSpace</span>  <span class="o">:</span> <span class="s1">&#39;nowrap&#39;</span>
-      <span class="p">}).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;VS-input-width-tester&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;VS-interface&#39;</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Watch for input value changes on all of these events. <code>resize</code>
+by measuring a hidden shadow div that should match the styling of the input.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  autoGrowInput: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+      <span class="hljs-keyword">var</span> $input  = $(<span class="hljs-keyword">this</span>);
+      <span class="hljs-keyword">var</span> $tester = $(<span class="hljs-string">'&lt;div /&gt;'</span>).css({
+        opacity     : <span class="hljs-number">0</span>,
+        top         : -<span class="hljs-number">9999</span>,
+        left        : -<span class="hljs-number">9999</span>,
+        position    : <span class="hljs-string">'absolute'</span>,
+        whiteSpace  : <span class="hljs-string">'nowrap'</span>
+      }).addClass(<span class="hljs-string">'VS-input-width-tester'</span>).addClass(<span class="hljs-string">'VS-interface'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Watch for input value changes on all of these events. <code>resize</code>
 event is called explicitly when the input has been changed without
-a single keypress.</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="kd">var</span> <span class="nx">events</span> <span class="o">=</span> <span class="s1">&#39;keydown.autogrow keypress.autogrow &#39;</span> <span class="o">+</span>
-                   <span class="s1">&#39;resize.autogrow change.autogrow&#39;</span><span class="p">;</span>
-      <span class="nx">$input</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="s1">&#39;.VS-input-width-tester&#39;</span><span class="p">).</span><span class="nx">remove</span><span class="p">();</span>
-      <span class="nx">$input</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="nx">$tester</span><span class="p">);</span>
-      <span class="nx">$input</span><span class="p">.</span><span class="nx">unbind</span><span class="p">(</span><span class="nx">events</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="nx">events</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">realEvent</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">realEvent</span><span class="p">)</span> <span class="nx">e</span> <span class="o">=</span> <span class="nx">realEvent</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">$input</span><span class="p">.</span><span class="nx">val</span><span class="p">();</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Watching for the backspace key is tricky because it may not
+a single keypress.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> events = <span class="hljs-string">'keydown.autogrow keypress.autogrow '</span> +
+                   <span class="hljs-string">'resize.autogrow change.autogrow'</span>;
+      $input.next(<span class="hljs-string">'.VS-input-width-tester'</span>).remove();
+      $input.after($tester);
+      $input.unbind(events).bind(events, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, realEvent)</span> {</span>
+        <span class="hljs-keyword">if</span> (realEvent) e = realEvent;
+        <span class="hljs-keyword">var</span> value = $input.val();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Watching for the backspace key is tricky because it may not
 actually be deleting the character, but instead the key gets
-redirected to move the cursor from facet to facet.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="nx">VS</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">hotkeys</span><span class="p">.</span><span class="nx">key</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;backspace&#39;</span><span class="p">)</span> <span class="p">{</span>
-          <span class="kd">var</span> <span class="nx">position</span> <span class="o">=</span> <span class="nx">$input</span><span class="p">.</span><span class="nx">getCursorPosition</span><span class="p">();</span>
-          <span class="k">if</span> <span class="p">(</span><span class="nx">position</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">value</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">position</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span>
-                                    <span class="nx">value</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">position</span><span class="p">,</span> <span class="nx">value</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">VS</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">hotkeys</span><span class="p">.</span><span class="nx">printable</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
-                   <span class="o">!</span><span class="nx">VS</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">hotkeys</span><span class="p">.</span><span class="nx">command</span><span class="p">)</span> <span class="p">{</span>
-          <span class="nx">value</span> <span class="o">+=</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">which</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="nx">value</span> <span class="o">=</span> <span class="nx">value</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;/g</span><span class="p">,</span> <span class="s1">&#39;&amp;amp;&#39;</span><span class="p">)</span>
-                     <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s/g</span><span class="p">,</span><span class="s1">&#39;&amp;nbsp;&#39;</span><span class="p">)</span>
-                     <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;/g</span><span class="p">,</span> <span class="s1">&#39;&amp;lt;&#39;</span><span class="p">)</span>
-                     <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&gt;/g</span><span class="p">,</span> <span class="s1">&#39;&amp;gt;&#39;</span><span class="p">);</span>
+redirected to move the cursor from facet to facet.</p>
 
-        <span class="nx">$tester</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (VS.app.hotkeys.key(e) == <span class="hljs-string">'backspace'</span>) {
+          <span class="hljs-keyword">var</span> position = $input.getCursorPosition();
+          <span class="hljs-keyword">if</span> (position &gt; <span class="hljs-number">0</span>) value = value.slice(<span class="hljs-number">0</span>, position-<span class="hljs-number">1</span>) +
+                                    value.slice(position, value.length);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (VS.app.hotkeys.printable(e) &amp;&amp;
+                   !VS.app.hotkeys.command) {
+          value += <span class="hljs-built_in">String</span>.fromCharCode(e.which);
+        }
+        value = value.replace(<span class="hljs-regexp">/&amp;/g</span>, <span class="hljs-string">'&amp;amp;'</span>)
+                     .replace(<span class="hljs-regexp">/\s/g</span>,<span class="hljs-string">'&amp;nbsp;'</span>)
+                     .replace(<span class="hljs-regexp">/&lt;/g</span>, <span class="hljs-string">'&amp;lt;'</span>)
+                     .replace(<span class="hljs-regexp">/&gt;/g</span>, <span class="hljs-string">'&amp;gt;'</span>);
 
-        <span class="nx">$input</span><span class="p">.</span><span class="nx">width</span><span class="p">(</span><span class="nx">$tester</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">+</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">$input</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;min-width&#39;</span><span class="p">)));</span>
-        <span class="nx">$input</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;updated.autogrow&#39;</span><span class="p">);</span>
-      <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Sets the width of the input on initialization.</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">$input</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;resize.autogrow&#39;</span><span class="p">);</span>
-    <span class="p">});</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>Cross-browser method used for calculating where the cursor is in an
-input field.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">getCursorPosition</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">position</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">input</span>    <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        $tester.html(value);
 
-    <span class="k">if</span> <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">selection</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// IE</span>
-      <span class="nx">input</span><span class="p">.</span><span class="nx">focus</span><span class="p">();</span>
-      <span class="kd">var</span> <span class="nx">sel</span>    <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">selection</span><span class="p">.</span><span class="nx">createRange</span><span class="p">();</span>
-      <span class="kd">var</span> <span class="nx">selLen</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">selection</span><span class="p">.</span><span class="nx">createRange</span><span class="p">().</span><span class="nx">text</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-      <span class="nx">sel</span><span class="p">.</span><span class="nx">moveStart</span><span class="p">(</span><span class="s1">&#39;character&#39;</span><span class="p">,</span> <span class="o">-</span><span class="nx">input</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
-      <span class="nx">position</span>   <span class="o">=</span> <span class="nx">sel</span><span class="p">.</span><span class="nx">text</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="nx">selLen</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">input</span> <span class="o">&amp;&amp;</span> <span class="nx">$</span><span class="p">(</span><span class="nx">input</span><span class="p">).</span><span class="nx">is</span><span class="p">(</span><span class="s1">&#39;:visible&#39;</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
-               <span class="nx">input</span><span class="p">.</span><span class="nx">selectionStart</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// Firefox/Safari</span>
-      <span class="nx">position</span> <span class="o">=</span> <span class="nx">input</span><span class="p">.</span><span class="nx">selectionStart</span><span class="p">;</span>
-    <span class="p">}</span>
+        $input.width($tester.width() + <span class="hljs-number">3</span> + <span class="hljs-built_in">parseInt</span>($input.css(<span class="hljs-string">'min-width'</span>)));
+        $input.trigger(<span class="hljs-string">'updated.autogrow'</span>);
+      });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Sets the width of the input on initialization.</p>
 
-    <span class="k">return</span> <span class="nx">position</span><span class="p">;</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>A simple proxy for <code>selectRange</code> that sets the cursor position in an
-input field.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">setCursorPosition</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">position</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">selectRange</span><span class="p">(</span><span class="nx">position</span><span class="p">,</span> <span class="nx">position</span><span class="p">);</span>
-    <span class="p">});</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Cross-browser way to select text in an input field.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">selectRange</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="s1">&#39;:visible&#39;</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">setSelectionRange</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// FF/Webkit</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">focus</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">setSelectionRange</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="p">);</span>
-      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">createTextRange</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// IE</span>
-        <span class="kd">var</span> <span class="nx">range</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">createTextRange</span><span class="p">();</span>
-        <span class="nx">range</span><span class="p">.</span><span class="nx">collapse</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
-        <span class="nx">range</span><span class="p">.</span><span class="nx">moveEnd</span><span class="p">(</span><span class="s1">&#39;character&#39;</span><span class="p">,</span> <span class="nx">end</span><span class="p">);</span>
-        <span class="nx">range</span><span class="p">.</span><span class="nx">moveStart</span><span class="p">(</span><span class="s1">&#39;character&#39;</span><span class="p">,</span> <span class="nx">start</span><span class="p">);</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">end</span> <span class="o">-</span> <span class="nx">start</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="nx">range</span><span class="p">.</span><span class="nx">select</span><span class="p">();</span>
-      <span class="p">}</span>
-    <span class="p">});</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Returns an object that contains the text selection range values for
-an input field.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">getSelection</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">input</span> <span class="o">=</span> <span class="k">this</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $input.trigger(<span class="hljs-string">'resize.autogrow'</span>);
+    });
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Cross-browser method used for calculating where the cursor is in an
+input field.</p>
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">selectionStart</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// FF/Webkit</span>
-      <span class="kd">var</span> <span class="nx">start</span> <span class="o">=</span> <span class="nx">input</span><span class="p">.</span><span class="nx">selectionStart</span><span class="p">;</span>
-      <span class="kd">var</span> <span class="nx">end</span>   <span class="o">=</span> <span class="nx">input</span><span class="p">.</span><span class="nx">selectionEnd</span><span class="p">;</span>
-      <span class="k">return</span> <span class="p">{</span>
-        <span class="nx">start</span>   <span class="o">:</span> <span class="nx">start</span><span class="p">,</span>
-        <span class="nx">end</span>     <span class="o">:</span> <span class="nx">end</span><span class="p">,</span>
-        <span class="nx">length</span>  <span class="o">:</span> <span class="nx">end</span><span class="o">-</span><span class="nx">start</span><span class="p">,</span>
-        <span class="nx">text</span>    <span class="o">:</span> <span class="nx">input</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="o">-</span><span class="nx">start</span><span class="p">)</span>
-      <span class="p">};</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">selection</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// IE</span>
-      <span class="kd">var</span> <span class="nx">range</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">selection</span><span class="p">.</span><span class="nx">createRange</span><span class="p">();</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">range</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">textRange</span> <span class="o">=</span> <span class="nx">input</span><span class="p">.</span><span class="nx">createTextRange</span><span class="p">();</span>
-        <span class="kd">var</span> <span class="nx">copyRange</span> <span class="o">=</span> <span class="nx">textRange</span><span class="p">.</span><span class="nx">duplicate</span><span class="p">();</span>
-        <span class="nx">textRange</span><span class="p">.</span><span class="nx">moveToBookmark</span><span class="p">(</span><span class="nx">range</span><span class="p">.</span><span class="nx">getBookmark</span><span class="p">());</span>
-        <span class="nx">copyRange</span><span class="p">.</span><span class="nx">setEndPoint</span><span class="p">(</span><span class="s1">&#39;EndToStart&#39;</span><span class="p">,</span> <span class="nx">textRange</span><span class="p">);</span>
-        <span class="kd">var</span> <span class="nx">start</span> <span class="o">=</span> <span class="nx">copyRange</span><span class="p">.</span><span class="nx">text</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">end</span>   <span class="o">=</span> <span class="nx">start</span> <span class="o">+</span> <span class="nx">range</span><span class="p">.</span><span class="nx">text</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-        <span class="k">return</span> <span class="p">{</span>
-          <span class="nx">start</span>   <span class="o">:</span> <span class="nx">start</span><span class="p">,</span>
-          <span class="nx">end</span>     <span class="o">:</span> <span class="nx">end</span><span class="p">,</span>
-          <span class="nx">length</span>  <span class="o">:</span> <span class="nx">end</span><span class="o">-</span><span class="nx">start</span><span class="p">,</span>
-          <span class="nx">text</span>    <span class="o">:</span> <span class="nx">range</span><span class="p">.</span><span class="nx">text</span>
-        <span class="p">};</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="p">{</span><span class="nx">start</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">end</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">length</span><span class="o">:</span> <span class="mi">0</span><span class="p">};</span>
-  <span class="p">}</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  getCursorPosition: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> position = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">var</span> input    = <span class="hljs-keyword">this</span>.get(<span class="hljs-number">0</span>);
 
-<span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>Debugging in Internet Explorer. This allows you to use 
-<code>console.log(['message', var1, var2, ...])</code>. Just remove the <code>false</code> and
+    <span class="hljs-keyword">if</span> (document.selection) { <span class="hljs-comment">// IE</span>
+      input.focus();
+      <span class="hljs-keyword">var</span> sel    = document.selection.createRange();
+      <span class="hljs-keyword">var</span> selLen = document.selection.createRange().text.length;
+      sel.moveStart(<span class="hljs-string">'character'</span>, -input.value.length);
+      position   = sel.text.length - selLen;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (input &amp;&amp; $(input).is(<span class="hljs-string">':visible'</span>) &amp;&amp;
+               input.selectionStart != <span class="hljs-literal">null</span>) { <span class="hljs-comment">// Firefox/Safari</span>
+      position = input.selectionStart;
+    }
+
+    <span class="hljs-keyword">return</span> position;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>A simple proxy for <code>selectRange</code> that sets the cursor position in an
+input field.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setCursorPosition: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(position)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+      <span class="hljs-keyword">return</span> $(<span class="hljs-keyword">this</span>).selectRange(position, position);
+    });
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Cross-browser way to select text in an input field.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  selectRange: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(start, end)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.filter(<span class="hljs-string">':visible'</span>).each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.setSelectionRange) { <span class="hljs-comment">// FF/Webkit</span>
+        <span class="hljs-keyword">this</span>.focus();
+        <span class="hljs-keyword">this</span>.setSelectionRange(start, end);
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.createTextRange) { <span class="hljs-comment">// IE</span>
+        <span class="hljs-keyword">var</span> range = <span class="hljs-keyword">this</span>.createTextRange();
+        range.collapse(<span class="hljs-literal">true</span>);
+        range.moveEnd(<span class="hljs-string">'character'</span>, end);
+        range.moveStart(<span class="hljs-string">'character'</span>, start);
+        <span class="hljs-keyword">if</span> (end - start &gt;= <span class="hljs-number">0</span>) range.select();
+      }
+    });
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Returns an object that contains the text selection range values for
+an input field.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  getSelection: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> input = <span class="hljs-keyword">this</span>[<span class="hljs-number">0</span>];
+
+    <span class="hljs-keyword">if</span> (input.selectionStart != <span class="hljs-literal">null</span>) { <span class="hljs-comment">// FF/Webkit</span>
+      <span class="hljs-keyword">var</span> start = input.selectionStart;
+      <span class="hljs-keyword">var</span> end   = input.selectionEnd;
+      <span class="hljs-keyword">return</span> {
+        start   : start,
+        end     : end,
+        length  : end-start,
+        text    : input.value.substr(start, end-start)
+      };
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (document.selection) { <span class="hljs-comment">// IE</span>
+      <span class="hljs-keyword">var</span> range = document.selection.createRange();
+      <span class="hljs-keyword">if</span> (range) {
+        <span class="hljs-keyword">var</span> textRange = input.createTextRange();
+        <span class="hljs-keyword">var</span> copyRange = textRange.duplicate();
+        textRange.moveToBookmark(range.getBookmark());
+        copyRange.setEndPoint(<span class="hljs-string">'EndToStart'</span>, textRange);
+        <span class="hljs-keyword">var</span> start = copyRange.text.length;
+        <span class="hljs-keyword">var</span> end   = start + range.text.length;
+        <span class="hljs-keyword">return</span> {
+          start   : start,
+          end     : end,
+          length  : end-start,
+          text    : range.text
+        };
+      }
+    }
+    <span class="hljs-keyword">return</span> {start: <span class="hljs-number">0</span>, end: <span class="hljs-number">0</span>, length: <span class="hljs-number">0</span>};
+  }
+
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Debugging in Internet Explorer. This allows you to use 
+<code>console.log([&#39;message&#39;, var1, var2, ...])</code>. Just remove the <code>false</code> and
 add your console.logs. This will automatically stringify objects using
-`JSON.stringify', so you can read what's going out. Think of this as a
-<em>Diet Firebug Lite Zero with Lemon</em>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">if</span> <span class="p">(</span><span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nb">window</span><span class="p">.</span><span class="nx">console</span> <span class="o">=</span> <span class="p">{};</span>
-  <span class="kd">var</span> <span class="nx">_$ied</span><span class="p">;</span>
-  <span class="nb">window</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">msg</span><span class="p">))</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-      <span class="kd">var</span> <span class="nx">vars</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">arg</span><span class="p">);</span>
-      <span class="p">}).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; - &#39;</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">_$ied</span><span class="p">){</span>
-      <span class="nx">_$ied</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;div&gt;&lt;ol&gt;&lt;/ol&gt;&lt;/div&gt;&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span>
-        <span class="s1">&#39;position&#39;</span><span class="o">:</span> <span class="s1">&#39;fixed&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;bottom&#39;</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
-        <span class="s1">&#39;left&#39;</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
-        <span class="s1">&#39;zIndex&#39;</span><span class="o">:</span> <span class="mi">20000</span><span class="p">,</span>
-        <span class="s1">&#39;width&#39;</span><span class="o">:</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">).</span><span class="nx">width</span><span class="p">()</span> <span class="o">-</span> <span class="mi">80</span><span class="p">,</span>
-        <span class="s1">&#39;border&#39;</span><span class="o">:</span> <span class="s1">&#39;1px solid #000&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;padding&#39;</span><span class="o">:</span> <span class="s1">&#39;10px&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;backgroundColor&#39;</span><span class="o">:</span> <span class="s1">&#39;#fff&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;fontFamily&#39;</span><span class="o">:</span> <span class="s1">&#39;arial,helvetica,sans-serif&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;fontSize&#39;</span><span class="o">:</span> <span class="s1">&#39;11px&#39;</span>
-      <span class="p">});</span>
-      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">_$ied</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="kd">var</span> <span class="nx">$message</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;li&gt;&#39;</span><span class="o">+</span><span class="nx">message</span><span class="o">+</span><span class="s1">&#39; - &#39;</span><span class="o">+</span><span class="nx">vars</span><span class="o">+</span><span class="s1">&#39;&lt;/li&gt;&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">({</span>
-      <span class="s1">&#39;borderBottom&#39;</span><span class="o">:</span> <span class="s1">&#39;1px solid #999999&#39;</span>
-    <span class="p">});</span>
-    <span class="nx">_$ied</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;ol&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">$message</span><span class="p">);</span>
-    <span class="nx">_</span><span class="p">.</span><span class="nx">delay</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="nx">$message</span><span class="p">.</span><span class="nx">fadeOut</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
-    <span class="p">},</span> <span class="mi">5000</span><span class="p">);</span>
-  <span class="p">};</span>
+`JSON.stringify’, so you can read what’s going out. Think of this as a
+<em>Diet Firebug Lite Zero with Lemon</em>.</p>
 
-<span class="p">}</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">if</span> (<span class="hljs-literal">false</span>) {
+  window.console = {};
+  <span class="hljs-keyword">var</span> _$ied;
+  window.console.log = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(msg)</span> {</span>
+    <span class="hljs-keyword">if</span> (_.isArray(msg)) {
+      <span class="hljs-keyword">var</span> message = msg[<span class="hljs-number">0</span>];
+      <span class="hljs-keyword">var</span> vars = _.map(msg.slice(<span class="hljs-number">1</span>), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(arg)</span> {</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">JSON</span>.stringify(arg);
+      }).join(<span class="hljs-string">' - '</span>);
+    }
+    <span class="hljs-keyword">if</span>(!_$ied){
+      _$ied = $(<span class="hljs-string">'&lt;div&gt;&lt;ol&gt;&lt;/ol&gt;&lt;/div&gt;'</span>).css({
+        <span class="hljs-string">'position'</span>: <span class="hljs-string">'fixed'</span>,
+        <span class="hljs-string">'bottom'</span>: <span class="hljs-number">10</span>,
+        <span class="hljs-string">'left'</span>: <span class="hljs-number">10</span>,
+        <span class="hljs-string">'zIndex'</span>: <span class="hljs-number">20000</span>,
+        <span class="hljs-string">'width'</span>: $(<span class="hljs-string">'body'</span>).width() - <span class="hljs-number">80</span>,
+        <span class="hljs-string">'border'</span>: <span class="hljs-string">'1px solid #000'</span>,
+        <span class="hljs-string">'padding'</span>: <span class="hljs-string">'10px'</span>,
+        <span class="hljs-string">'backgroundColor'</span>: <span class="hljs-string">'#fff'</span>,
+        <span class="hljs-string">'fontFamily'</span>: <span class="hljs-string">'arial,helvetica,sans-serif'</span>,
+        <span class="hljs-string">'fontSize'</span>: <span class="hljs-string">'11px'</span>
+      });
+      $(<span class="hljs-string">'body'</span>).append(_$ied);
+    }
+    <span class="hljs-keyword">var</span> $message = $(<span class="hljs-string">'&lt;li&gt;'</span>+message+<span class="hljs-string">' - '</span>+vars+<span class="hljs-string">'&lt;/li&gt;'</span>).css({
+      <span class="hljs-string">'borderBottom'</span>: <span class="hljs-string">'1px solid #999999'</span>
+    });
+    _$ied.find(<span class="hljs-string">'ol'</span>).append($message);
+    _.delay(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+      $message.fadeOut(<span class="hljs-number">500</span>);
+    }, <span class="hljs-number">5000</span>);
+  };
 
-<span class="p">})();</span>
+}
 
-</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
+})();</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
