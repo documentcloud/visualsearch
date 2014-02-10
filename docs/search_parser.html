@@ -1,65 +1,293 @@
-<!DOCTYPE html>  <html> <head>   <title>search_parser.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="search_facets.html">                 search_facets.js               </a>                                           <a class="source" href="search_query.html">                 search_query.js               </a>                                           <a class="source" href="templates.html">                 templates.js               </a>                                           <a class="source" href="backbone_extensions.html">                 backbone_extensions.js               </a>                                           <a class="source" href="hotkeys.html">                 hotkeys.js               </a>                                           <a class="source" href="inflector.html">                 inflector.js               </a>                                           <a class="source" href="jquery_extensions.html">                 jquery_extensions.js               </a>                                           <a class="source" href="search_parser.html">                 search_parser.js               </a>                                           <a class="source" href="search_box.html">                 search_box.js               </a>                                           <a class="source" href="search_facet.html">                 search_facet.js               </a>                                           <a class="source" href="search_input.html">                 search_input.js               </a>                                           <a class="source" href="visualsearch.html">                 visualsearch.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               search_parser.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<!DOCTYPE html>
 
-<span class="kd">var</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">jQuery</span><span class="p">;</span> <span class="c1">// Handle namespaced jQuery</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Used to extract keywords and facets from the free text search.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">QUOTES_RE</span>   <span class="o">=</span> <span class="s2">&quot;(&#39;[^&#39;]+&#39;|\&quot;[^\&quot;]+\&quot;)&quot;</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">FREETEXT_RE</span> <span class="o">=</span> <span class="s2">&quot;(&#39;[^&#39;]+&#39;|\&quot;[^\&quot;]+\&quot;|[^&#39;\&quot;\\s]\\S*)&quot;</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">CATEGORY_RE</span> <span class="o">=</span> <span class="nx">FREETEXT_RE</span> <span class="o">+</span>                     <span class="s1">&#39;:\\s*&#39;</span><span class="p">;</span>
-<span class="nx">VS</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">SearchParser</span> <span class="o">=</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Matches <code>category: "free text"</code>, with and without quotes.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">ALL_FIELDS</span> <span class="o">:</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="nx">CATEGORY_RE</span> <span class="o">+</span> <span class="nx">FREETEXT_RE</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">),</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Matches a single category without the text. Used to correctly extract facets.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">CATEGORY</span>   <span class="o">:</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="nx">CATEGORY_RE</span><span class="p">),</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Called to parse a query into a collection of <code>SearchFacet</code> models.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">parse</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">instance</span><span class="p">,</span> <span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">searchFacets</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_extractAllFacets</span><span class="p">(</span><span class="nx">instance</span><span class="p">,</span> <span class="nx">query</span><span class="p">);</span>
-    <span class="nx">instance</span><span class="p">.</span><span class="nx">searchQuery</span><span class="p">.</span><span class="nx">reset</span><span class="p">(</span><span class="nx">searchFacets</span><span class="p">);</span>
-    <span class="k">return</span> <span class="nx">searchFacets</span><span class="p">;</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Walks the query and extracts facets, categories, and free text.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">_extractAllFacets</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">instance</span><span class="p">,</span> <span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">facets</span> <span class="o">=</span> <span class="p">[];</span>
-    <span class="kd">var</span> <span class="nx">originalQuery</span> <span class="o">=</span> <span class="nx">query</span><span class="p">;</span>
-    <span class="k">while</span> <span class="p">(</span><span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">category</span><span class="p">,</span> <span class="nx">value</span><span class="p">;</span>
-      <span class="nx">originalQuery</span> <span class="o">=</span> <span class="nx">query</span><span class="p">;</span>
-      <span class="kd">var</span> <span class="nx">field</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_extractNextField</span><span class="p">(</span><span class="nx">query</span><span class="p">);</span>
-      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">field</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">category</span> <span class="o">=</span> <span class="nx">instance</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">remainder</span><span class="p">;</span>
-        <span class="nx">value</span>    <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_extractSearchText</span><span class="p">(</span><span class="nx">query</span><span class="p">);</span>
-        <span class="nx">query</span>    <span class="o">=</span> <span class="nx">VS</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">inflector</span><span class="p">.</span><span class="nx">trim</span><span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">));</span>
-      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">category</span> <span class="o">=</span> <span class="nx">field</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">CATEGORY</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(^[&#39;&quot;]|[&#39;&quot;]$)/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
-        <span class="nx">value</span>    <span class="o">=</span> <span class="nx">field</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">CATEGORY</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(^[&#39;&quot;]|[&#39;&quot;]$)/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
-        <span class="nx">query</span>    <span class="o">=</span> <span class="nx">VS</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">inflector</span><span class="p">.</span><span class="nx">trim</span><span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">field</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">));</span>
-      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">category</span> <span class="o">=</span> <span class="nx">instance</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">remainder</span><span class="p">;</span>
-        <span class="nx">value</span>    <span class="o">=</span> <span class="nx">field</span><span class="p">;</span>
-        <span class="nx">query</span>    <span class="o">=</span> <span class="nx">VS</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">inflector</span><span class="p">.</span><span class="nx">trim</span><span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">));</span>
-      <span class="p">}</span>
+<html>
+<head>
+  <title>search_parser.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="search_facets.html">
+                search_facets.js
+              </a>
+            
+              
+              <a class="source" href="search_query.html">
+                search_query.js
+              </a>
+            
+              
+              <a class="source" href="templates.html">
+                templates.js
+              </a>
+            
+              
+              <a class="source" href="backbone_extensions.html">
+                backbone_extensions.js
+              </a>
+            
+              
+              <a class="source" href="hotkeys.html">
+                hotkeys.js
+              </a>
+            
+              
+              <a class="source" href="inflector.html">
+                inflector.js
+              </a>
+            
+              
+              <a class="source" href="jquery_extensions.html">
+                jquery_extensions.js
+              </a>
+            
+              
+              <a class="source" href="search_parser.html">
+                search_parser.js
+              </a>
+            
+              
+              <a class="source" href="search_box.html">
+                search_box.js
+              </a>
+            
+              
+              <a class="source" href="search_facet.html">
+                search_facet.js
+              </a>
+            
+              
+              <a class="source" href="search_input.html">
+                search_input.js
+              </a>
+            
+              
+              <a class="source" href="visualsearch.html">
+                visualsearch.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>search_parser.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
 
-      <span class="k">if</span> <span class="p">(</span><span class="nx">category</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-          <span class="kd">var</span> <span class="nx">searchFacet</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VS</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">SearchFacet</span><span class="p">({</span>
-            <span class="nx">category</span> <span class="o">:</span> <span class="nx">category</span><span class="p">,</span>
-            <span class="nx">value</span>    <span class="o">:</span> <span class="nx">VS</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">inflector</span><span class="p">.</span><span class="nx">trim</span><span class="p">(</span><span class="nx">value</span><span class="p">),</span>
-            <span class="nx">app</span>      <span class="o">:</span> <span class="nx">instance</span>
-          <span class="p">});</span>
-          <span class="nx">facets</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">searchFacet</span><span class="p">);</span>
-      <span class="p">}</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">originalQuery</span> <span class="o">==</span> <span class="nx">query</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
-    <span class="p">}</span>
+<span class="hljs-keyword">var</span> $ = jQuery; <span class="hljs-comment">// Handle namespaced jQuery</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Used to extract keywords and facets from the free text search.</p>
 
-    <span class="k">return</span> <span class="nx">facets</span><span class="p">;</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>Extracts the first field found, capturing any free text that comes
-before the category.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">_extractNextField</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">textRe</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">&#39;^\\s*(\\S+)\\s+(?=&#39;</span> <span class="o">+</span> <span class="nx">QUOTES_RE</span> <span class="o">+</span> <span class="nx">FREETEXT_RE</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">textMatch</span> <span class="o">=</span> <span class="nx">query</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">textRe</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">textMatch</span> <span class="o">&amp;&amp;</span> <span class="nx">textMatch</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">textMatch</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_extractFirstField</span><span class="p">(</span><span class="nx">query</span><span class="p">);</span>
-    <span class="p">}</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>If there is no free text before the facet, extract the category and value.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">_extractFirstField</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">fields</span> <span class="o">=</span> <span class="nx">query</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">ALL_FIELDS</span><span class="p">);</span>
-    <span class="k">return</span> <span class="nx">fields</span> <span class="o">&amp;&amp;</span> <span class="nx">fields</span><span class="p">.</span><span class="nx">length</span> <span class="o">&amp;&amp;</span> <span class="nx">fields</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>If the found match is not a category and facet, extract the trimmed free text.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">_extractSearchText</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">query</span> <span class="o">=</span> <span class="nx">query</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">VS</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">inflector</span><span class="p">.</span><span class="nx">trim</span><span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">ALL_FIELDS</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">));</span>
-    <span class="k">return</span> <span class="nx">text</span><span class="p">;</span>
-  <span class="p">}</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> QUOTES_RE   = <span class="hljs-string">"('[^']+'|\"[^\"]+\")"</span>;
+<span class="hljs-keyword">var</span> FREETEXT_RE = <span class="hljs-string">"('[^']+'|\"[^\"]+\"|[^'\"\\s]\\S*)"</span>;
+<span class="hljs-keyword">var</span> CATEGORY_RE = FREETEXT_RE +                     <span class="hljs-string">':\\s*'</span>;
+VS.app.SearchParser = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Matches <code>category: &quot;free text&quot;</code>, with and without quotes.</p>
 
-<span class="p">};</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  ALL_FIELDS : <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(CATEGORY_RE + FREETEXT_RE, <span class="hljs-string">'g'</span>),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Matches a single category without the text. Used to correctly extract facets.</p>
 
-<span class="p">})();</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  CATEGORY   : <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(CATEGORY_RE),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Called to parse a query into a collection of <code>SearchFacet</code> models.</p>
 
-</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  parse : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(instance, query)</span> {</span>
+    <span class="hljs-keyword">var</span> searchFacets = <span class="hljs-keyword">this</span>._extractAllFacets(instance, query);
+    instance.searchQuery.reset(searchFacets);
+    <span class="hljs-keyword">return</span> searchFacets;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Walks the query and extracts facets, categories, and free text.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  _extractAllFacets : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(instance, query)</span> {</span>
+    <span class="hljs-keyword">var</span> facets = [];
+    <span class="hljs-keyword">var</span> originalQuery = query;
+    <span class="hljs-keyword">while</span> (query) {
+      <span class="hljs-keyword">var</span> category, value;
+      originalQuery = query;
+      <span class="hljs-keyword">var</span> field = <span class="hljs-keyword">this</span>._extractNextField(query);
+      <span class="hljs-keyword">if</span> (!field) {
+        category = instance.options.remainder;
+        value    = <span class="hljs-keyword">this</span>._extractSearchText(query);
+        query    = VS.utils.inflector.trim(query.replace(value, <span class="hljs-string">''</span>));
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (field.indexOf(<span class="hljs-string">':'</span>) != -<span class="hljs-number">1</span>) {
+        category = field.match(<span class="hljs-keyword">this</span>.CATEGORY)[<span class="hljs-number">1</span>].replace(<span class="hljs-regexp">/(^['"]|['"]$)/g</span>, <span class="hljs-string">''</span>);
+        value    = field.replace(<span class="hljs-keyword">this</span>.CATEGORY, <span class="hljs-string">''</span>).replace(<span class="hljs-regexp">/(^['"]|['"]$)/g</span>, <span class="hljs-string">''</span>);
+        query    = VS.utils.inflector.trim(query.replace(field, <span class="hljs-string">''</span>));
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (field.indexOf(<span class="hljs-string">':'</span>) == -<span class="hljs-number">1</span>) {
+        category = instance.options.remainder;
+        value    = field;
+        query    = VS.utils.inflector.trim(query.replace(value, <span class="hljs-string">''</span>));
+      }
+
+      <span class="hljs-keyword">if</span> (category &amp;&amp; value) {
+          <span class="hljs-keyword">var</span> searchFacet = <span class="hljs-keyword">new</span> VS.model.SearchFacet({
+            category : category,
+            value    : VS.utils.inflector.trim(value),
+            app      : instance
+          });
+          facets.push(searchFacet);
+      }
+      <span class="hljs-keyword">if</span> (originalQuery == query) <span class="hljs-keyword">break</span>;
+    }
+
+    <span class="hljs-keyword">return</span> facets;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Extracts the first field found, capturing any free text that comes
+before the category.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  _extractNextField : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(query)</span> {</span>
+    <span class="hljs-keyword">var</span> textRe = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">'^\\s*(\\S+)\\s+(?='</span> + QUOTES_RE + FREETEXT_RE + <span class="hljs-string">')'</span>);
+    <span class="hljs-keyword">var</span> textMatch = query.match(textRe);
+    <span class="hljs-keyword">if</span> (textMatch &amp;&amp; textMatch.length &gt;= <span class="hljs-number">1</span>) {
+      <span class="hljs-keyword">return</span> textMatch[<span class="hljs-number">1</span>];
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._extractFirstField(query);
+    }
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>If there is no free text before the facet, extract the category and value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  _extractFirstField : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(query)</span> {</span>
+    <span class="hljs-keyword">var</span> fields = query.match(<span class="hljs-keyword">this</span>.ALL_FIELDS);
+    <span class="hljs-keyword">return</span> fields &amp;&amp; fields.length &amp;&amp; fields[<span class="hljs-number">0</span>];
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>If the found match is not a category and facet, extract the trimmed free text.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  _extractSearchText : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(query)</span> {</span>
+    query = query || <span class="hljs-string">''</span>;
+    <span class="hljs-keyword">var</span> text = VS.utils.inflector.trim(query.replace(<span class="hljs-keyword">this</span>.ALL_FIELDS, <span class="hljs-string">''</span>));
+    <span class="hljs-keyword">return</span> text;
+  }
+
+};
+
+})();</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,349 +1,876 @@
-<!DOCTYPE html>  <html> <head>   <title>search_facet.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="search_facets.html">                 search_facets.js               </a>                                           <a class="source" href="search_query.html">                 search_query.js               </a>                                           <a class="source" href="templates.html">                 templates.js               </a>                                           <a class="source" href="backbone_extensions.html">                 backbone_extensions.js               </a>                                           <a class="source" href="hotkeys.html">                 hotkeys.js               </a>                                           <a class="source" href="inflector.html">                 inflector.js               </a>                                           <a class="source" href="jquery_extensions.html">                 jquery_extensions.js               </a>                                           <a class="source" href="search_parser.html">                 search_parser.js               </a>                                           <a class="source" href="search_box.html">                 search_box.js               </a>                                           <a class="source" href="search_facet.html">                 search_facet.js               </a>                                           <a class="source" href="search_input.html">                 search_input.js               </a>                                           <a class="source" href="visualsearch.html">                 visualsearch.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               search_facet.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<!DOCTYPE html>
 
-<span class="kd">var</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">jQuery</span><span class="p">;</span> <span class="c1">// Handle namespaced jQuery</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>This is the visual search facet that holds the category and its autocompleted
-input field.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">VS</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">SearchFacet</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+<html>
+<head>
+  <title>search_facet.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="search_facets.html">
+                search_facets.js
+              </a>
+            
+              
+              <a class="source" href="search_query.html">
+                search_query.js
+              </a>
+            
+              
+              <a class="source" href="templates.html">
+                templates.js
+              </a>
+            
+              
+              <a class="source" href="backbone_extensions.html">
+                backbone_extensions.js
+              </a>
+            
+              
+              <a class="source" href="hotkeys.html">
+                hotkeys.js
+              </a>
+            
+              
+              <a class="source" href="inflector.html">
+                inflector.js
+              </a>
+            
+              
+              <a class="source" href="jquery_extensions.html">
+                jquery_extensions.js
+              </a>
+            
+              
+              <a class="source" href="search_parser.html">
+                search_parser.js
+              </a>
+            
+              
+              <a class="source" href="search_box.html">
+                search_box.js
+              </a>
+            
+              
+              <a class="source" href="search_facet.html">
+                search_facet.js
+              </a>
+            
+              
+              <a class="source" href="search_input.html">
+                search_input.js
+              </a>
+            
+              
+              <a class="source" href="visualsearch.html">
+                visualsearch.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>search_facet.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
 
-  <span class="nx">type</span> <span class="o">:</span> <span class="s1">&#39;facet&#39;</span><span class="p">,</span>
+<span class="hljs-keyword">var</span> $ = jQuery; <span class="hljs-comment">// Handle namespaced jQuery</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>This is the visual search facet that holds the category and its autocompleted
+input field.</p>
 
-  <span class="nx">className</span> <span class="o">:</span> <span class="s1">&#39;search_facet&#39;</span><span class="p">,</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>VS.ui.SearchFacet = Backbone.View.extend({
 
-  <span class="nx">events</span> <span class="o">:</span> <span class="p">{</span>
-    <span class="s1">&#39;click .category&#39;</span>           <span class="o">:</span> <span class="s1">&#39;selectFacet&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;keydown input&#39;</span>             <span class="o">:</span> <span class="s1">&#39;keydown&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;mousedown input&#39;</span>           <span class="o">:</span> <span class="s1">&#39;enableEdit&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;mouseover .VS-icon-cancel&#39;</span> <span class="o">:</span> <span class="s1">&#39;showDelete&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;mouseout .VS-icon-cancel&#39;</span>  <span class="o">:</span> <span class="s1">&#39;hideDelete&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;click .VS-icon-cancel&#39;</span>     <span class="o">:</span> <span class="s1">&#39;remove&#39;</span>
-  <span class="p">},</span>
+  type : <span class="hljs-string">'facet'</span>,
 
-  <span class="nx">initialize</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">flags</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="nx">canClose</span> <span class="o">:</span> <span class="kc">false</span>
-    <span class="p">};</span>
-    <span class="nx">_</span><span class="p">.</span><span class="nx">bindAll</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s1">&#39;set&#39;</span><span class="p">,</span> <span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="s1">&#39;deselectFacet&#39;</span><span class="p">,</span> <span class="s1">&#39;deferDisableEdit&#39;</span><span class="p">);</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Rendering the facet sets up autocompletion, events on blur, and populates
-the facet's input with its starting value.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">render</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">el</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">JST</span><span class="p">[</span><span class="s1">&#39;search_facet&#39;</span><span class="p">]({</span>
-      <span class="nx">model</span> <span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span>
-    <span class="p">}));</span>
+  className : <span class="hljs-string">'search_facet'</span>,
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">setMode</span><span class="p">(</span><span class="s1">&#39;not&#39;</span><span class="p">,</span> <span class="s1">&#39;editing&#39;</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">setMode</span><span class="p">(</span><span class="s1">&#39;not&#39;</span><span class="p">,</span> <span class="s1">&#39;selected&#39;</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">box</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">);</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">([</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">]);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">val</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">label</span><span class="p">());</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;blur&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">deferDisableEdit</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Handle paste events with <code>propertychange</code></p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;input propertychange&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">keydown</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">setupAutocomplete</span><span class="p">();</span>
+  events : {
+    <span class="hljs-string">'click .category'</span>           : <span class="hljs-string">'selectFacet'</span>,
+    <span class="hljs-string">'keydown input'</span>             : <span class="hljs-string">'keydown'</span>,
+    <span class="hljs-string">'mousedown input'</span>           : <span class="hljs-string">'enableEdit'</span>,
+    <span class="hljs-string">'mouseover .VS-icon-cancel'</span> : <span class="hljs-string">'showDelete'</span>,
+    <span class="hljs-string">'mouseout .VS-icon-cancel'</span>  : <span class="hljs-string">'hideDelete'</span>,
+    <span class="hljs-string">'click .VS-icon-cancel'</span>     : <span class="hljs-string">'remove'</span>
+  },
 
-    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>This method is used to setup the facet's input to auto-grow.
+  initialize : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> {</span>
+    <span class="hljs-keyword">this</span>.options = _.extend({}, <span class="hljs-keyword">this</span>.options, options);
+
+    <span class="hljs-keyword">this</span>.flags = {
+      canClose : <span class="hljs-literal">false</span>
+    };
+    _.bindAll(<span class="hljs-keyword">this</span>, <span class="hljs-string">'set'</span>, <span class="hljs-string">'keydown'</span>, <span class="hljs-string">'deselectFacet'</span>, <span class="hljs-string">'deferDisableEdit'</span>);
+    <span class="hljs-keyword">this</span>.app = <span class="hljs-keyword">this</span>.options.app;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Rendering the facet sets up autocompletion, events on blur, and populates
+the facet’s input with its starting value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  render : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    $(<span class="hljs-keyword">this</span>.el).html(JST[<span class="hljs-string">'search_facet'</span>]({
+      model : <span class="hljs-keyword">this</span>.model,
+      readOnly: <span class="hljs-keyword">this</span>.app.options.readOnly
+    }));
+
+    <span class="hljs-keyword">this</span>.setMode(<span class="hljs-string">'not'</span>, <span class="hljs-string">'editing'</span>);
+    <span class="hljs-keyword">this</span>.setMode(<span class="hljs-string">'not'</span>, <span class="hljs-string">'selected'</span>);
+    <span class="hljs-keyword">this</span>.box = <span class="hljs-keyword">this</span>.$(<span class="hljs-string">'input'</span>);
+    <span class="hljs-keyword">this</span>.box.val(<span class="hljs-keyword">this</span>.model.label());
+    <span class="hljs-keyword">this</span>.box.bind(<span class="hljs-string">'blur'</span>, <span class="hljs-keyword">this</span>.deferDisableEdit);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Handle paste events with <code>propertychange</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.box.bind(<span class="hljs-string">'input propertychange'</span>, <span class="hljs-keyword">this</span>.keydown);
+    <span class="hljs-keyword">this</span>.setupAutocomplete();
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>This method is used to setup the facet’s input to auto-grow.
 This is defered in the searchBox so it can be attached to the
-DOM to get the correct font-size.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">calculateSize</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">autoGrowInput</span><span class="p">();</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">unbind</span><span class="p">(</span><span class="s1">&#39;updated.autogrow&#39;</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;updated.autogrow&#39;</span><span class="p">,</span> <span class="nx">_</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">moveAutocomplete</span><span class="p">,</span> <span class="k">this</span><span class="p">));</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Forces a recalculation of this facet's input field's value. Called when
-the facet is focused, removed, or otherwise modified.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">resize</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;resize.autogrow&#39;</span><span class="p">,</span> <span class="nx">e</span><span class="p">);</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>Watches the facet's input field to see if it matches the beginnings of
+DOM to get the correct font-size.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  calculateSize : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">this</span>.box.autoGrowInput();
+    <span class="hljs-keyword">this</span>.box.unbind(<span class="hljs-string">'updated.autogrow'</span>);
+    <span class="hljs-keyword">this</span>.box.bind(<span class="hljs-string">'updated.autogrow'</span>, _.bind(<span class="hljs-keyword">this</span>.moveAutocomplete, <span class="hljs-keyword">this</span>));
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Forces a recalculation of this facet’s input field’s value. Called when
+the facet is focused, removed, or otherwise modified.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  resize : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
+    <span class="hljs-keyword">this</span>.box.trigger(<span class="hljs-string">'resize.autogrow'</span>, e);
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Watches the facet’s input field to see if it matches the beginnings of
 words in <code>autocompleteValues</code>, which is different for every category.
 If the value, when selected from the autocompletion menu, is different
-than what it was, commit the facet and search for it.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">setupAutocomplete</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">autocomplete</span><span class="p">({</span>
-      <span class="nx">source</span>    <span class="o">:</span> <span class="nx">_</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">autocompleteValues</span><span class="p">,</span> <span class="k">this</span><span class="p">),</span>
-      <span class="nx">minLength</span> <span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-      <span class="nx">delay</span>     <span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-      <span class="nx">autoFocus</span> <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-      <span class="nx">position</span>  <span class="o">:</span> <span class="p">{</span><span class="nx">offset</span> <span class="o">:</span> <span class="s2">&quot;0 5&quot;</span><span class="p">},</span>
-      <span class="nx">create</span>    <span class="o">:</span> <span class="nx">_</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">ui</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">el</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.ui-autocomplete-input&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;z-index&#39;</span><span class="p">,</span><span class="s1">&#39;auto&#39;</span><span class="p">);</span>
-      <span class="p">},</span> <span class="k">this</span><span class="p">),</span>
-      <span class="nx">select</span>    <span class="o">:</span> <span class="nx">_</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">ui</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
-        <span class="kd">var</span> <span class="nx">originalValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">ui</span><span class="p">.</span><span class="nx">item</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">originalValue</span> <span class="o">!=</span> <span class="nx">ui</span><span class="p">.</span><span class="nx">item</span><span class="p">.</span><span class="nx">value</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">val</span><span class="p">()</span> <span class="o">!=</span> <span class="nx">ui</span><span class="p">.</span><span class="nx">item</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-          <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">autosearch</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-          <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-              <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">renderFacets</span><span class="p">();</span>
-              <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">focusNextFacet</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">viewPosition</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">order</span><span class="p">});</span>
-          <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-      <span class="p">},</span> <span class="k">this</span><span class="p">),</span>
-      <span class="nx">open</span>      <span class="o">:</span> <span class="nx">_</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">ui</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">box</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">autocomplete</span><span class="p">(</span><span class="s1">&#39;widget&#39;</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.ui-menu-item&#39;</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-          <span class="kd">var</span> <span class="nx">$value</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">),</span>
-              <span class="nx">autoCompleteData</span> <span class="o">=</span> <span class="nx">$value</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;item.autocomplete&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="nx">$value</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;ui-autocomplete-item&#39;</span><span class="p">);</span>
+than what it was, commit the facet and search for it.</p>
 
-          <span class="k">if</span> <span class="p">(</span><span class="nx">autoCompleteData</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nx">box</span><span class="p">.</span><span class="nx">val</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="nx">box</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;uiAutocomplete&#39;</span><span class="p">).</span><span class="nx">menu</span><span class="p">.</span><span class="nx">activate</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">box</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;uiAutocomplete&#39;</span><span class="p">).</span><span class="nx">menu</span><span class="p">.</span><span class="nx">activate</span><span class="p">(</span><span class="k">new</span> <span class="nx">$</span><span class="p">.</span><span class="nx">Event</span><span class="p">(</span><span class="s2">&quot;mouseover&quot;</span><span class="p">),</span> <span class="nx">$value</span><span class="p">);</span>
-          <span class="p">}</span>
-        <span class="p">});</span>
-      <span class="p">},</span> <span class="k">this</span><span class="p">)</span>
-    <span class="p">});</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setupAutocomplete : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">this</span>.box.autocomplete({
+      source    : _.bind(<span class="hljs-keyword">this</span>.autocompleteValues, <span class="hljs-keyword">this</span>),
+      minLength : <span class="hljs-number">0</span>,
+      delay     : <span class="hljs-number">0</span>,
+      autoFocus : <span class="hljs-literal">true</span>,
+      position  : {offset : <span class="hljs-string">"0 5"</span>},
+      create    : _.bind(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, ui)</span> {</span>
+        $(<span class="hljs-keyword">this</span>.el).find(<span class="hljs-string">'.ui-autocomplete-input'</span>).css(<span class="hljs-string">'z-index'</span>,<span class="hljs-string">'auto'</span>);
+      }, <span class="hljs-keyword">this</span>),
+      select    : _.bind(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, ui)</span> {</span>
+        e.preventDefault();
+        <span class="hljs-keyword">var</span> originalValue = <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">'value'</span>);
+        <span class="hljs-keyword">this</span>.set(ui.item.value);
+        <span class="hljs-keyword">if</span> (originalValue != ui.item.value || <span class="hljs-keyword">this</span>.box.val() != ui.item.value) {
+          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.app.options.autosearch) {
+            <span class="hljs-keyword">this</span>.search(e);
+          } <span class="hljs-keyword">else</span> {
+              <span class="hljs-keyword">this</span>.app.searchBox.renderFacets();
+              <span class="hljs-keyword">this</span>.app.searchBox.focusNextFacet(<span class="hljs-keyword">this</span>, <span class="hljs-number">1</span>, {viewPosition: <span class="hljs-keyword">this</span>.options.order});
+          }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+      }, <span class="hljs-keyword">this</span>),
+      open      : _.bind(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, ui)</span> {</span>
+        <span class="hljs-keyword">var</span> box = <span class="hljs-keyword">this</span>.box;
+        <span class="hljs-keyword">this</span>.box.autocomplete(<span class="hljs-string">'widget'</span>).find(<span class="hljs-string">'.ui-menu-item'</span>).each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+          <span class="hljs-keyword">var</span> $value = $(<span class="hljs-keyword">this</span>),
+              autoCompleteData = $value.data(<span class="hljs-string">'item.autocomplete'</span>) || $value.data(<span class="hljs-string">'ui-autocomplete-item'</span>);
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">autocomplete</span><span class="p">(</span><span class="s1">&#39;widget&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;VS-interface&#39;</span><span class="p">);</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>As the facet's input field grows, it may move to the next line in the
+          <span class="hljs-keyword">if</span> (autoCompleteData[<span class="hljs-string">'value'</span>] == box.val() &amp;&amp; box.data(<span class="hljs-string">'ui-autocomplete'</span>).menu.activate) {
+            box.data(<span class="hljs-string">'ui-autocomplete'</span>).menu.activate(<span class="hljs-keyword">new</span> $.Event(<span class="hljs-string">"mouseover"</span>), $value);
+          }
+        });
+      }, <span class="hljs-keyword">this</span>)
+    });
+
+    <span class="hljs-keyword">this</span>.box.autocomplete(<span class="hljs-string">'widget'</span>).addClass(<span class="hljs-string">'VS-interface'</span>);
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>As the facet’s input field grows, it may move to the next line in the
 search box. <code>autoGrowInput</code> triggers an <code>updated</code> event on the input
-field, which is bound to this method to move the autocomplete menu.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">moveAutocomplete</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">autocomplete</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;uiAutocomplete&#39;</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">autocomplete</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">autocomplete</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">position</span><span class="p">({</span>
-        <span class="nx">my</span>        <span class="o">:</span> <span class="s2">&quot;left top&quot;</span><span class="p">,</span>
-        <span class="nx">at</span>        <span class="o">:</span> <span class="s2">&quot;left bottom&quot;</span><span class="p">,</span>
-        <span class="nx">of</span>        <span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;uiAutocomplete&#39;</span><span class="p">).</span><span class="nx">element</span><span class="p">,</span>
-        <span class="nx">collision</span> <span class="o">:</span> <span class="s2">&quot;flip&quot;</span><span class="p">,</span>
-        <span class="nx">offset</span>    <span class="o">:</span> <span class="s2">&quot;0 5&quot;</span>
-      <span class="p">});</span>
-    <span class="p">}</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>When a user enters a facet and it is being edited, immediately show
-the autocomplete menu and size it to match the contents.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">searchAutocomplete</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">autocomplete</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;uiAutocomplete&#39;</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">autocomplete</span><span class="p">)</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">menu</span> <span class="o">=</span> <span class="nx">autocomplete</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">;</span>
-      <span class="nx">autocomplete</span><span class="p">.</span><span class="nx">search</span><span class="p">();</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Resize the menu based on the correctly measured width of what's bigger:
-the menu's original size or the menu items' new size.</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">menu</span><span class="p">.</span><span class="nx">outerWidth</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span>
-        <span class="nx">menu</span><span class="p">.</span><span class="nx">width</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">outerWidth</span><span class="p">(),</span>
-        <span class="nx">autocomplete</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">outerWidth</span><span class="p">()</span>
-      <span class="p">));</span>
-    <span class="p">}</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>Closes the autocomplete menu. Called on disabling, selecting, deselecting,
-and anything else that takes focus out of the facet's input field.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">closeAutocomplete</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">autocomplete</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;uiAutocomplete&#39;</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">autocomplete</span><span class="p">)</span> <span class="nx">autocomplete</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>Search terms used in the autocomplete menu. These are specific to the facet,
-and only match for the facet's category. The values are then matched on the
+field, which is bound to this method to move the autocomplete menu.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  moveAutocomplete : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> autocomplete = <span class="hljs-keyword">this</span>.box.data(<span class="hljs-string">'ui-autocomplete'</span>);
+    <span class="hljs-keyword">if</span> (autocomplete) {
+      autocomplete.menu.element.position({
+        my        : <span class="hljs-string">"left top"</span>,
+        at        : <span class="hljs-string">"left bottom"</span>,
+        of        : <span class="hljs-keyword">this</span>.box.data(<span class="hljs-string">'ui-autocomplete'</span>).element,
+        collision : <span class="hljs-string">"flip"</span>,
+        offset    : <span class="hljs-string">"0 5"</span>
+      });
+    }
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>When a user enters a facet and it is being edited, immediately show
+the autocomplete menu and size it to match the contents.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  searchAutocomplete : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
+    <span class="hljs-keyword">var</span> autocomplete = <span class="hljs-keyword">this</span>.box.data(<span class="hljs-string">'ui-autocomplete'</span>);
+    <span class="hljs-keyword">if</span> (autocomplete) {
+      <span class="hljs-keyword">var</span> menu = autocomplete.menu.element;
+      autocomplete.search();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Resize the menu based on the correctly measured width of what’s bigger:
+the menu’s original size or the menu items’ new size.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      menu.outerWidth(<span class="hljs-built_in">Math</span>.max(
+        menu.width(<span class="hljs-string">''</span>).outerWidth(),
+        autocomplete.element.outerWidth()
+      ));
+    }
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Closes the autocomplete menu. Called on disabling, selecting, deselecting,
+and anything else that takes focus out of the facet’s input field.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  closeAutocomplete : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> autocomplete = <span class="hljs-keyword">this</span>.box.data(<span class="hljs-string">'ui-autocomplete'</span>);
+    <span class="hljs-keyword">if</span> (autocomplete) autocomplete.close();
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Search terms used in the autocomplete menu. These are specific to the facet,
+and only match for the facet’s category. The values are then matched on the
 first letter of any word in matches, and finally sorted according to the
-value's own category. You can pass <code>preserveOrder</code> as an option in the 
-<code>facetMatches</code> callback to skip any further ordering done client-side.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">autocompleteValues</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">resp</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">category</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">value</span>    <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">searchTerm</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">term</span><span class="p">;</span>
+value’s own category. You can pass <code>preserveOrder</code> as an option in the
+<code>facetMatches</code> callback to skip any further ordering done client-side.</p>
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">callbacks</span><span class="p">.</span><span class="nx">valueMatches</span><span class="p">(</span><span class="nx">category</span><span class="p">,</span> <span class="nx">searchTerm</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">matches</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">options</span> <span class="o">=</span> <span class="nx">options</span> <span class="o">||</span> <span class="p">{};</span>
-      <span class="nx">matches</span> <span class="o">=</span> <span class="nx">matches</span> <span class="o">||</span> <span class="p">[];</span>
-      
-      <span class="k">if</span> <span class="p">(</span><span class="nx">searchTerm</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span> <span class="o">!=</span> <span class="nx">searchTerm</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">preserveMatches</span><span class="p">)</span> <span class="p">{</span>
-          <span class="nx">resp</span><span class="p">(</span><span class="nx">matches</span><span class="p">);</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-          <span class="kd">var</span> <span class="nx">re</span> <span class="o">=</span> <span class="nx">VS</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">inflector</span><span class="p">.</span><span class="nx">escapeRegExp</span><span class="p">(</span><span class="nx">searchTerm</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
-          <span class="kd">var</span> <span class="nx">matcher</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">&#39;\\b&#39;</span> <span class="o">+</span> <span class="nx">re</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">);</span>
-          <span class="nx">matches</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">grep</span><span class="p">(</span><span class="nx">matches</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">matcher</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="o">||</span>
-                   <span class="nx">matcher</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span> <span class="o">||</span>
-                   <span class="nx">matcher</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">label</span><span class="p">);</span>
-        <span class="p">});</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-      
-      <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">preserveOrder</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">resp</span><span class="p">(</span><span class="nx">matches</span><span class="p">);</span>
-      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nx">resp</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">sortBy</span><span class="p">(</span><span class="nx">matches</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">match</span><span class="p">)</span> <span class="p">{</span>
-          <span class="k">if</span> <span class="p">(</span><span class="nx">match</span> <span class="o">==</span> <span class="nx">value</span> <span class="o">||</span> <span class="nx">match</span><span class="p">.</span><span class="nx">value</span> <span class="o">==</span> <span class="nx">value</span><span class="p">)</span> <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-          <span class="k">else</span> <span class="k">return</span> <span class="nx">match</span><span class="p">;</span>
-        <span class="p">}));</span>
-      <span class="p">}</span>
-    <span class="p">});</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  autocompleteValues : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, resp)</span> {</span>
+    <span class="hljs-keyword">var</span> category = <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">'category'</span>);
+    <span class="hljs-keyword">var</span> value    = <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">'value'</span>);
+    <span class="hljs-keyword">var</span> searchTerm = req.term;
 
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>Sets the facet's model's value.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">set</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">value</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span><span class="s1">&#39;value&#39;</span><span class="o">:</span> <span class="nx">value</span><span class="p">});</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p>Before the searchBox performs a search, we need to close the
-autocomplete menu.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">search</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">direction</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">direction</span><span class="p">)</span> <span class="nx">direction</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">closeAutocomplete</span><span class="p">();</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">searchEvent</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-    <span class="nx">_</span><span class="p">.</span><span class="nx">defer</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">focusNextFacet</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">direction</span><span class="p">,</span> <span class="p">{</span><span class="nx">viewPosition</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">order</span><span class="p">});</span>
-    <span class="p">},</span> <span class="k">this</span><span class="p">));</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <p>Begin editing the facet's input. This is called when the user enters
+    <span class="hljs-keyword">this</span>.app.options.callbacks.valueMatches(category, searchTerm, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(matches, options)</span> {</span>
+      options = options || {};
+      matches = matches || [];
+
+      <span class="hljs-keyword">if</span> (searchTerm &amp;&amp; value != searchTerm) {
+        <span class="hljs-keyword">if</span> (options.preserveMatches) {
+          resp(matches);
+        } <span class="hljs-keyword">else</span> {
+          <span class="hljs-keyword">var</span> re = VS.utils.inflector.escapeRegExp(searchTerm || <span class="hljs-string">''</span>);
+          <span class="hljs-keyword">var</span> matcher = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">'\\b'</span> + re, <span class="hljs-string">'i'</span>);
+          matches = $.grep(matches, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item)</span> {</span>
+            <span class="hljs-keyword">return</span> matcher.test(item) ||
+                   matcher.test(item.value) ||
+                   matcher.test(item.label);
+        });
+        }
+      }
+
+      <span class="hljs-keyword">if</span> (options.preserveOrder) {
+        resp(matches);
+      } <span class="hljs-keyword">else</span> {
+        resp(_.sortBy(matches, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(match)</span> {</span>
+          <span class="hljs-keyword">if</span> (match == value || match.value == value) <span class="hljs-keyword">return</span> <span class="hljs-string">''</span>;
+          <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> match;
+        }));
+      }
+    });
+
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Sets the facet’s model’s value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  set : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span> {</span>
+    <span class="hljs-keyword">if</span> (!value) <span class="hljs-keyword">return</span>;
+    <span class="hljs-keyword">this</span>.model.set({<span class="hljs-string">'value'</span>: value});
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Before the searchBox performs a search, we need to close the
+autocomplete menu.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  search : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, direction)</span> {</span>
+    <span class="hljs-keyword">if</span> (!direction) direction = <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">this</span>.closeAutocomplete();
+    <span class="hljs-keyword">this</span>.app.searchBox.searchEvent(e);
+    _.defer(_.bind(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+      <span class="hljs-keyword">this</span>.app.searchBox.focusNextFacet(<span class="hljs-keyword">this</span>, direction, {viewPosition: <span class="hljs-keyword">this</span>.options.order});
+    }, <span class="hljs-keyword">this</span>));
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Begin editing the facet’s input. This is called when the user enters
 the input either from another facet or directly clicking on it.</p>
-
 <p>This method tells all other facets and inputs to disable so it can have
-the sole focus. It also prepares the autocompletion menu.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">enableEdit</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">modes</span><span class="p">.</span><span class="nx">editing</span> <span class="o">!=</span> <span class="s1">&#39;is&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">setMode</span><span class="p">(</span><span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;editing&#39;</span><span class="p">);</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">deselectFacet</span><span class="p">();</span>
-      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">val</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">val</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">));</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
+the sole focus. It also prepares the autocompletion menu.</p>
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">flags</span><span class="p">.</span><span class="nx">canClose</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">disableFacets</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">addFocus</span><span class="p">();</span>
-    <span class="nx">_</span><span class="p">.</span><span class="nx">defer</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">addFocus</span><span class="p">();</span>
-    <span class="p">},</span> <span class="k">this</span><span class="p">));</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">resize</span><span class="p">();</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">searchAutocomplete</span><span class="p">();</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">focus</span><span class="p">();</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <p>When the user blurs the input, they may either be going to another input
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  enableEdit : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.app.options.readOnly) <span class="hljs-keyword">return</span>;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.modes.editing != <span class="hljs-string">'is'</span>) {
+      <span class="hljs-keyword">this</span>.setMode(<span class="hljs-string">'is'</span>, <span class="hljs-string">'editing'</span>);
+      <span class="hljs-keyword">this</span>.deselectFacet();
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.box.val() == <span class="hljs-string">''</span>) {
+        <span class="hljs-keyword">this</span>.box.val(<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">'value'</span>));
+      }
+    }
+
+    <span class="hljs-keyword">this</span>.flags.canClose = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">this</span>.app.searchBox.disableFacets(<span class="hljs-keyword">this</span>);
+    <span class="hljs-keyword">this</span>.app.searchBox.addFocus();
+    _.defer(_.bind(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+      <span class="hljs-keyword">this</span>.app.searchBox.addFocus();
+    }, <span class="hljs-keyword">this</span>));
+    <span class="hljs-keyword">this</span>.resize();
+    <span class="hljs-keyword">this</span>.searchAutocomplete();
+    <span class="hljs-keyword">this</span>.box.focus();
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>When the user blurs the input, they may either be going to another input
 or off the search box entirely. If they go to another input, this facet
 will be instantly disabled, and the canClose flag will be turned back off.</p>
-
 <p>However, if the user clicks elsewhere on the page, this method starts a timer
 that checks if any of the other inputs are selected or are being edited. If
-not, then it can finally close itself and its autocomplete menu.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">deferDisableEdit</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">flags</span><span class="p">.</span><span class="nx">canClose</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="nx">_</span><span class="p">.</span><span class="nx">delay</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">flags</span><span class="p">.</span><span class="nx">canClose</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">is</span><span class="p">(</span><span class="s1">&#39;:focus&#39;</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
-          <span class="k">this</span><span class="p">.</span><span class="nx">modes</span><span class="p">.</span><span class="nx">editing</span> <span class="o">==</span> <span class="s1">&#39;is&#39;</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">modes</span><span class="p">.</span><span class="nx">selected</span> <span class="o">!=</span> <span class="s1">&#39;is&#39;</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">disableEdit</span><span class="p">();</span>
-      <span class="p">}</span>
-    <span class="p">},</span> <span class="k">this</span><span class="p">),</span> <span class="mi">250</span><span class="p">);</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <p>Called either by other facets receiving focus or by the timer in <code>deferDisableEdit</code>,
+not, then it can finally close itself and its autocomplete menu.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  deferDisableEdit : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">this</span>.flags.canClose = <span class="hljs-literal">true</span>;
+    _.delay(_.bind(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.flags.canClose &amp;&amp; !<span class="hljs-keyword">this</span>.box.is(<span class="hljs-string">':focus'</span>) &amp;&amp;
+          <span class="hljs-keyword">this</span>.modes.editing == <span class="hljs-string">'is'</span> &amp;&amp; <span class="hljs-keyword">this</span>.modes.selected != <span class="hljs-string">'is'</span>) {
+        <span class="hljs-keyword">this</span>.disableEdit();
+      }
+    }, <span class="hljs-keyword">this</span>), <span class="hljs-number">250</span>);
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Called either by other facets receiving focus or by the timer in <code>deferDisableEdit</code>,
 this method will turn off the facet, remove any text selection, and close
-the autocomplete menu.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">disableEdit</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">newFacetQuery</span> <span class="o">=</span> <span class="nx">VS</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">inflector</span><span class="p">.</span><span class="nx">trim</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">val</span><span class="p">());</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">newFacetQuery</span> <span class="o">!=</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">))</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">newFacetQuery</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">flags</span><span class="p">.</span><span class="nx">canClose</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">selectRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">blur</span><span class="p">();</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">setMode</span><span class="p">(</span><span class="s1">&#39;not&#39;</span><span class="p">,</span> <span class="s1">&#39;editing&#39;</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">closeAutocomplete</span><span class="p">();</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">removeFocus</span><span class="p">();</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <p>Selects the facet, which blurs the facet's input and highlights the facet.
+the autocomplete menu.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  disableEdit : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> newFacetQuery = VS.utils.inflector.trim(<span class="hljs-keyword">this</span>.box.val());
+    <span class="hljs-keyword">if</span> (newFacetQuery != <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">'value'</span>)) {
+      <span class="hljs-keyword">this</span>.set(newFacetQuery);
+    }
+    <span class="hljs-keyword">this</span>.flags.canClose = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">this</span>.box.selectRange(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+    <span class="hljs-keyword">this</span>.box.blur();
+    <span class="hljs-keyword">this</span>.setMode(<span class="hljs-string">'not'</span>, <span class="hljs-string">'editing'</span>);
+    <span class="hljs-keyword">this</span>.closeAutocomplete();
+    <span class="hljs-keyword">this</span>.app.searchBox.removeFocus();
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Selects the facet, which blurs the facet’s input and highlights the facet.
 If this is the only facet being selected (and not part of a select all event),
 we attach a mouse/keyboard watcher to check if the next action by the user
-should delete this facet or just deselect it.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">selectFacet</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
-    <span class="kd">var</span> <span class="nx">allSelected</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">allSelected</span><span class="p">();</span>
-    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">modes</span><span class="p">.</span><span class="nx">selected</span> <span class="o">==</span> <span class="s1">&#39;is&#39;</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+should delete this facet or just deselect it.</p>
 
-    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">is</span><span class="p">(</span><span class="s1">&#39;:focus&#39;</span><span class="p">))</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">setCursorPosition</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">blur</span><span class="p">();</span>
-    <span class="p">}</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  selectFacet : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
+    <span class="hljs-keyword">if</span> (e) e.preventDefault();
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.app.options.readOnly) <span class="hljs-keyword">return</span>;
+    <span class="hljs-keyword">var</span> allSelected = <span class="hljs-keyword">this</span>.app.searchBox.allSelected();
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.modes.selected == <span class="hljs-string">'is'</span>) <span class="hljs-keyword">return</span>;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">flags</span><span class="p">.</span><span class="nx">canClose</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">closeAutocomplete</span><span class="p">();</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">setMode</span><span class="p">(</span><span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;selected&#39;</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">setMode</span><span class="p">(</span><span class="s1">&#39;not&#39;</span><span class="p">,</span> <span class="s1">&#39;editing&#39;</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">allSelected</span> <span class="o">||</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">unbind</span><span class="p">(</span><span class="s1">&#39;keydown.facet&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">keydown</span><span class="p">);</span>
-      <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">unbind</span><span class="p">(</span><span class="s1">&#39;click.facet&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">deselectFacet</span><span class="p">);</span>
-      <span class="nx">_</span><span class="p">.</span><span class="nx">defer</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">unbind</span><span class="p">(</span><span class="s1">&#39;keydown.facet&#39;</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;keydown.facet&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">keydown</span><span class="p">);</span>
-        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">unbind</span><span class="p">(</span><span class="s1">&#39;click.facet&#39;</span><span class="p">).</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;click.facet&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">deselectFacet</span><span class="p">);</span>
-      <span class="p">},</span> <span class="k">this</span><span class="p">));</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">disableFacets</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">addFocus</span><span class="p">();</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <p>Turns off highlighting on the facet. Called in a variety of ways, this
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.box.is(<span class="hljs-string">':focus'</span>)) {
+      <span class="hljs-keyword">this</span>.box.setCursorPosition(<span class="hljs-number">0</span>);
+      <span class="hljs-keyword">this</span>.box.blur();
+    }
+
+    <span class="hljs-keyword">this</span>.flags.canClose = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">this</span>.closeAutocomplete();
+    <span class="hljs-keyword">this</span>.setMode(<span class="hljs-string">'is'</span>, <span class="hljs-string">'selected'</span>);
+    <span class="hljs-keyword">this</span>.setMode(<span class="hljs-string">'not'</span>, <span class="hljs-string">'editing'</span>);
+    <span class="hljs-keyword">if</span> (!allSelected || e) {
+      $(document).unbind(<span class="hljs-string">'keydown.facet'</span>, <span class="hljs-keyword">this</span>.keydown);
+      $(document).unbind(<span class="hljs-string">'click.facet'</span>, <span class="hljs-keyword">this</span>.deselectFacet);
+      _.defer(_.bind(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+        $(document).unbind(<span class="hljs-string">'keydown.facet'</span>).bind(<span class="hljs-string">'keydown.facet'</span>, <span class="hljs-keyword">this</span>.keydown);
+        $(document).unbind(<span class="hljs-string">'click.facet'</span>).one(<span class="hljs-string">'click.facet'</span>, <span class="hljs-keyword">this</span>.deselectFacet);
+      }, <span class="hljs-keyword">this</span>));
+      <span class="hljs-keyword">this</span>.app.searchBox.disableFacets(<span class="hljs-keyword">this</span>);
+      <span class="hljs-keyword">this</span>.app.searchBox.addFocus();
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Turns off highlighting on the facet. Called in a variety of ways, this
 only deselects the facet if it is selected, and then cleans up the
 keyboard/mouse watchers that were created when the facet was first
-selected.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">deselectFacet</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
-    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">modes</span><span class="p">.</span><span class="nx">selected</span> <span class="o">==</span> <span class="s1">&#39;is&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">setMode</span><span class="p">(</span><span class="s1">&#39;not&#39;</span><span class="p">,</span> <span class="s1">&#39;selected&#39;</span><span class="p">);</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">closeAutocomplete</span><span class="p">();</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">removeFocus</span><span class="p">();</span>
-    <span class="p">}</span>
-    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">unbind</span><span class="p">(</span><span class="s1">&#39;keydown.facet&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">keydown</span><span class="p">);</span>
-    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">unbind</span><span class="p">(</span><span class="s1">&#39;click.facet&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">deselectFacet</span><span class="p">);</span>
-    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <p>Is the user currently focused in this facet's input field?</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">isFocused</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">is</span><span class="p">(</span><span class="s1">&#39;:focus&#39;</span><span class="p">);</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <p>Hovering over the delete button styles the facet so the user knows that
-the delete button will kill the entire facet.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">showDelete</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">el</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;search_facet_maybe_delete&#39;</span><span class="p">);</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <p>On <code>mouseout</code>, the user is no longer hovering on the delete button.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">hideDelete</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">el</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;search_facet_maybe_delete&#39;</span><span class="p">);</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-23">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-23">&#182;</a>               </div>               <p>When switching between facets, depending on the direction the cursor is
-coming from, the cursor in this facet's input field should match the original
-direction.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">setCursorAtEnd</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">direction</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">direction</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">setCursorPosition</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">val</span><span class="p">().</span><span class="nx">length</span><span class="p">);</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">setCursorPosition</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-    <span class="p">}</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-24">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-24">&#182;</a>               </div>               <p>Deletes the facet and sends the cursor over to the nearest input field.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">remove</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">committed</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">deselectFacet</span><span class="p">();</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">disableEdit</span><span class="p">();</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchQuery</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">committed</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">autosearch</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">renderFacets</span><span class="p">();</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">focusNextFacet</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">viewPosition</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">order</span><span class="p">});</span>
-    <span class="p">}</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-25">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-25">&#182;</a>               </div>               <p>Selects the text in the facet's input field. When the user tabs between
-facets, convention is to highlight the entire field.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">selectText</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">selectRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">val</span><span class="p">().</span><span class="nx">length</span><span class="p">);</span>
-  <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-26">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-26">&#182;</a>               </div>               <p>Handles all keyboard inputs when in the facet's input field. This checks
+selected.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  deselectFacet : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
+    <span class="hljs-keyword">if</span> (e) e.preventDefault();
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.modes.selected == <span class="hljs-string">'is'</span>) {
+      <span class="hljs-keyword">this</span>.setMode(<span class="hljs-string">'not'</span>, <span class="hljs-string">'selected'</span>);
+      <span class="hljs-keyword">this</span>.closeAutocomplete();
+      <span class="hljs-keyword">this</span>.app.searchBox.removeFocus();
+    }
+    $(document).unbind(<span class="hljs-string">'keydown.facet'</span>, <span class="hljs-keyword">this</span>.keydown);
+    $(document).unbind(<span class="hljs-string">'click.facet'</span>, <span class="hljs-keyword">this</span>.deselectFacet);
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Is the user currently focused in this facet’s input field?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  isFocused : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.box.is(<span class="hljs-string">':focus'</span>);
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>Hovering over the delete button styles the facet so the user knows that
+the delete button will kill the entire facet.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  showDelete : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    $(<span class="hljs-keyword">this</span>.el).addClass(<span class="hljs-string">'search_facet_maybe_delete'</span>);
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>On <code>mouseout</code>, the user is no longer hovering on the delete button.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  hideDelete : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    $(<span class="hljs-keyword">this</span>.el).removeClass(<span class="hljs-string">'search_facet_maybe_delete'</span>);
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>When switching between facets, depending on the direction the cursor is
+coming from, the cursor in this facet’s input field should match the original
+direction.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setCursorAtEnd : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(direction)</span> {</span>
+    <span class="hljs-keyword">if</span> (direction == -<span class="hljs-number">1</span>) {
+      <span class="hljs-keyword">this</span>.box.setCursorPosition(<span class="hljs-keyword">this</span>.box.val().length);
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">this</span>.box.setCursorPosition(<span class="hljs-number">0</span>);
+    }
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>Deletes the facet and sends the cursor over to the nearest input field.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  remove : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
+    <span class="hljs-keyword">var</span> committed = <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">'value'</span>);
+    <span class="hljs-keyword">this</span>.deselectFacet();
+    <span class="hljs-keyword">this</span>.disableEdit();
+    <span class="hljs-keyword">this</span>.app.searchQuery.remove(<span class="hljs-keyword">this</span>.model);
+    <span class="hljs-keyword">if</span> (committed &amp;&amp; <span class="hljs-keyword">this</span>.app.options.autosearch) {
+      <span class="hljs-keyword">this</span>.search(e, -<span class="hljs-number">1</span>);
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">this</span>.app.searchBox.renderFacets();
+      <span class="hljs-keyword">this</span>.app.searchBox.focusNextFacet(<span class="hljs-keyword">this</span>, -<span class="hljs-number">1</span>, {viewPosition: <span class="hljs-keyword">this</span>.options.order});
+    }
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>Selects the text in the facet’s input field. When the user tabs between
+facets, convention is to highlight the entire field.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  selectText: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">this</span>.box.selectRange(<span class="hljs-number">0</span>, <span class="hljs-keyword">this</span>.box.val().length);
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>Handles all keyboard inputs when in the facet’s input field. This checks
 for movement between facets and inputs, entering a new value that needs
-to be autocompleted, as well as the removal of this facet.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">keydown</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">VS</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">hotkeys</span><span class="p">.</span><span class="nx">key</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+to be autocompleted, as well as the removal of this facet.</p>
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">==</span> <span class="s1">&#39;enter&#39;</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">val</span><span class="p">())</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">disableEdit</span><span class="p">();</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">==</span> <span class="s1">&#39;left&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">modes</span><span class="p">.</span><span class="nx">selected</span> <span class="o">==</span> <span class="s1">&#39;is&#39;</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">deselectFacet</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">focusNextFacet</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">startAtEnd</span><span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">});</span>
-      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">getCursorPosition</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">getSelection</span><span class="p">().</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">selectFacet</span><span class="p">();</span>
-      <span class="p">}</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">==</span> <span class="s1">&#39;right&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">modes</span><span class="p">.</span><span class="nx">selected</span> <span class="o">==</span> <span class="s1">&#39;is&#39;</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">deselectFacet</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">setCursorAtEnd</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">enableEdit</span><span class="p">();</span>
-      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">getCursorPosition</span><span class="p">()</span> <span class="o">==</span> <span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">val</span><span class="p">().</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">disableEdit</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">focusNextFacet</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-      <span class="p">}</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">VS</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">hotkeys</span><span class="p">.</span><span class="nx">shift</span> <span class="o">&amp;&amp;</span> <span class="nx">key</span> <span class="o">==</span> <span class="s1">&#39;tab&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">focusNextFacet</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span>
-        <span class="nx">startAtEnd</span>  <span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-        <span class="nx">skipToFacet</span> <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-        <span class="nx">selectText</span>  <span class="o">:</span> <span class="kc">true</span>
-      <span class="p">});</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">==</span> <span class="s1">&#39;tab&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">focusNextFacet</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">{</span>
-        <span class="nx">skipToFacet</span> <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-        <span class="nx">selectText</span>  <span class="o">:</span> <span class="kc">true</span>
-      <span class="p">});</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">VS</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">hotkeys</span><span class="p">.</span><span class="nx">command</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">which</span> <span class="o">==</span> <span class="mi">97</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">which</span> <span class="o">==</span> <span class="mi">65</span><span class="p">))</span> <span class="p">{</span>
-      <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">selectAllFacets</span><span class="p">();</span>
-      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">VS</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">hotkeys</span><span class="p">.</span><span class="nx">printable</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">modes</span><span class="p">.</span><span class="nx">selected</span> <span class="o">==</span> <span class="s1">&#39;is&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">.</span><span class="nx">focusNextFacet</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">startAtEnd</span><span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">});</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">==</span> <span class="s1">&#39;backspace&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">modes</span><span class="p">.</span><span class="nx">selected</span> <span class="o">==</span> <span class="s1">&#39;is&#39;</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">getCursorPosition</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
-                 <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">box</span><span class="p">.</span><span class="nx">getSelection</span><span class="p">().</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">selectFacet</span><span class="p">();</span>
-      <span class="p">}</span>
-    <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-27">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-27">&#182;</a>               </div>               <p>Handle paste events</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">which</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-28">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-28">&#182;</a>               </div>               <p>this.searchAutocomplete(e);</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">_</span><span class="p">.</span><span class="nx">defer</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">resize</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nx">e</span><span class="p">));</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  keydown : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
+    <span class="hljs-keyword">var</span> key = VS.app.hotkeys.key(e);
 
-<span class="p">});</span>
+    <span class="hljs-keyword">if</span> (key == <span class="hljs-string">'enter'</span> &amp;&amp; <span class="hljs-keyword">this</span>.box.val()) {
+      <span class="hljs-keyword">this</span>.disableEdit();
+      <span class="hljs-keyword">this</span>.search(e);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (key == <span class="hljs-string">'left'</span>) {
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.modes.selected == <span class="hljs-string">'is'</span>) {
+        <span class="hljs-keyword">this</span>.deselectFacet();
+        <span class="hljs-keyword">this</span>.app.searchBox.focusNextFacet(<span class="hljs-keyword">this</span>, -<span class="hljs-number">1</span>, {startAtEnd: -<span class="hljs-number">1</span>});
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.box.getCursorPosition() == <span class="hljs-number">0</span> &amp;&amp; !<span class="hljs-keyword">this</span>.box.getSelection().length) {
+        <span class="hljs-keyword">this</span>.selectFacet();
+      }
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (key == <span class="hljs-string">'right'</span>) {
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.modes.selected == <span class="hljs-string">'is'</span>) {
+        e.preventDefault();
+        <span class="hljs-keyword">this</span>.deselectFacet();
+        <span class="hljs-keyword">this</span>.setCursorAtEnd(<span class="hljs-number">0</span>);
+        <span class="hljs-keyword">this</span>.enableEdit();
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.box.getCursorPosition() == <span class="hljs-keyword">this</span>.box.val().length) {
+        e.preventDefault();
+        <span class="hljs-keyword">this</span>.disableEdit();
+        <span class="hljs-keyword">this</span>.app.searchBox.focusNextFacet(<span class="hljs-keyword">this</span>, <span class="hljs-number">1</span>);
+      }
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (VS.app.hotkeys.shift &amp;&amp; key == <span class="hljs-string">'tab'</span>) {
+      e.preventDefault();
+      <span class="hljs-keyword">this</span>.app.searchBox.focusNextFacet(<span class="hljs-keyword">this</span>, -<span class="hljs-number">1</span>, {
+        startAtEnd  : -<span class="hljs-number">1</span>,
+        skipToFacet : <span class="hljs-literal">true</span>,
+        selectText  : <span class="hljs-literal">true</span>
+      });
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (key == <span class="hljs-string">'tab'</span>) {
+      e.preventDefault();
+      <span class="hljs-keyword">this</span>.app.searchBox.focusNextFacet(<span class="hljs-keyword">this</span>, <span class="hljs-number">1</span>, {
+        skipToFacet : <span class="hljs-literal">true</span>,
+        selectText  : <span class="hljs-literal">true</span>
+      });
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (VS.app.hotkeys.command &amp;&amp; (e.which == <span class="hljs-number">97</span> || e.which == <span class="hljs-number">65</span>)) {
+      e.preventDefault();
+      <span class="hljs-keyword">this</span>.app.searchBox.selectAllFacets();
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (VS.app.hotkeys.printable(e) &amp;&amp; <span class="hljs-keyword">this</span>.modes.selected == <span class="hljs-string">'is'</span>) {
+      <span class="hljs-keyword">this</span>.app.searchBox.focusNextFacet(<span class="hljs-keyword">this</span>, -<span class="hljs-number">1</span>, {startAtEnd: -<span class="hljs-number">1</span>});
+      <span class="hljs-keyword">this</span>.remove(e);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (key == <span class="hljs-string">'backspace'</span>) {
+       $(document).on(<span class="hljs-string">'keydown.backspace'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
+          <span class="hljs-keyword">if</span> (VS.app.hotkeys.key(e) === <span class="hljs-string">'backspace'</span>) {
+             e.preventDefault();
+          }
+       });
 
-<span class="p">})();</span>
+       $(document).on(<span class="hljs-string">'keyup.backspace'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
+          $(document).off(<span class="hljs-string">'.backspace'</span>);
+       });
 
-</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.modes.selected == <span class="hljs-string">'is'</span>) {
+        e.preventDefault();
+        <span class="hljs-keyword">this</span>.remove(e);
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.box.getCursorPosition() == <span class="hljs-number">0</span> &amp;&amp;
+                 !<span class="hljs-keyword">this</span>.box.getSelection().length) {
+        e.preventDefault();
+        <span class="hljs-keyword">this</span>.selectFacet();
+      }
+       e.stopPropagation();
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>Handle paste events</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (e.which == <span class="hljs-literal">null</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>this.searchAutocomplete(e);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        _.defer(_.bind(<span class="hljs-keyword">this</span>.resize, <span class="hljs-keyword">this</span>, e));
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">this</span>.resize(e);
+    }
+  }
+
+});
+
+})();</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

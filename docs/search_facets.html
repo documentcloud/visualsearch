@@ -1,57 +1,237 @@
-<!DOCTYPE html>  <html> <head>   <title>search_facets.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="search_facets.html">                 search_facets.js               </a>                                           <a class="source" href="search_query.html">                 search_query.js               </a>                                           <a class="source" href="templates.html">                 templates.js               </a>                                           <a class="source" href="backbone_extensions.html">                 backbone_extensions.js               </a>                                           <a class="source" href="hotkeys.html">                 hotkeys.js               </a>                                           <a class="source" href="inflector.html">                 inflector.js               </a>                                           <a class="source" href="jquery_extensions.html">                 jquery_extensions.js               </a>                                           <a class="source" href="search_parser.html">                 search_parser.js               </a>                                           <a class="source" href="search_box.html">                 search_box.js               </a>                                           <a class="source" href="search_facet.html">                 search_facet.js               </a>                                           <a class="source" href="search_input.html">                 search_input.js               </a>                                           <a class="source" href="visualsearch.html">                 visualsearch.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               search_facets.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<!DOCTYPE html>
 
-<span class="kd">var</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">jQuery</span><span class="p">;</span> <span class="c1">// Handle namespaced jQuery</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>The model that holds individual search facets and their categories.
-Held in a collection by <code>VS.app.searchQuery</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">VS</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">SearchFacet</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Extract the category and value and serialize it in preparation for
+<html>
+<head>
+  <title>search_facets.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="search_facets.html">
+                search_facets.js
+              </a>
+            
+              
+              <a class="source" href="search_query.html">
+                search_query.js
+              </a>
+            
+              
+              <a class="source" href="templates.html">
+                templates.js
+              </a>
+            
+              
+              <a class="source" href="backbone_extensions.html">
+                backbone_extensions.js
+              </a>
+            
+              
+              <a class="source" href="hotkeys.html">
+                hotkeys.js
+              </a>
+            
+              
+              <a class="source" href="inflector.html">
+                inflector.js
+              </a>
+            
+              
+              <a class="source" href="jquery_extensions.html">
+                jquery_extensions.js
+              </a>
+            
+              
+              <a class="source" href="search_parser.html">
+                search_parser.js
+              </a>
+            
+              
+              <a class="source" href="search_box.html">
+                search_box.js
+              </a>
+            
+              
+              <a class="source" href="search_facet.html">
+                search_facet.js
+              </a>
+            
+              
+              <a class="source" href="search_input.html">
+                search_input.js
+              </a>
+            
+              
+              <a class="source" href="visualsearch.html">
+                visualsearch.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>search_facets.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+
+<span class="hljs-keyword">var</span> $ = jQuery; <span class="hljs-comment">// Handle namespaced jQuery</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>The model that holds individual search facets and their categories.
+Held in a collection by <code>VS.app.searchQuery</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>VS.model.SearchFacet = Backbone.Model.extend({</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Extract the category and value and serialize it in preparation for
 turning the entire searchBox into a search query that can be sent
-to the server for parsing and searching.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">serialize</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">category</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">quoteCategory</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">));</span>
-    <span class="kd">var</span> <span class="nx">value</span>    <span class="o">=</span> <span class="nx">VS</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">inflector</span><span class="p">.</span><span class="nx">trim</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">));</span>
-    <span class="kd">var</span> <span class="nx">remainder</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;app&quot;</span><span class="p">).</span><span class="nx">options</span><span class="p">.</span><span class="nx">remainder</span><span class="p">;</span>
+to the server for parsing and searching.</p>
 
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">value</span><span class="p">)</span> <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  serialize : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> category = <span class="hljs-keyword">this</span>.quoteCategory(<span class="hljs-keyword">this</span>.get(<span class="hljs-string">'category'</span>));
+    <span class="hljs-keyword">var</span> value    = VS.utils.inflector.trim(<span class="hljs-keyword">this</span>.get(<span class="hljs-string">'value'</span>));
+    <span class="hljs-keyword">var</span> remainder = <span class="hljs-keyword">this</span>.get(<span class="hljs-string">"app"</span>).options.remainder;
 
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;app&quot;</span><span class="p">).</span><span class="nx">options</span><span class="p">.</span><span class="nx">unquotable</span> <span class="o">||</span> <span class="p">[],</span> <span class="nx">category</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">category</span> <span class="o">!=</span> <span class="nx">remainder</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">value</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">quoteValue</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
-    <span class="p">}</span>
+    <span class="hljs-keyword">if</span> (!value) <span class="hljs-keyword">return</span> <span class="hljs-string">''</span>;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">category</span> <span class="o">!=</span> <span class="nx">remainder</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">category</span> <span class="o">=</span> <span class="nx">category</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="nx">category</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">category</span> <span class="o">+</span> <span class="nx">value</span><span class="p">;</span>
-  <span class="p">},</span>
-  </pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Wrap categories that have spaces or any kind of quote with opposite matching
-quotes to preserve the complex category during serialization.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">quoteCategory</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">category</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">hasDoubleQuote</span> <span class="o">=</span> <span class="p">(</span><span class="sr">/&quot;/</span><span class="p">).</span><span class="nx">test</span><span class="p">(</span><span class="nx">category</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">hasSingleQuote</span> <span class="o">=</span> <span class="p">(</span><span class="sr">/&#39;/</span><span class="p">).</span><span class="nx">test</span><span class="p">(</span><span class="nx">category</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">hasSpace</span>       <span class="o">=</span> <span class="p">(</span><span class="sr">/\s/</span><span class="p">).</span><span class="nx">test</span><span class="p">(</span><span class="nx">category</span><span class="p">);</span>
+    <span class="hljs-keyword">if</span> (!_.contains(<span class="hljs-keyword">this</span>.get(<span class="hljs-string">"app"</span>).options.unquotable || [], category) &amp;&amp; category != remainder) {
+      value = <span class="hljs-keyword">this</span>.quoteValue(value);
+    }
+
+    <span class="hljs-keyword">if</span> (category != remainder) {
+      category = category + <span class="hljs-string">': '</span>;
+    } <span class="hljs-keyword">else</span> {
+      category = <span class="hljs-string">""</span>;
+    }
+    <span class="hljs-keyword">return</span> category + value;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Wrap categories that have spaces or any kind of quote with opposite matching
+quotes to preserve the complex category during serialization.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  quoteCategory : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(category)</span> {</span>
+    <span class="hljs-keyword">var</span> hasDoubleQuote = (<span class="hljs-regexp">/"/</span>).test(category);
+    <span class="hljs-keyword">var</span> hasSingleQuote = (<span class="hljs-regexp">/'/</span>).test(category);
+    <span class="hljs-keyword">var</span> hasSpace       = (<span class="hljs-regexp">/\s/</span>).test(category);
     
-    <span class="k">if</span> <span class="p">(</span><span class="nx">hasDoubleQuote</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">hasSingleQuote</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="nx">category</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hasSpace</span> <span class="o">||</span> <span class="p">(</span><span class="nx">hasSingleQuote</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">hasDoubleQuote</span><span class="p">))</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="nx">category</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">category</span><span class="p">;</span>
-    <span class="p">}</span>
-  <span class="p">},</span>
-  </pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Wrap values that have quotes in opposite matching quotes. If a value has
-both single and double quotes, just use the double quotes.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">quoteValue</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">hasDoubleQuote</span> <span class="o">=</span> <span class="p">(</span><span class="sr">/&quot;/</span><span class="p">).</span><span class="nx">test</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">hasSingleQuote</span> <span class="o">=</span> <span class="p">(</span><span class="sr">/&#39;/</span><span class="p">).</span><span class="nx">test</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+    <span class="hljs-keyword">if</span> (hasDoubleQuote &amp;&amp; !hasSingleQuote) {
+      <span class="hljs-keyword">return</span> <span class="hljs-string">"'"</span> + category + <span class="hljs-string">"'"</span>;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (hasSpace || (hasSingleQuote &amp;&amp; !hasDoubleQuote)) {
+      <span class="hljs-keyword">return</span> <span class="hljs-string">'"'</span> + category + <span class="hljs-string">'"'</span>;
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">return</span> category;
+    }
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Wrap values that have quotes in opposite matching quotes. If a value has
+both single and double quotes, just use the double quotes.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  quoteValue : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span> {</span>
+    <span class="hljs-keyword">var</span> hasDoubleQuote = (<span class="hljs-regexp">/"/</span>).test(value);
+    <span class="hljs-keyword">var</span> hasSingleQuote = (<span class="hljs-regexp">/'/</span>).test(value);
     
-    <span class="k">if</span> <span class="p">(</span><span class="nx">hasDoubleQuote</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">hasSingleQuote</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="nx">value</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="nx">value</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">;</span>
-    <span class="p">}</span>
-  <span class="p">},</span>
-  </pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>If provided, use a custom label instead of the raw value.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">label</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">);</span>
-  <span class="p">}</span>
+    <span class="hljs-keyword">if</span> (hasDoubleQuote &amp;&amp; !hasSingleQuote) {
+      <span class="hljs-keyword">return</span> <span class="hljs-string">"'"</span> + value + <span class="hljs-string">"'"</span>;
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">return</span> <span class="hljs-string">'"'</span> + value + <span class="hljs-string">'"'</span>;
+    }
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>If provided, use a custom label instead of the raw value.</p>
 
-<span class="p">});</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  label : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.get(<span class="hljs-string">'label'</span>) || <span class="hljs-keyword">this</span>.get(<span class="hljs-string">'value'</span>);
+  }
 
-<span class="p">})();</span>
+});
 
-</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
+})();</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
