@@ -19,7 +19,7 @@ javascripts:
     - lib/js/utils/*.js
     - lib/js/models/*.js
     - lib/js/templates/*.jst
-  <% unless $VS_MIN %>visualsearch_templates:
+  <% if not $VS_MIN %>visualsearch_templates:
     - lib/js/templates/*.jst
   <% end %>
 
