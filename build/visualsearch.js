@@ -620,8 +620,8 @@ VS.ui.SearchFacet = Backbone.View.extend({
           var $value = $(this),
               autoCompleteData = $value.data('item.autocomplete') || $value.data('ui-autocomplete-item');
 
-          if (autoCompleteData['value'] == box.val() && box.data('uiAutocomplete').menu.activate) {
-            box.data('uiAutocomplete').menu.activate(new $.Event("mouseover"), $value);
+          if (autoCompleteData['value'] == box.val() && box.data('ui-autocomplete').menu.activate) {
+            box.data('ui-autocomplete').menu.activate(new $.Event("mouseover"), $value);
           }
         });
       }, this)
@@ -634,12 +634,12 @@ VS.ui.SearchFacet = Backbone.View.extend({
   // search box. `autoGrowInput` triggers an `updated` event on the input
   // field, which is bound to this method to move the autocomplete menu.
   moveAutocomplete : function() {
-    var autocomplete = this.box.data('uiAutocomplete');
+    var autocomplete = this.box.data('ui-autocomplete');
     if (autocomplete) {
       autocomplete.menu.element.position({
         my        : "left top",
         at        : "left bottom",
-        of        : this.box.data('uiAutocomplete').element,
+        of        : this.box.data('ui-autocomplete').element,
         collision : "flip",
         offset    : "0 5"
       });
@@ -649,7 +649,7 @@ VS.ui.SearchFacet = Backbone.View.extend({
   // When a user enters a facet and it is being edited, immediately show
   // the autocomplete menu and size it to match the contents.
   searchAutocomplete : function(e) {
-    var autocomplete = this.box.data('uiAutocomplete');
+    var autocomplete = this.box.data('ui-autocomplete');
     if (autocomplete) {
       var menu = autocomplete.menu.element;
       autocomplete.search();
@@ -666,7 +666,7 @@ VS.ui.SearchFacet = Backbone.View.extend({
   // Closes the autocomplete menu. Called on disabling, selecting, deselecting,
   // and anything else that takes focus out of the facet's input field.
   closeAutocomplete : function() {
-    var autocomplete = this.box.data('uiAutocomplete');
+    var autocomplete = this.box.data('ui-autocomplete');
     if (autocomplete) autocomplete.close();
   },
 
@@ -927,6 +927,16 @@ VS.ui.SearchFacet = Backbone.View.extend({
       this.options.app.searchBox.focusNextFacet(this, -1, {startAtEnd: -1});
       this.remove(e);
     } else if (key == 'backspace') {
+       $(document).on('keydown.backspace', function(e) {
+          if (VS.app.hotkeys.key(e) === 'backspace') {
+             e.preventDefault();
+          }
+       });
+
+       $(document).on('keyup.backspace', function(e) {
+          $(document).off('.backspace');
+       });
+
       if (this.modes.selected == 'is') {
         e.preventDefault();
         this.remove(e);
@@ -935,6 +945,7 @@ VS.ui.SearchFacet = Backbone.View.extend({
         e.preventDefault();
         this.selectFacet();
       }
+       e.stopPropagation();
     }
 
     // Handle paste events
@@ -1020,7 +1031,7 @@ VS.ui.SearchInput = Backbone.View.extend({
     });
 
     // Renders the results grouped by the categories they belong to.
-    this.box.data('uiAutocomplete')._renderMenu = function(ul, items) {
+    this.box.data('ui-autocomplete')._renderMenu = function(ul, items) {
       var category = '';
       _.each(items, _.bind(function(item, i) {
         if (item.category && item.category != category) {
@@ -1073,7 +1084,7 @@ VS.ui.SearchInput = Backbone.View.extend({
   // Closes the autocomplete menu. Called on disabling, selecting, deselecting,
   // and anything else that takes focus out of the facet's input field.
   closeAutocomplete : function() {
-    var autocomplete = this.box.data('uiAutocomplete');
+    var autocomplete = this.box.data('ui-autocomplete');
     if (autocomplete) autocomplete.close();
   },
 
@@ -1081,12 +1092,12 @@ VS.ui.SearchInput = Backbone.View.extend({
   // search box. `autoGrowInput` triggers an `updated` event on the input
   // field, which is bound to this method to move the autocomplete menu.
   moveAutocomplete : function() {
-    var autocomplete = this.box.data('uiAutocomplete');
+    var autocomplete = this.box.data('ui-autocomplete');
     if (autocomplete) {
       autocomplete.menu.element.position({
         my        : "left top",
         at        : "left bottom",
-        of        : this.box.data('uiAutocomplete').element,
+        of        : this.box.data('ui-autocomplete').element,
         collision : "none",
         offset    : '0 -1'
       });
@@ -1096,7 +1107,7 @@ VS.ui.SearchInput = Backbone.View.extend({
   // When a user enters a facet and it is being edited, immediately show
   // the autocomplete menu and size it to match the contents.
   searchAutocomplete : function(e) {
-    var autocomplete = this.box.data('uiAutocomplete');
+    var autocomplete = this.box.data('ui-autocomplete');
     if (autocomplete) {
       var menu = autocomplete.menu.element;
       autocomplete.search();
