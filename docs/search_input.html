@@ -215,7 +215,9 @@ remainder of the input field and adding a separate facet for it.</p>
         $(<span class="hljs-keyword">this</span>.el).find(<span class="hljs-string">'.ui-autocomplete-input'</span>).css(<span class="hljs-string">'z-index'</span>,<span class="hljs-string">'auto'</span>);
       }, <span class="hljs-keyword">this</span>),
       select    : _.bind(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, ui)</span> {</span>
-        e.preventDefault();</pre></div></div>
+        <span class="hljs-keyword">this</span>.addFacet(e, ui.item);
+      }, <span class="hljs-keyword">this</span>)
+    });</pre></div></div>
             
         </li>
         
@@ -225,27 +227,6 @@ remainder of the input field and adding a separate facet for it.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p>stopPropogation does weird things in jquery-ui 1.9
-e.stopPropagation();</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> remainder = <span class="hljs-keyword">this</span>.addTextFacetRemainder(ui.item.label || ui.item.value);
-        <span class="hljs-keyword">var</span> position  = <span class="hljs-keyword">this</span>.options.position + (remainder ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>);
-        <span class="hljs-keyword">this</span>.app.searchBox.addFacet(ui.item <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">String</span> ? ui.item : ui.item.value, <span class="hljs-string">''</span>, position);
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-      }, <span class="hljs-keyword">this</span>)
-    });</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>Renders the results grouped by the categories they belong to.</p>
 
@@ -274,11 +255,112 @@ e.stopPropagation();</p>
         </li>
         
         
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Adds a given facet (with a remainder, if exists). If facet not provided, tries to extract
+a facet from the last word of the current input (matching it to available facets).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  addFacet : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e, facetToAdd)</span> {</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> facetToAdd === <span class="hljs-string">'undefined'</span>) {</pre></div></div>
+            
+        </li>
+        
+        
         <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>trying to find a facet that matches the last word in the input </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> query    = <span class="hljs-keyword">this</span>.box.val();
+      <span class="hljs-keyword">var</span> lastWord = query.match(<span class="hljs-regexp">/\w+$/</span>);
+      <span class="hljs-keyword">if</span> (lastWord) {
+        lastWord = lastWord[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">var</span> availableFacets = [];
+        <span class="hljs-keyword">this</span>.app.options.callbacks.facetMatches(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(facets)</span> {</span>
+            availableFacets = facets;
+        });
+        
+        facetToAdd = _.find(availableFacets, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(facet)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>first try to match a label, as label (if provided) is the text
+that users see in jQuery autocomplete dropdown menu</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">var</span> category = facet.label || facet.value || facet;
+          <span class="hljs-keyword">return</span> category &amp;&amp; category.toLowerCase() === lastWord.toLowerCase();
+        });
+      }
+    }
+    <span class="hljs-keyword">if</span> (facetToAdd) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>stopPropogation does weird things in jquery-ui 1.9
+e.stopPropagation();</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      e.preventDefault();
+      <span class="hljs-keyword">var</span> categoryTyped = facetToAdd.label || facetToAdd.value || facetToAdd;
+      <span class="hljs-keyword">var</span> remainder = <span class="hljs-keyword">this</span>.addTextFacetRemainder(categoryTyped);
+      <span class="hljs-keyword">var</span> position  = <span class="hljs-keyword">this</span>.options.position + (remainder?<span class="hljs-number">1</span>:<span class="hljs-number">0</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>first try to use a value, as jQuery autocomplete sets value
+when selected an item from the dropdown menu</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> categoryToAdd = facetToAdd.value || facetToAdd.label || facetToAdd;
+      <span class="hljs-keyword">this</span>.app.searchBox.addFacet(categoryToAdd, <span class="hljs-string">''</span>, position);
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>Search terms used in the autocomplete menu. The values are matched on the
 first letter of any word in matches, and finally sorted according to the
@@ -298,11 +380,11 @@ value’s own category. You can pass <code>preserveOrder</code> as an option in 
         </li>
         
         
-        <li id="section-9">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>Only match from the beginning of the word.</p>
 
@@ -310,7 +392,7 @@ value’s own category. You can pass <code>preserveOrder</code> as an option in 
             
             <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> matcher    = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">'^'</span> + re, <span class="hljs-string">'i'</span>);
       <span class="hljs-keyword">var</span> matches    = $.grep(prefixes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item)</span> {</span>
-        <span class="hljs-keyword">return</span> item &amp;&amp; matcher.test(item.label || item);
+        <span class="hljs-keyword">return</span> item &amp;&amp; matcher.test(item.label || item.value || item);
       });
 
       <span class="hljs-keyword">if</span> (options.preserveOrder) {
@@ -318,6 +400,7 @@ value’s own category. You can pass <code>preserveOrder</code> as an option in 
       } <span class="hljs-keyword">else</span> {
         resp(_.sortBy(matches, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(match)</span> {</span>
           <span class="hljs-keyword">if</span> (match.label) <span class="hljs-keyword">return</span> match.category + <span class="hljs-string">'-'</span> + match.label;
+          <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (match.value) <span class="hljs-keyword">return</span> match.category + <span class="hljs-string">'-'</span> + match.value;
           <span class="hljs-keyword">else</span>             <span class="hljs-keyword">return</span> match;
         }));
       }
@@ -328,11 +411,11 @@ value’s own category. You can pass <code>preserveOrder</code> as an option in 
         </li>
         
         
-        <li id="section-10">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Closes the autocomplete menu. Called on disabling, selecting, deselecting,
 and anything else that takes focus out of the facet’s input field.</p>
@@ -347,11 +430,11 @@ and anything else that takes focus out of the facet’s input field.</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>As the input field grows, it may move to the next line in the
 search box. <code>autoGrowInput</code> triggers an <code>updated</code> event on the input
@@ -375,11 +458,11 @@ field, which is bound to this method to move the autocomplete menu.</p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>When a user enters a facet and it is being edited, immediately show
 the autocomplete menu and size it to match the contents.</p>
@@ -395,11 +478,11 @@ the autocomplete menu and size it to match the contents.</p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>Resize the menu based on the correctly measured width of what’s bigger:
 the menu’s original size or the menu items’ new size.</p>
@@ -416,11 +499,11 @@ the menu’s original size or the menu items’ new size.</p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>If a user searches for “word word category”, the category would be
 matched and autocompleted, and when selected, the “word word” would
@@ -452,11 +535,11 @@ also be caught as the remainder and then added in its own facet.</p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>Directly called to focus the input. This is different from <code>addFocus</code>
 because this is not called by a focus event. This instead calls a
@@ -475,11 +558,11 @@ focus event causing the input to become focused.</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>Event called on user focus on the input. Tells all other input and facets
 to give up focus, and starts revving the autocomplete.</p>
@@ -502,11 +585,11 @@ to give up focus, and starts revving the autocomplete.</p>
         </li>
         
         
-        <li id="section-17">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Directly called to blur the input. This is different from <code>removeFocus</code>
 because this is not called by a blur event.</p>
@@ -521,11 +604,11 @@ because this is not called by a blur event.</p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>Event called when user blur’s the input, either through the keyboard tabbing
 away or the mouse clicking off. Cleans up</p>
@@ -543,11 +626,11 @@ away or the mouse clicking off. Cleans up</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>When the user blurs the input, they may either be going to another input
 or off the search box entirely. If they go to another input, this facet
@@ -572,11 +655,11 @@ not, then it can finally close itself and its autocomplete menu.</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>Starts a timer that will cause a triple-click, which highlights all facets.</p>
 
@@ -591,11 +674,11 @@ not, then it can finally close itself and its autocomplete menu.</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>Event on click that checks if a triple click is in play. The
 <code>tripleClickTimer</code> is counting down, ready to be engaged and intercept
@@ -615,11 +698,11 @@ the click event to force a select all instead.</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>Is the user currently focused in the input field?</p>
 
@@ -632,11 +715,11 @@ the click event to force a select all instead.</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>When serializing the facets, the inputs need to also have their values represented,
 in case they contain text that is not yet faceted (but will be once the search is
@@ -651,11 +734,11 @@ completed).</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>When switching between facets and inputs, depending on the direction the cursor
 is coming from, the cursor in this facet’s input field should match the original
@@ -674,11 +757,11 @@ direction.</p>
         </li>
         
         
-        <li id="section-25">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>Selects the entire range of text in the input. Useful when tabbing between inputs
 and facets.</p>
@@ -697,11 +780,11 @@ and facets.</p>
         </li>
         
         
-        <li id="section-26">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>Before the searchBox performs a search, we need to close the
 autocomplete menu.</p>
@@ -720,11 +803,11 @@ autocomplete menu.</p>
         </li>
         
         
-        <li id="section-27">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>Callback fired on key press in the search box. We search when they hit return.</p>
 
@@ -737,22 +820,7 @@ autocomplete menu.</p>
       <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.search(e, <span class="hljs-number">100</span>);
     } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (VS.app.hotkeys.colon(e)) {
       <span class="hljs-keyword">this</span>.box.trigger(<span class="hljs-string">'resize.autogrow'</span>, e);
-      <span class="hljs-keyword">var</span> query    = <span class="hljs-keyword">this</span>.box.val();
-      <span class="hljs-keyword">var</span> prefixes = [];
-      <span class="hljs-keyword">this</span>.app.options.callbacks.facetMatches(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(p)</span> {</span>
-          prefixes = p;
-      });
-      <span class="hljs-keyword">var</span> labels   = _.map(prefixes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(prefix)</span> {</span>
-        <span class="hljs-keyword">if</span> (prefix.label) <span class="hljs-keyword">return</span> prefix.label;
-        <span class="hljs-keyword">else</span>              <span class="hljs-keyword">return</span> prefix;
-      });
-      <span class="hljs-keyword">if</span> (_.contains(labels, query)) {
-        e.preventDefault();
-        <span class="hljs-keyword">var</span> remainder = <span class="hljs-keyword">this</span>.addTextFacetRemainder(query);
-        <span class="hljs-keyword">var</span> position  = <span class="hljs-keyword">this</span>.options.position + (remainder?<span class="hljs-number">1</span>:<span class="hljs-number">0</span>);
-        <span class="hljs-keyword">this</span>.app.searchBox.addFacet(query, <span class="hljs-string">''</span>, position);
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-      }
+      <span class="hljs-keyword">this</span>.addFacet(e);
     } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (key == <span class="hljs-string">'backspace'</span>) {
       <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.box.getCursorPosition() == <span class="hljs-number">0</span> &amp;&amp; !<span class="hljs-keyword">this</span>.box.getSelection().length) {
         e.preventDefault();
@@ -767,11 +835,11 @@ autocomplete menu.</p>
         </li>
         
         
-        <li id="section-28">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>Handles all keyboard inputs when in the input field. This checks
 for movement between facets and inputs, entering a new value that needs
@@ -795,15 +863,25 @@ to be autocompleted, as well as stepping between facets with backspace.</p>
     } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (VS.app.hotkeys.shift &amp;&amp; key == <span class="hljs-string">'tab'</span>) {
       e.preventDefault();
       <span class="hljs-keyword">this</span>.app.searchBox.focusNextFacet(<span class="hljs-keyword">this</span>, -<span class="hljs-number">1</span>, {selectText: <span class="hljs-literal">true</span>});
-    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (key == <span class="hljs-string">'tab'</span>) {
-      <span class="hljs-keyword">var</span> value = <span class="hljs-keyword">this</span>.box.val();
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (key == <span class="hljs-string">'tab'</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>note that this event is not fired when the tab button fires autocomplete’s
+<code>select</code> callback (pressing the tab when an item in the autocomplete menu is selected)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> value = <span class="hljs-keyword">this</span>.box.val();
       <span class="hljs-keyword">if</span> (value.length) {
-        e.preventDefault();
-        <span class="hljs-keyword">var</span> remainder = <span class="hljs-keyword">this</span>.addTextFacetRemainder(value);
-        <span class="hljs-keyword">var</span> position  = <span class="hljs-keyword">this</span>.options.position + (remainder?<span class="hljs-number">1</span>:<span class="hljs-number">0</span>);
-        <span class="hljs-keyword">if</span> (value != remainder) {
-            <span class="hljs-keyword">this</span>.app.searchBox.addFacet(value, <span class="hljs-string">''</span>, position);
-        }
+        <span class="hljs-keyword">this</span>.addFacet(e);
       } <span class="hljs-keyword">else</span> {
         <span class="hljs-keyword">var</span> foundFacet = <span class="hljs-keyword">this</span>.app.searchBox.focusNextFacet(<span class="hljs-keyword">this</span>, <span class="hljs-number">0</span>, {
           skipToFacet: <span class="hljs-literal">true</span>,
@@ -837,11 +915,11 @@ to be autocompleted, as well as stepping between facets with backspace.</p>
         </li>
         
         
-        <li id="section-29">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>We should get the value of an input should be done
 on keyup since keydown gets the previous value and not the current one</p>
