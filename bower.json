@@ -10,7 +10,7 @@
   "main": ["build-min/visualsearch-datauri.css", "build-min/visualsearch.css", "build-min/visualsearch.js"],
   "license": "MIT",
   "dependencies": {
-    "jQuery": ">=1.4",
+    "jquery": ">=1.4",
     "jquery-ui": ">=1.8",
     "backbone": ">=0.9.10",
     "underscore":">=1.4.3"
