@@ -278,7 +278,7 @@ VS.ui.SearchBox = Backbone.View.extend({
   // Handles showing/hiding the placeholder text
   renderPlaceholder : function() {
     var $placeholder = this.$('.VS-placeholder');
-    if (this.app.searchQuery.length) {
+    if (this.app.searchQuery.length || _.any(this.inputViews, function(view) { return view.value() != ""; })) {
       $placeholder.addClass("VS-hidden");
     } else {
       $placeholder.removeClass("VS-hidden")
@@ -508,6 +508,7 @@ VS.ui.SearchBox = Backbone.View.extend({
       return view.isFocused();
     });
     if (!focus) this.$('.VS-search-box').removeClass('VS-focus');
+    this.renderPlaceholder();
   },
 
   // Show a menu which adds pre-defined facets to the search box. This is unused for now.
