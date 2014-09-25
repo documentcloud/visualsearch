@@ -7,7 +7,7 @@
   .VS-search .VS-icon-cancel {
     width: 11px; height: 11px;
     background-position: center 0;
-    background-image: url(../images/embed/icons/cancel_search.png?1311104738);
+    background-image: url(../images/embed/icons/cancel_search.png?1411660636);
     cursor: pointer;
   }
     .VS-search .VS-icon-cancel:hover {
@@ -15,7 +15,7 @@
     }
   .VS-search .VS-icon-search {
     width: 12px; height: 12px;
-    background-image: url(../images/embed/icons/search_glyph.png?1311104738);
+    background-image: url(../images/embed/icons/search_glyph.png?1411660636);
   }
 
 /*------------------------------ RESET + DEFAULT STYLES ---------------------------------*/
@@ -111,7 +111,8 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
       font-size: 14px;
   }
   .VS-search .VS-search-box.VS-focus .VS-placeholder,
-  .VS-search .VS-search-box .VS-placeholder.VS-hidden {
+  .VS-search .VS-search-box .VS-placeholder.VS-hidden,
+  .VS-search .VS-search-box .VS-cancel-search-box.VS-hidden {
       display: none;
   }
   .VS-search .VS-search-inner {
