@@ -111,7 +111,8 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
       font-size: 14px;
   }
   .VS-search .VS-search-box.VS-focus .VS-placeholder,
-  .VS-search .VS-search-box .VS-placeholder.VS-hidden {
+  .VS-search .VS-search-box .VS-placeholder.VS-hidden,
+  .VS-search .VS-search-box .VS-cancel-search-box.VS-hidden {
       display: none;
   }
   .VS-search .VS-search-inner {
