@@ -1,1 +1,5 @@
 .DS_Store
+
+build-min
+build
+bower_components

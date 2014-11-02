@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="chrome=1">
+	<title>DocumentCloud's VisualSearch.js</title>
+	<style type="text/css">
+		body {
+			font-size   : 16px;
+			line-height : 24px;
+			background  : #FEF3CA;
+			color       : #022;
+			height      : 100%;
+			font-family : "Palatino Linotype", "Book Antiqua", Palatino, FreeSerif, serif;
+		}
+
+		div.container {
+			width  : 720px;
+			margin : 50px 0 50px 50px;
+		}
+
+		p, li {
+			margin : 16px 0 16px 0;
+			width  : 550px;
+		}
+
+		p.break {
+			margin-top : 35px;
+		}
+
+		ol {
+			padding-left : 24px;
+		}
+
+		ol li {
+			font-weight : bold;
+			margin-left : 0;
+		}
+
+		a, a:visited {
+			padding         : 0 2px;
+			text-decoration : none;
+			background      : #f0c095;
+			color           : #252519;
+		}
+
+		a:active, a:hover {
+			color      : #FFF;
+			background : #C25D00;
+		}
+
+		h1, h2, h3, h4, h5, h6 {
+			margin-top : 40px;
+		}
+
+		b.header {
+			font-size : 18px;
+		}
+
+		span.alias {
+			font-size   : 14px;
+			font-style  : italic;
+			margin-left : 20px;
+		}
+
+		table {
+			margin : 16px 0; padding : 0;
+		}
+
+		tr, td, th {
+			margin     : 0; padding : 0;
+			text-align : left;
+		}
+
+		th {
+			padding : 24px 0 0;
+		}
+
+		tr:first-child th {
+			padding-top : 0;
+		}
+
+		td {
+			padding : 6px 15px 6px 0;
+		}
+
+		td.definition {
+			line-height : 18px;
+			font-size   : 14px;
+		}
+
+		table.downloads td {
+			padding-left : 18px;
+		}
+
+		.demo-hint {
+			font-size   : 13px;
+			margin      : 0 0 12px 12px;
+			font-weight : normal;
+		}
+
+		#VS code, #VS pre, #VS tt {
+			font-family : Monaco, Consolas, "Lucida Console", monospace;
+			font-size   : 12px;
+			line-height : 18px;
+			color       : #444;
+			background  : none;
+		}
+
+		#VS code {
+			margin-left : 8px;
+			padding     : 0 0 0 12px;
+			font-weight : normal;
+		}
+
+		#VS pre {
+			font-size   : 12px;
+			padding     : 2px 0 2px 0;
+			border-left : 6px solid #829C37;
+			margin      : 12px 0;
+		}
+
+		#search_query {
+			margin  : 18px 0;
+			opacity : 0;
+		}
+
+		#search_query .raquo {
+			font-size    : 18px;
+			line-height  : 12px;
+			font-weight  : bold;
+			margin-right : 4px;
+		}
+
+		#search_query2 {
+			margin  : 18px 0;
+			opacity : 0;
+		}
+
+		#search_query2 .raquo {
+			font-size    : 18px;
+			line-height  : 12px;
+			font-weight  : bold;
+			margin-right : 4px;
+		}
+	</style>
+
+	<link rel="stylesheet" href="lib/css/reset.css" type="text/css" media="screen" charset="utf-8">
+	<link rel="stylesheet" href="lib/css/icons.css" type="text/css" media="screen" charset="utf-8">
+	<link rel="stylesheet" href="lib/css/workspace.css" type="text/css" media="screen" charset="utf-8">
+
+	<script src="vendor/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+	<!-- <script src="vendor/backported/jquery-1.4.4.js" type="text/javascript" charset="utf-8"></script> -->
+	<script src="vendor/jquery.ui.core.js" type="text/javascript" charset="utf-8"></script>
+	<script src="vendor/jquery.ui.widget.js" type="text/javascript" charset="utf-8"></script>
+	<script src="vendor/jquery.ui.position.js" type="text/javascript" charset="utf-8"></script>
+	<script src="vendor/jquery.ui.menu.js" type="text/javascript" charset="utf-8"></script>
+	<script src="vendor/jquery.ui.autocomplete.js" type="text/javascript" charset="utf-8"></script>
+	<script src="vendor/underscore-1.5.2.js" type="text/javascript" charset="utf-8"></script>
+	<script src="vendor/backbone-1.1.0.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/js/visualsearch.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/js/views/search_box.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/js/views/search_facet.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/js/views/search_input.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/js/models/search_facets.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/js/models/search_query.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/js/utils/backbone_extensions.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/js/utils/hotkeys.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/js/utils/jquery_extensions.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/js/utils/search_parser.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/js/utils/inflector.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/js/templates/templates.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+
+<div class="container" id="VS">
+
+	<h1><a href="index.html">VisualSearch.js</a></h1>
+
+	<h2 id="demo">Demo <span class="demo-hint"><i>Try searching for: <b>account</b>, <b>filter</b>, <b>access</b>, <b>title</b>,
+		<b>city</b>, <b>state</b>, or <b>country</b>.</i></span></h2>
+
+	<div id="search_box_container"></div>
+	<div id="search_query">&nbsp;</div>
+
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function () {
+			$data = {};
+			$.getJSON("https://gist.githubusercontent.com/dynamicguy/13c6c8c06ef03b109948/raw/ebcb89d7bb484e50d305bf219b8ef9cec887a6b8/facets.json", function (data) {
+				$data = data;
+			});
+			var visualSearch = VS.init({
+				container: $('#search_box_container'),
+				query: '',
+				callbacks: {
+					search: function (query, searchCollection) {
+						var $query = $('#search_query');
+						$query.stop().animate({opacity: 1}, {duration: 300, queue: false});
+						$query.html('<span class="raquo">&raquo;</span> You searched for: <b>' + searchCollection.serialize() + '</b>');
+						clearTimeout(window.queryHideDelay);
+						window.queryHideDelay = setTimeout(function () {
+							$query.animate({
+								opacity: 0
+							}, {
+								duration: 1000,
+								queue: false
+							});
+						}, 2000);
+					},
+					facetMatches: function (callback) {
+						var items = [];
+						$.each($data, function (key, val) {
+							items.push(val);
+						});
+						callback(items);
+					},
+					valueMatches: function (facet, searchTerm, callback) {
+						$.each($data, function (key, val) {
+							if (val.label == facet) {
+								callback(val.entries);
+							}
+						});
+					}
+				}
+			});
+		});
+	</script>
+</div>
+
+</body>
+</html>
