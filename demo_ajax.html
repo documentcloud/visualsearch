@@ -186,13 +186,19 @@
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function () {
 			$data = {};
-			$.getJSON("https://gist.githubusercontent.com/dynamicguy/13c6c8c06ef03b109948/raw/ebcb89d7bb484e50d305bf219b8ef9cec887a6b8/facets.json", function (data) {
-				$data = data;
-			});
 			var visualSearch = VS.init({
 				container: $('#search_box_container'),
 				query: '',
+				showFacets  : true,
+				autosearch  : true,
+				unquotable  : [],
+				remainder   : 'text',
 				callbacks: {
+					focus: function(){
+						$.getJSON("https://gist.githubusercontent.com/dynamicguy/13c6c8c06ef03b109948/raw/ebcb89d7bb484e50d305bf219b8ef9cec887a6b8/facets.json", function (data) {
+							$data = data;
+						});
+					},
 					search: function (query, searchCollection) {
 						var $query = $('#search_query');
 						$query.stop().animate({opacity: 1}, {duration: 300, queue: false});
@@ -210,6 +216,7 @@
 					facetMatches: function (callback) {
 						var items = [];
 						$.each($data, function (key, val) {
+							val.category = key;
 							items.push(val);
 						});
 						callback(items);
