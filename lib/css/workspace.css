@@ -195,26 +195,29 @@
   float: left;
   margin-left: -1px;
 }
-  .VS-search .search_input input {
-    padding: 6px 3px 6px 2px;
-    line-height: 10px;
-    height: 22px;
-    margin-top: -4px;
-    width: 10px;
-    z-index: 100;
-    min-width: 4px;
-    position: relative;
-  }
-  .VS-search .search_input.is_editing input {
-    color: #202020;
-  }
+.VS-search .search_input input {
+padding: 6px 3px 6px 2px;
+line-height: 10px;
+height: 22px;
+margin-top: -4px;
+width: 10px;
+z-index: 100;
+min-width: 4px;
+position: relative;
+}
+.VS-search .search_input.is_editing input {
+color: #202020;
+}
 
 /* ================ */
 /* = Autocomplete = */
 /* ================ */
 
 .ui-helper-hidden-accessible {
-    display: none;
+    display: block;
+	position: fixed;
+	line-height: 25px;
+	color: #d5d5d5;
 }
 
 .VS-interface.ui-autocomplete {

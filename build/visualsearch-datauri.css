@@ -265,7 +265,7 @@ Source: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/
 /* ================ */
 
 .ui-helper-hidden-accessible {
-    display: none;
+    display: block;
 }
 
 .VS-interface.ui-autocomplete {

@@ -190,9 +190,9 @@
 				container: $('#search_box_container'),
 				query: '',
 				showFacets  : true,
-				autosearch  : true,
+				autosearch  : false,
 				unquotable  : [],
-				remainder   : 'text',
+				remainder   : 'keyword',
 				callbacks: {
 					focus: function(){
 						$.getJSON("https://gist.githubusercontent.com/dynamicguy/13c6c8c06ef03b109948/raw/ebcb89d7bb484e50d305bf219b8ef9cec887a6b8/facets.json", function (data) {
@@ -202,21 +202,25 @@
 					search: function (query, searchCollection) {
 						var $query = $('#search_query');
 						$query.stop().animate({opacity: 1}, {duration: 300, queue: false});
+						
 						$query.html('<span class="raquo">&raquo;</span> You searched for: <b>' + searchCollection.serialize() + '</b>');
-						clearTimeout(window.queryHideDelay);
-						window.queryHideDelay = setTimeout(function () {
-							$query.animate({
-								opacity: 0
-							}, {
-								duration: 1000,
-								queue: false
-							});
-						}, 2000);
+						$.each(searchCollection.models, function(key, val){
+							console.info(val.get('category'));
+							console.info(val.get('value'));
+						});
+						// clearTimeout(window.queryHideDelay);
+						// window.queryHideDelay = setTimeout(function () {
+						// 	$query.animate({
+						// 		opacity: 0
+						// 	}, {
+						// 		duration: 100000,
+						// 		queue: false
+						// 	});
+						// }, 2000);
 					},
 					facetMatches: function (callback) {
 						var items = [];
 						$.each($data, function (key, val) {
-							val.category = key;
 							items.push(val);
 						});
 						callback(items);
