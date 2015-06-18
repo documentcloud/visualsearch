@@ -378,7 +378,7 @@
                     'A Repository Grows in Brooklyn'
                   ]);
                   break;
-                case 'city':
+                case 'locality':
                   callback([
                     'Cleveland',
                     'New York City',
@@ -443,10 +443,10 @@
             facetMatches : function(callback) {
               callback([
                 'account', 'filter', 'access', 'title',
-                { label: 'city',    category: 'location' },
-                { label: 'address', category: 'location' },
-                { label: 'country', category: 'location' },
-                { label: 'state',   category: 'location' },
+                { value: 'locality', label: 'city', category: 'location' },
+                { value: 'address',  category: 'location' },
+                { label: 'country',  category: 'location' },
+                { label: 'state',    category: 'location' },
               ], {
                   preserveOrder: true
               });

@@ -1047,13 +1047,7 @@ VS.ui.SearchInput = Backbone.View.extend({
         $(this.el).find('.ui-autocomplete-input').css('z-index','auto');
       }, this),
       select    : _.bind(function(e, ui) {
-        e.preventDefault();
-        // stopPropogation does weird things in jquery-ui 1.9
-        // e.stopPropagation();
-        var remainder = this.addTextFacetRemainder(ui.item.label || ui.item.value);
-        var position  = this.options.position + (remainder ? 1 : 0);
-        this.app.searchBox.addFacet(ui.item instanceof String ? ui.item : ui.item.value, '', position);
-        return false;
+        this.addFacet(e, ui.item);
       }, this)
     });
 
@@ -1077,6 +1071,43 @@ VS.ui.SearchInput = Backbone.View.extend({
 
     this.box.autocomplete('widget').addClass('VS-interface');
   },
+  
+  // Adds a given facet (with a remainder, if exists). If facet not provided, tries to extract
+  // a facet from the last word of the current input (matching it to available facets).
+  addFacet : function(e, facetToAdd) {
+    if (typeof facetToAdd === 'undefined') {
+      // trying to find a facet that matches the last word in the input 
+      var query    = this.box.val();
+      var lastWord = query.match(/\w+$/);
+      if (lastWord) {
+        lastWord = lastWord[0];
+        var availableFacets = [];
+        this.app.options.callbacks.facetMatches(function(facets) {
+            availableFacets = facets;
+        });
+        
+        facetToAdd = _.find(availableFacets, function (facet) {
+          // first try to match a label, as label (if provided) is the text
+          // that users see in jQuery autocomplete dropdown menu
+          var category = facet.label || facet.value || facet;
+          return category && category.toLowerCase() === lastWord.toLowerCase();
+        });
+      }
+    }
+    if (facetToAdd) {
+      // stopPropogation does weird things in jquery-ui 1.9
+      // e.stopPropagation();
+      e.preventDefault();
+      var categoryTyped = facetToAdd.label || facetToAdd.value || facetToAdd;
+      var remainder = this.addTextFacetRemainder(categoryTyped);
+      var position  = this.options.position + (remainder?1:0);
+      // first try to use a value, as jQuery autocomplete sets value
+      // when selected an item from the dropdown menu
+      var categoryToAdd = facetToAdd.value || facetToAdd.label || facetToAdd;
+      this.app.searchBox.addFacet(categoryToAdd, '', position);
+      return false;
+    }
+  },
 
   // Search terms used in the autocomplete menu. The values are matched on the
   // first letter of any word in matches, and finally sorted according to the
@@ -1093,7 +1124,7 @@ VS.ui.SearchInput = Backbone.View.extend({
       // Only match from the beginning of the word.
       var matcher    = new RegExp('^' + re, 'i');
       var matches    = $.grep(prefixes, function(item) {
-        return item && matcher.test(item.label || item);
+        return item && matcher.test(item.label || item.value || item);
       });
 
       if (options.preserveOrder) {
@@ -1101,6 +1132,7 @@ VS.ui.SearchInput = Backbone.View.extend({
       } else {
         resp(_.sortBy(matches, function(match) {
           if (match.label) return match.category + '-' + match.label;
+          else if (match.value) return match.category + '-' + match.value;
           else             return match;
         }));
       }
@@ -1305,22 +1337,7 @@ VS.ui.SearchInput = Backbone.View.extend({
       return this.search(e, 100);
     } else if (VS.app.hotkeys.colon(e)) {
       this.box.trigger('resize.autogrow', e);
-      var query    = this.box.val();
-      var prefixes = [];
-      this.app.options.callbacks.facetMatches(function(p) {
-          prefixes = p;
-      });
-      var labels   = _.map(prefixes, function(prefix) {
-        if (prefix.label) return prefix.label;
-        else              return prefix;
-      });
-      if (_.contains(labels, query)) {
-        e.preventDefault();
-        var remainder = this.addTextFacetRemainder(query);
-        var position  = this.options.position + (remainder?1:0);
-        this.app.searchBox.addFacet(query, '', position);
-        return false;
-      }
+      this.addFacet(e);
     } else if (key == 'backspace') {
       if (this.box.getCursorPosition() == 0 && !this.box.getSelection().length) {
         e.preventDefault();
@@ -1352,14 +1369,11 @@ VS.ui.SearchInput = Backbone.View.extend({
       e.preventDefault();
       this.app.searchBox.focusNextFacet(this, -1, {selectText: true});
     } else if (key == 'tab') {
+      // note that this event is not fired when the tab button fires autocomplete's
+      // `select` callback (pressing the tab when an item in the autocomplete menu is selected)
       var value = this.box.val();
       if (value.length) {
-        e.preventDefault();
-        var remainder = this.addTextFacetRemainder(value);
-        var position  = this.options.position + (remainder?1:0);
-        if (value != remainder) {
-            this.app.searchBox.addFacet(value, '', position);
-        }
+        this.addFacet(e);
       } else {
         var foundFacet = this.app.searchBox.focusNextFacet(this, 0, {
           skipToFacet: true,
