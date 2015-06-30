@@ -1,11 +1,11 @@
 /*
- VisualSearch.js 0.4.0
-  (c) 2011 Samuel Clay, @samuelclay, DocumentCloud Inc.
+ VisualSearch.js 0.5.1
+  (c) 2011 Samuel Clay, @samuelclay, DocumentCloud Inc., Investigative Reporters & Editors
   VisualSearch.js may be freely distributed under the MIT license.
   For all details and documentation:
   http://documentcloud.github.com/visualsearch
 */
-(function(){var c=jQuery;window.VS||(window.VS={});VS.app||(VS.app={});VS.ui||(VS.ui={});VS.model||(VS.model={});VS.utils||(VS.utils={});VS.VERSION="0.5.0";VS.VisualSearch=function(a){var b={container:"",query:"",autosearch:!0,unquotable:[],remainder:"text",showFacets:!0,readOnly:!1,callbacks:{search:c.noop,focus:c.noop,blur:c.noop,facetMatches:c.noop,valueMatches:c.noop,clearSearch:c.noop,removedFacet:c.noop}};this.options=_.extend({},b,a);this.options.callbacks=_.extend({},b.callbacks,a.callbacks);
+(function(){var c=jQuery;window.VS||(window.VS={});VS.app||(VS.app={});VS.ui||(VS.ui={});VS.model||(VS.model={});VS.utils||(VS.utils={});VS.VERSION="0.5.1";VS.VisualSearch=function(a){var b={container:"",query:"",autosearch:!0,unquotable:[],remainder:"text",showFacets:!0,readOnly:!1,callbacks:{search:c.noop,focus:c.noop,blur:c.noop,facetMatches:c.noop,valueMatches:c.noop,clearSearch:c.noop,removedFacet:c.noop}};this.options=_.extend({},b,a);this.options.callbacks=_.extend({},b.callbacks,a.callbacks);
 VS.app.hotkeys.initialize();this.searchQuery=new VS.model.SearchQuery;this.searchBox=new VS.ui.SearchBox({app:this,showFacets:this.options.showFacets});a.container&&(a=this.searchBox.render().el,c(this.options.container).html(a));this.searchBox.value(this.options.query||"");c(window).bind("unload",function(a){});return this};VS.init=function(a){return new VS.VisualSearch(a)}})();
 (function(){var c=jQuery;VS.ui.SearchBox=Backbone.View.extend({id:"search",events:{"click .VS-cancel-search-box":"clearSearch","mousedown .VS-search-box":"maybeFocusSearch","dblclick .VS-search-box":"highlightSearch","click .VS-search-box":"maybeTripleClick"},initialize:function(a){this.options=_.extend({},this.options,a);this.app=this.options.app;this.flags={allSelected:!1};this.facetViews=[];this.inputViews=[];_.bindAll(this,"renderFacets","_maybeDisableFacets","disableFacets","deselectAllFacets",
 "addedFacet","removedFacet","changedFacet");this.app.searchQuery.bind("reset",this.renderFacets).bind("add",this.addedFacet).bind("remove",this.removedFacet).bind("change",this.changedFacet);c(document).bind("keydown",this._maybeDisableFacets)},render:function(){c(this.el).append(JST.search_box({readOnly:this.app.options.readOnly}));c(document.body).setMode("no","search");return this},value:function(a){return null==a?this.serialize():this.setQuery(a)},serialize:function(){var a=[],b=this.inputViews.length;
