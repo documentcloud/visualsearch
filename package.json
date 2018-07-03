@@ -1,0 +1,31 @@
+{
+  "name": "visualsearch",
+  "version": "1.0.0",
+  "description": "A rich search box for real data",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'bower_components', 'junction') } catch (e) { }\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/documentcloud/visualsearch.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/documentcloud/visualsearch/issues"
+  },
+  "homepage": "https://github.com/documentcloud/visualsearch#readme",
+  "dependencies": {
+    "@bower_components/backbone": "jashkenas/backbone#>=0.9.10",
+    "@bower_components/jquery": "jquery/jquery-dist#>=1.4",
+    "@bower_components/jquery-ui": "components/jqueryui#>=1.8",
+    "@bower_components/underscore": "jashkenas/underscore#>=1.4.3"
+  },
+  "engines": {
+    "yarn": ">= 1.0.0"
+  }
+}
