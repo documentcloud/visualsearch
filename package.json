@@ -22,7 +22,7 @@
   "dependencies": {
     "backbone": "0.9.10",
     "jquery": "1.11.0",
-    "jquery-ui": "1.11.4",
+    "jquery-ui": "1.12.1",
     "underscore": "1.4.3"
   },
   "engines": {
