@@ -20,10 +20,10 @@
   },
   "homepage": "https://github.com/documentcloud/visualsearch#readme",
   "dependencies": {
-    "@bower_components/backbone": "jashkenas/backbone#>=0.9.10",
-    "@bower_components/jquery": "jquery/jquery-dist#>=1.4",
-    "@bower_components/jquery-ui": "components/jqueryui#>=1.8",
-    "@bower_components/underscore": "jashkenas/underscore#>=1.4.3"
+    "backbone": "0.9.10",
+    "jquery": "1.11.0",
+    "jquery-ui": "1.11.4",
+    "underscore": "1.4.3"
   },
   "engines": {
     "yarn": ">= 1.0.0"
