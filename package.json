@@ -17,7 +17,7 @@
   "homepage": "https://github.com/documentcloud/visualsearch#readme",
   "dependencies": {
     "backbone": "1.3.3",
-    "jquery": "1.11.0",
+    "jquery": "3.5.0",
     "jquery-ui": "1.12.1",
     "underscore": "1.4.3"
   },
